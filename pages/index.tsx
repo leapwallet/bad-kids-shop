@@ -4,14 +4,18 @@ import { useMemo } from "react";
 import { WalletSection } from "../components";
 import { toUtf8 } from "@cosmjs/encoding";
 import { useChain } from "@cosmos-kit/react";
-import Image from "next/image"
-import BadkidsLogo from '../public/bad_kids_logo.svg'
+import Image from "next/image";
+import BadkidsLogo from "../public/bad_kids_logo.svg";
+import Search from "../public/search.svg";
+import Sort from "../public/sort.svg";
+import StargazeLogo from "../public/stargaze-logo.svg";
+import WalletIcon from "../public/account_balance_wallet.svg";
 
 import { cosmwasm, getSigningCosmwasmClient } from "stargazejs";
 
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import Text from "../components/Text";
-
+import { sliceAddress } from "../config/formatAddress";
 
 const { executeContract } = cosmwasm.wasm.v1.MessageComposer.withTypeUrl;
 
@@ -126,29 +130,31 @@ function NFTs() {
   });
 
   const nfts = useMemo(() => {
-    return result.data?.tokens.tokens.filter((token: any) => token.owner.address !== address ).map((token: any) => {
-      return {
-        image: token.media.url,
-        media_type: token.media.type,
-        name: token.metadata.name,
-        tokenId: token.tokenId,
-        listPrice: token.listPrice,
-        traits: token.traits,
-        rarityOrder: token.rarityOrder,
-        collection: {
-          name: token.collection.name,
-          media_type: token.collection.media.type,
-          image: token.collection.media.url,
-          contractAddress: token.collection.contractAddress,
-          tokenCount: token.collection.tokenCounts.total
-        },
-      };
-    });
+    return result.data?.tokens.tokens
+      .filter((token: any) => token.owner.address !== address)
+      .map((token: any) => {
+        return {
+          image: token.media.url,
+          media_type: token.media.type,
+          name: token.metadata.name,
+          tokenId: token.tokenId,
+          listPrice: token.listPrice,
+          traits: token.traits,
+          rarityOrder: token.rarityOrder,
+          collection: {
+            name: token.collection.name,
+            media_type: token.collection.media.type,
+            image: token.collection.media.url,
+            contractAddress: token.collection.contractAddress,
+            tokenCount: token.collection.tokenCounts.total,
+          },
+        };
+      });
   }, [result]);
-  console.log('logging nfts', nfts)
+  console.log("logging nfts", nfts);
 
   const onnNFTClick = async (nft: any) => {
-    if(!address) return
+    if (!address) return;
     const twoWeekExpiry = 14 * 24 * 60 * 60 * 1000;
     const tx = createBuyNftTx({
       sender: address,
@@ -163,33 +169,31 @@ function NFTs() {
       ],
     });
 
-    const signer = getOfflineSignerDirect()
+    const signer = getOfflineSignerDirect();
 
     const signingCosmwasmClient = await getSigningCosmwasmClient({
-      rpcEndpoint: chain.apis?.rpc?.[0].address ?? '',
-      signer: signer
+      rpcEndpoint: chain.apis?.rpc?.[0].address ?? "",
+      signer: signer,
     });
 
     const fee = {
       amount: [
         {
           amount: "0",
-          denom: "ustars"
-        }
+          denom: "ustars",
+        },
       ],
-      gas: '1000000'
-    }
-    console.log('logging tx', tx)
-    
+      gas: "1000000",
+    };
 
-    const signedTx = await signingCosmwasmClient.sign(address, [tx], fee, "")
+    const signedTx = await signingCosmwasmClient.sign(address, [tx], fee, "");
     const txRaw = TxRaw.encode({
       bodyBytes: signedTx.bodyBytes,
       authInfoBytes: signedTx.authInfoBytes,
-      signatures: signedTx.signatures
-    }).finish()
-    
-    const res = await signingCosmwasmClient.broadcastTx(txRaw)
+      signatures: signedTx.signatures,
+    }).finish();
+
+    const res = await signingCosmwasmClient.broadcastTx(txRaw);
   };
 
   return (
@@ -206,19 +210,75 @@ function NFTs() {
   );
 }
 
+function WalletButton() {
+  const {
+    connect,
+    openView,
+    status,
+    username,
+    address,
+    message,
+    wallet,
+    chain: chainInfo,
+  } = useChain("stargaze");
+
+  return (
+    <div>
+      <button
+        onClick={() => openView()}
+        className="flex items-center gap-2 justify-between border border-white-100 rounded-3xl px-5 py-2"
+      >
+        <Image src={WalletIcon} alt="wallet" height={16} width={16} />
+        <Text size="sm" color="text-white-100 font-bold">
+          {status === "Disconnected" ? "connect" : sliceAddress(address)}
+        </Text>
+      </button>
+    </div>
+  );
+}
+
 export default function Home() {
   return (
     <div className="px-14 py-8">
-      <section className="flex items-center justify-between mb-16">
-      <Image src={BadkidsLogo} alt="bad-kids" />
-      <WalletSection />
+      <section className="flex flex-wrap items-center justify-between mb-16">
+        <Image src={BadkidsLogo} alt="bad-kids" />
+        <div className="flex gap-3">
+          <button className="flex gap-2 items-center justify-between border border-white-100 rounded-3xl px-5 py-2">
+            <Image src={StargazeLogo} height={16} width={16} alt="get stars" />
+            <Text size="sm" color="text-white-100 font-bold">
+              Get Stars
+            </Text>
+          </button>
+          <WalletButton />
+        </div>
       </section>
-      <section className="mb-8">
-      <Text size="md">Collection of 9,999 bad drawings of kids. </Text>
-      <Text size="md">Some people like the pictures and some people are bad kids themselves.</Text>
-
+      <section className="mb-8 flex flex-wrap justify-between">
+        <div className="">
+          <Text size="md">Collection of 9,999 bad drawings of kids. </Text>
+          <Text size="md">
+            Some people like the pictures and some people are bad kids
+            themselves.
+          </Text>
+        </div>
+        <div className="flex items-center ml-auto justify-between">
+          <button
+            className="flex items-center bg-black-100 px-4 py-2 rounded-3xl mr-2"
+            style={{ boxShadow: "-11px 15px 23.4px 0px rgba(0, 0, 0, 0.41)" }}
+          >
+            <Image src={Search} height={16} width={16} alt="search" />
+            <Text className="ml-2 font-bold">Token ID</Text>
+          </button>
+          <button className="flex items-center bg-black-100 px-4 py-2 rounded-3xl">
+            <Image src={Sort} height={16} width={16} alt="sort" />
+            <Text
+              className="ml-2 font-bold"
+              style={{ boxShadow: "-11px 15px 23.4px 0px rgba(0, 0, 0, 0.41)" }}
+            >
+              Sort
+            </Text>
+          </button>
+        </div>
       </section>
-      
       <NFTs />
     </div>
   );
