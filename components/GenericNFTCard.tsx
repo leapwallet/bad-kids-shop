@@ -1,5 +1,10 @@
 import React, { useMemo } from 'react'
 import { useNFTImage} from '../hooks/useNFTImage'
+import Text from './Text'
+import { formatNumber, fromSmall } from '../config/mathutils'
+import BN from 'bignumber.js'
+import Image from 'next/image'
+import ArrowNorthWest from '../public/arrow-north-west.svg'
 
 type GenericCardProps = {
   nft: {
@@ -7,10 +12,21 @@ type GenericCardProps = {
     media_type: string, 
     name: string, 
     tokenId: string,
+    listPrice: {
+      amount: string
+      denom: string
+    }
+    traits: {
+      rarity: string
+      rarityScore: number
+      rarityPercent: number
+    }
+    rarityOrder: number
     collection: {
       name: string
       image: string
       media_type: string
+      tokenCount: number
     }
   }
   onNFTClick: (nft: any) => void
@@ -58,9 +74,9 @@ export function GenericNFTCard({nft, onNFTClick}: GenericCardProps){
     return name
   }, [nft?.name, nft?.tokenId])
   return (
-      <button
-      className='relative flex w-[calc(50%-6px)] sm:w-[calc(50%-12px)] md:w-[calc(33%-16px)] lg:w-[calc(25%-18px)] group cursor-pointer flex-col items-center justify-start gap-[2px] sm:gap-3 rounded-2xl p-0 sm:!p-4 ease transition-all duration-300 border-[0] sm:border border-gray-100 dark:border-gray-900 hover:shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)]'
-      onClick={() => onNFTClick(nft)}
+      <div
+      className='relative flex w-full sm:w-[calc(50%-12px)] md:w-[calc(33%-16px)] lg:w-[calc(25%-18px)] group flex-col items-center justify-start gap-[2px] sm:gap-3 rounded-2xl p-0 sm:!p-4 ease transition-all duration-300 border-[0] sm:border border-gray-100 dark:border-gray-900 hover:shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)]'
+      
     >
       {imageComponent}
       <div className='absolute top-0 left-0 aspect-square w-full flex-col items-start justify-end p-5 ease transition-all duration-300 hidden group-hover:flex'>
@@ -75,15 +91,32 @@ export function GenericNFTCard({nft, onNFTClick}: GenericCardProps){
         <div className='flex w-full flex-col items-start justify-start gap-[2px]'>
           <div className='flex w-full flex-row items-center justify-start gap-1'>
             <div className='h-5 w-5'>{collectionImageComponent}</div>
-            <div className='w-full overflow-hidden text-ellipsis whitespace-nowrap text-left text-base !leading-6 text-black-100 dark:text-white-100'>
-              {nft?.collection?.name}
+            <div className='w-full overflow-hidden text-ellipsis whitespace-nowrap text-left text-base !leading-6 text-black-100 dark:text-white-100 font-bold'>
+              {nft?.name}
             </div>
           </div>
-          <div className='w-full overflow-hidden text-ellipsis whitespace-nowrap text-left text-sm !leading-5 text-gray-600 dark:text-gray-400'>
-            {nftNameString}
-          </div>
+          <Text size="sm" color="text-white-100">
+              {nft?.rarityOrder} / {nft?.collection?.tokenCount}
+          </Text>
+        </div>
+        <div>
+          <p className="text-right text-base !leading-6 text-black-100 dark:text-white-100 font-bold">{formatNumber(fromSmall(nft.listPrice.amount))}</p>
+          <p className="text-right w-full text-base !leading-6 text-black-100 dark:text-white-100">
+            Stars
+          </p>
         </div>
       </div>
-    </button>
+      <div className="w-full flex items-center">
+        <button className="flex items-center justify-center h-[32px] w-[32px] bg-transparent border-white-100 border rounded-full cursor-pointer">
+          <Image src={ArrowNorthWest} alt="link" height={10} width={10}  />
+          
+        </button>
+        <button onClick={() => onNFTClick(nft)} className="flex bg-white-100 py-3 px-8 w-[70%] justify-center ml-auto rounded-3xl cursor-pointer">
+          <Text size="xs" color="text-black-100 text-center font-bold">
+            Buy Now
+          </Text>
+        </button>
+      </div>
+    </div>
 )
 }

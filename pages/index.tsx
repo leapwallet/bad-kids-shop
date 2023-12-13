@@ -4,10 +4,13 @@ import { useMemo } from "react";
 import { WalletSection } from "../components";
 import { toUtf8 } from "@cosmjs/encoding";
 import { useChain } from "@cosmos-kit/react";
+import Image from "next/image"
+import BadkidsLogo from '../public/bad_kids_logo.svg'
 
 import { cosmwasm, getSigningCosmwasmClient } from "stargazejs";
 
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
+import Text from "../components/Text";
 
 
 const { executeContract } = cosmwasm.wasm.v1.MessageComposer.withTypeUrl;
@@ -60,10 +63,15 @@ const getNFTTokensQuery = `
   tokens(collectionAddr: $collectionAddr, limit: $limit, offset: $offset, filterForSale: $filterForSale, sortBy: $sortBy) {
     tokens {
       description
+      name
+      rarityOrder
       owner {
         address
       }
       collection {
+        tokenCounts {
+          total
+        }
         media {
           type
           url
@@ -109,7 +117,7 @@ function NFTs() {
   const [result] = useQuery({
     query: getNFTTokensQuery,
     variables: {
-      collectionAddr: SASQUATCH_SOCIETY_COLLECTION,
+      collectionAddr: BAD_KIDS_COLLECTION,
       limit: 10,
       offset: 10,
       filterForSale: "FIXED_PRICE",
@@ -122,18 +130,22 @@ function NFTs() {
       return {
         image: token.media.url,
         media_type: token.media.type,
-        nftName: token.metadata.name,
+        name: token.metadata.name,
         tokenId: token.tokenId,
         listPrice: token.listPrice,
+        traits: token.traits,
+        rarityOrder: token.rarityOrder,
         collection: {
           name: token.collection.name,
           media_type: token.collection.media.type,
           image: token.collection.media.url,
           contractAddress: token.collection.contractAddress,
+          tokenCount: token.collection.tokenCounts.total
         },
       };
     });
   }, [result]);
+  console.log('logging nfts', nfts)
 
   const onnNFTClick = async (nft: any) => {
     if(!address) return
@@ -178,11 +190,6 @@ function NFTs() {
     }).finish()
     
     const res = await signingCosmwasmClient.broadcastTx(txRaw)
-    console.log('loggin res', res)
-
-    
-
-    console.log('logging result', signedTx)
   };
 
   return (
@@ -201,8 +208,17 @@ function NFTs() {
 
 export default function Home() {
   return (
-    <div>
+    <div className="px-14 py-8">
+      <section className="flex items-center justify-between mb-16">
+      <Image src={BadkidsLogo} alt="bad-kids" />
       <WalletSection />
+      </section>
+      <section className="mb-8">
+      <Text size="md">Collection of 9,999 bad drawings of kids. </Text>
+      <Text size="md">Some people like the pictures and some people are bad kids themselves.</Text>
+
+      </section>
+      
       <NFTs />
     </div>
   );

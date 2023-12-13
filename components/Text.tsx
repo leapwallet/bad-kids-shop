@@ -18,7 +18,7 @@ export type TextProps = {
 export default function Text(props: PropsWithChildren<TextProps>) {
   const { size, children, className, color, style } = props
   return (
-    <span
+    <p
       style={style}
       className={classNames(
         `flex shrink  font-satoshi`,
@@ -40,7 +40,7 @@ export default function Text(props: PropsWithChildren<TextProps>) {
       )}
     >
       {children}
-    </span>
+    </p>
   )
 }
 
