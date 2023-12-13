@@ -13,6 +13,7 @@ type GenericCardProps = {
       media_type: string
     }
   }
+  onNFTClick: (nft: any) => void
 }
 
 const Images = {
@@ -22,7 +23,8 @@ const Images = {
 }
 
 
-export function GenericNFTCard({nft}: GenericCardProps){
+export function GenericNFTCard({nft, onNFTClick}: GenericCardProps){
+
   const { imageComponent } = useNFTImage({
     image: nft.image,
     mediaType: nft.media_type,
@@ -55,12 +57,10 @@ export function GenericNFTCard({nft}: GenericCardProps){
     }
     return name
   }, [nft?.name, nft?.tokenId])
-  const onNFTClick = () => {
-  }
   return (
       <button
       className='relative flex w-[calc(50%-6px)] sm:w-[calc(50%-12px)] md:w-[calc(33%-16px)] lg:w-[calc(25%-18px)] group cursor-pointer flex-col items-center justify-start gap-[2px] sm:gap-3 rounded-2xl p-0 sm:!p-4 ease transition-all duration-300 border-[0] sm:border border-gray-100 dark:border-gray-900 hover:shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)]'
-      onClick={onNFTClick}
+      onClick={() => onNFTClick(nft)}
     >
       {imageComponent}
       <div className='absolute top-0 left-0 aspect-square w-full flex-col items-start justify-end p-5 ease transition-all duration-300 hidden group-hover:flex'>

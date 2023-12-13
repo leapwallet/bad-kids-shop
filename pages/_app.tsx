@@ -13,6 +13,22 @@ import '@interchain-ui/react/styles';
 import { Provider as GraphqlProvider} from 'urql'
 import { client } from '../config/urqlclient';
 
+
+const updatedChains = chains.map((chain) => {
+      if (chain.chain_id === 'stargaze-1') {
+        return {
+          ...chain,
+          apis: {
+            ...chain.apis,
+            rest: [{address: 'https://leap-node-proxy.numia.xyz/stargaze-lcd'}].concat(chain.apis?.rest ?? []),
+            rpc: [{address: 'https://leap-node-proxy.numia.xyz/stargaze-rpc'}].concat(chain.apis?.rpc ?? []),
+          },
+        };
+      }
+
+      return chain;
+    });
+
 function CreateCosmosApp({ Component, pageProps }: AppProps) {
   const signerOptions: SignerOptions = {
     // signingStargate: () => {
@@ -20,11 +36,14 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
     // }
   };
 
+
+  
+
   return (
   <GraphqlProvider value={client}>
 
       <ChainProvider
-        chains={chains}
+        chains={updatedChains}
         assetLists={assets}
         wallets={[...keplrWallets, ...cosmostationWallets, ...leapWallets]}
         walletConnectOptions={{

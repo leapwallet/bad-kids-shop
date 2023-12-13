@@ -12,6 +12,7 @@
     "@chakra-ui/icons": "2.0.12",
     "@chakra-ui/react": "2.5.1",
     "@cosmjs/cosmwasm-stargate": "0.31.1",
+    "@cosmjs/encoding": "^0.32.1",
     "@cosmjs/stargate": "0.31.1",
     "@cosmos-kit/core": "^2.6.6",
     "@cosmos-kit/cosmostation": "^2.3.11",
@@ -22,12 +23,14 @@
     "@emotion/styled": "11.10.6",
     "chain-registry": "1.20.0",
     "classnames": "^2.3.2",
+    "cosmjs-types": "^0.9.0",
     "framer-motion": "9.0.7",
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "4.6.0",
     "react-loading-skeleton": "^3.3.1",
+    "stargazejs": "^0.14.1",
     "urql": "^4.0.6"
   },
   "devDependencies": {
