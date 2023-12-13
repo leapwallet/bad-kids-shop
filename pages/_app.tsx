@@ -7,8 +7,10 @@ import { wallets as leapWallets } from "@cosmos-kit/leap";
 import { SignerOptions } from "@cosmos-kit/core";
 import { chains, assets } from "chain-registry";
 import "@interchain-ui/react/styles";
-import { Provider as GraphqlProvider } from "urql";
-import { client } from "../config/urqlclient";
+import { ApolloProvider as GraphqlProvider } from '@apollo/client';
+
+
+import { client } from "../config/apolloclient";
 import LeapUiTheme, { ThemeName } from "../components/ThemeProvider";
 import Head from "next/head";
 
@@ -44,7 +46,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
         <title>Bad Kids Shop</title>
       </Head>
 
-      <GraphqlProvider value={client}>
+      <GraphqlProvider client={client}>
         <LeapUiTheme defaultTheme={ThemeName.DARK}>
           <ChainProvider
             chains={updatedChains}

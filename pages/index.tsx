@@ -1,6 +1,7 @@
-import { useQuery } from "urql";
+import { useQuery, gql } from '@apollo/client';
+
 import { GenericNFTCard } from "../components/GenericNFTCard";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { WalletSection } from "../components";
 import { toUtf8 } from "@cosmjs/encoding";
 import { useChain } from "@cosmos-kit/react";
@@ -63,7 +64,7 @@ function createBuyNftTx({
   };
 }
 
-const getNFTTokensQuery = `
+const getNFTTokensQuery = gql`
   query Tokens($collectionAddr: String!, $limit: Int, $offset: Int, $filterForSale: SaleType, $sortBy: TokenSort) {
   tokens(collectionAddr: $collectionAddr, limit: $limit, offset: $offset, filterForSale: $filterForSale, sortBy: $sortBy) {
     tokens {
@@ -118,22 +119,54 @@ const SASQUATCH_SOCIETY_COLLECTION =
 
 function NFTs() {
   const { address, chain, getOfflineSignerDirect } = useChain("stargaze");
+  const [offset, setOffset] = useState(10);
 
-
-  const [result] = useQuery({
-    query: getNFTTokensQuery,
+  const {loading, error, data: result, fetchMore} = useQuery(getNFTTokensQuery, {
     variables: {
       collectionAddr: BAD_KIDS_COLLECTION,
       limit: 10,
-      offset: 10,
+      offset: offset,
       filterForSale: "FIXED_PRICE",
       sortBy: "PRICE_ASC",
-    },
+    }
   });
+  console.log('logging offset', result)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalPageHeight = document.documentElement.scrollHeight;
+      const scrollPoint = window.scrollY + window.innerHeight;
+      if (scrollPoint >= totalPageHeight) {
+        toast(`Loading more Bad Kids`, {position: "bottom-center"})
+        fetchMore({
+          variables: {
+            offset: result.tokens.tokens.length + 10,
+          },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult) return prev;
+            return Object.assign({}, prev, {
+              tokens: { tokens: [...prev.tokens.tokens, ...fetchMoreResult.tokens.tokens] },
+            });
+          }
+        })
+
+        
+
+        // Perform actions here when the user reaches the bottom of the page
+      }
+    };
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll);
+
+    // Cleanup function
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+
 
   const nfts = useMemo(() => {
-    return result.data?.tokens.tokens
-      .filter((token: any) => token.owner.address !== address)
+    return result?.tokens?.tokens?.filter((token: any) => token.owner.address !== address)
       .map((token: any) => {
         return {
           image: token.media.url,
@@ -153,7 +186,6 @@ function NFTs() {
         };
       });
   }, [result]);
-  console.log("logging nfts", nfts);
 
   const onnNFTClick = async (nft: any) => {
     if (!address) return;
@@ -205,9 +237,6 @@ function NFTs() {
       toast.error(`Error: ${e.message}`)
 
     }
-    
-    
-
   };
 
   return (
@@ -259,8 +288,8 @@ function WalletButton() {
 
 export default function Home() {
   return (
-    <div className="px-14 py-8">
-      <section className="flex flex-wrap items-center justify-between mb-16">
+    <div className="px-14 py-8 mt-16">
+      <section className="flex flex-wrap items-center justify-between mb-16 bg-black-100 shadow-lg p-4 fixed top-0 left-0 right-0 z-50">
         <Image src={BadkidsLogo} alt="bad-kids" />
         <div className="flex gap-3">
           <button onClick={() => window.open("https://cosmos.leapwallet.io/transact/swap", "_blank")} className="flex gap-2 items-center justify-between border border-white-100 rounded-3xl px-5 py-2">
