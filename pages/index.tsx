@@ -6,6 +6,7 @@ import { client } from '../config/urqlclient';
 import { useQuery} from 'urql'
 import { GenericNFTCard } from '../components/GenericNFTCard';
 import { useMemo } from 'react';
+import { WalletSection } from '../components'
 
 const getNFTTokensQuery = `
   query Tokens($collectionAddr: String!, $limit: Int, $offset: Int, $filterForSale: SaleType, $sortBy: TokenSort) {
@@ -83,6 +84,7 @@ function NFTs() {
 
 export default function Home() {
   return <div>
+  <WalletSection />
    <NFTs />
   </div>
 

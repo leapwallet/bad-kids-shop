@@ -97,9 +97,6 @@ export const WalletSection = () => {
     />
   );
 
-  const userInfo = username && (
-    <ConnectedUserInfo username={username} icon={<Astronaut />} />
-  );
   const addressBtn = (
     <CopyAddressBtn
       walletStatus={status}
@@ -117,12 +114,6 @@ export const WalletSection = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <GridItem marginBottom={'20px'}>
-          <ChainCard
-            prettyName={chain?.label || chainName}
-            icon={chain?.icon}
-          />
-        </GridItem>
         <GridItem px={6}>
           <Stack
             justifyContent="center"
@@ -137,7 +128,6 @@ export const WalletSection = () => {
             px={4}
             py={{ base: 6, md: 12 }}
           >
-            {userInfo}
             {addressBtn}
             <Box w="full" maxW={{ base: 52, md: 64 }}>
               {connectWalletButton}
