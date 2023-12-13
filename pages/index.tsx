@@ -15,7 +15,8 @@ import { cosmwasm, getSigningCosmwasmClient } from "stargazejs";
 
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import Text from "../components/Text";
-import { sliceAddress } from "../config/formatAddress";
+import { sliceAddress } from "../config/formatAddress"
+import toast, { Toaster } from "react-hot-toast";
 
 const { executeContract } = cosmwasm.wasm.v1.MessageComposer.withTypeUrl;
 
@@ -54,7 +55,7 @@ function createBuyNftTx({
     funds: funds,
   });
 
-  console.log('logging execute contract tx', executeContractTx)
+  console.log("logging execute contract tx", executeContractTx);
 
   return {
     typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
@@ -118,6 +119,7 @@ const SASQUATCH_SOCIETY_COLLECTION =
 function NFTs() {
   const { address, chain, getOfflineSignerDirect } = useChain("stargaze");
 
+
   const [result] = useQuery({
     query: getNFTTokensQuery,
     variables: {
@@ -155,45 +157,57 @@ function NFTs() {
 
   const onnNFTClick = async (nft: any) => {
     if (!address) return;
-    const twoWeekExpiry = 14 * 24 * 60 * 60 * 1000;
-    const tx = createBuyNftTx({
-      sender: address,
-      collection: nft.collection.contractAddress,
-      tokenId: parseInt(nft.tokenId),
-      expiry: ((Date.now() + twoWeekExpiry) * 1000_000).toString(),
-      funds: [
-        {
-          denom: nft.listPrice.denom,
-          amount: nft.listPrice.amount,
-        },
-      ],
-    });
+    try {
+      toast(`Please sign the transaction on your wallet`)
+      const twoWeekExpiry = 14 * 24 * 60 * 60 * 1000;
+      const tx = createBuyNftTx({
+        sender: address,
+        collection: nft.collection.contractAddress,
+        tokenId: parseInt(nft.tokenId),
+        expiry: ((Date.now() + twoWeekExpiry) * 1000_000).toString(),
+        funds: [
+          {
+            denom: nft.listPrice.denom,
+            amount: nft.listPrice.amount,
+          },
+        ],
+      });
+  
+      const signer = getOfflineSignerDirect();
+  
+      const signingCosmwasmClient = await getSigningCosmwasmClient({
+        rpcEndpoint: chain.apis?.rpc?.[0].address ?? "",
+        signer: signer,
+      });
+  
+      const fee = {
+        amount: [
+          {
+            amount: "0",
+            denom: "ustars",
+          },
+        ],
+        gas: "1000000",
+      };
+  
+      const signedTx = await signingCosmwasmClient.sign(address, [tx], fee, "");
+      const txRaw = TxRaw.encode({
+        bodyBytes: signedTx.bodyBytes,
+        authInfoBytes: signedTx.authInfoBytes,
+        signatures: signedTx.signatures,
+      }).finish();
+  
+      const res = await signingCosmwasmClient.broadcastTx(txRaw);
+      
+      toast.success(`Transaction sent successfully`)
+      
+    }catch(e: any){
+      toast.error(`Error: ${e.message}`)
 
-    const signer = getOfflineSignerDirect();
+    }
+    
+    
 
-    const signingCosmwasmClient = await getSigningCosmwasmClient({
-      rpcEndpoint: chain.apis?.rpc?.[0].address ?? "",
-      signer: signer,
-    });
-
-    const fee = {
-      amount: [
-        {
-          amount: "0",
-          denom: "ustars",
-        },
-      ],
-      gas: "1000000",
-    };
-
-    const signedTx = await signingCosmwasmClient.sign(address, [tx], fee, "");
-    const txRaw = TxRaw.encode({
-      bodyBytes: signedTx.bodyBytes,
-      authInfoBytes: signedTx.authInfoBytes,
-      signatures: signedTx.signatures,
-    }).finish();
-
-    const res = await signingCosmwasmClient.broadcastTx(txRaw);
   };
 
   return (
@@ -221,6 +235,12 @@ function WalletButton() {
     wallet,
     chain: chainInfo,
   } = useChain("stargaze");
+  let text = "Connect Wallet";
+  if (status === "Connected") {
+    text = sliceAddress(address);
+  } else if (status === "Connecting") {
+    text = "Connecting...";
+  }
 
   return (
     <div>
@@ -230,7 +250,7 @@ function WalletButton() {
       >
         <Image src={WalletIcon} alt="wallet" height={16} width={16} />
         <Text size="sm" color="text-white-100 font-bold">
-          {status === "Disconnected" ? "connect" : sliceAddress(address)}
+          {text}
         </Text>
       </button>
     </div>
@@ -243,7 +263,7 @@ export default function Home() {
       <section className="flex flex-wrap items-center justify-between mb-16">
         <Image src={BadkidsLogo} alt="bad-kids" />
         <div className="flex gap-3">
-          <button className="flex gap-2 items-center justify-between border border-white-100 rounded-3xl px-5 py-2">
+          <button onClick={() => window.open("https://cosmos.leapwallet.io/transact/swap", "_blank")} className="flex gap-2 items-center justify-between border border-white-100 rounded-3xl px-5 py-2">
             <Image src={StargazeLogo} height={16} width={16} alt="get stars" />
             <Text size="sm" color="text-white-100 font-bold">
               Get Stars
@@ -280,6 +300,7 @@ export default function Home() {
         </div>
       </section>
       <NFTs />
+      <Toaster position="bottom-right" />
     </div>
   );
 }

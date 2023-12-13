@@ -27,6 +27,7 @@ type GenericCardProps = {
       image: string
       media_type: string
       tokenCount: number
+      contractAddress: string
     }
   }
   onNFTClick: (nft: any) => void
@@ -107,7 +108,7 @@ export function GenericNFTCard({nft, onNFTClick}: GenericCardProps){
         </div>
       </div>
       <div className="w-full flex items-center">
-        <button className="flex items-center justify-center h-[32px] w-[32px] bg-transparent border-white-100 border rounded-full cursor-pointer">
+        <button onClick={() => window.open(`https://stargaze.zone/m/${nft.collection.contractAddress}/${nft.tokenId}`, "_blank")} className="flex items-center justify-center h-[32px] w-[32px] bg-transparent border-white-100 border rounded-full cursor-pointer">
           <Image src={ArrowNorthWest} alt="link" height={10} width={10}  />
           
         </button>
