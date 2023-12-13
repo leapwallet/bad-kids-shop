@@ -10,6 +10,8 @@ import { SignerOptions } from '@cosmos-kit/core';
 import { chains, assets } from 'chain-registry';
 import { defaultTheme } from '../config';
 import '@interchain-ui/react/styles';
+import { Provider as GraphqlProvider} from 'urql'
+import { client } from '../config/urqlclient';
 
 function CreateCosmosApp({ Component, pageProps }: AppProps) {
   const signerOptions: SignerOptions = {
@@ -19,6 +21,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
   };
 
   return (
+  <GraphqlProvider value={client}>
 
       <ChainProvider
         chains={chains}
@@ -40,6 +43,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
       >
         <Component {...pageProps} />
       </ChainProvider>
+      </GraphqlProvider>
 
   );
 }
