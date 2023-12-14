@@ -6,6 +6,7 @@ import { useElementsWalletClient } from '../config/walletclient'
 import Image from 'next/image'
 import Text from './Text'
 import StargazeLogo from "../public/stargaze-logo.svg";
+import { useEffect } from 'react'
 
 const renderLiquidityButton = ({ onClick }: any) => {
   return (
@@ -21,6 +22,13 @@ const renderLiquidityButton = ({ onClick }: any) => {
 export function ElementsContainer(){
   const {address, openView} = useChain('stargaze')
   const walletClient = useElementsWalletClient()
+  useEffect(() => {
+    const elementsModal = document.querySelector('.leap-elements')
+    if(elementsModal){
+      //@ts-ignore
+      elementsModal.style['zIndex'] = 0
+    }
+  }, [])
   return (
     <div className="z-0">
       <LiquidityModal
