@@ -2,7 +2,6 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { ChainProvider } from "@cosmos-kit/react";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
-import { wallets as cosmostationWallets } from "@cosmos-kit/cosmostation";
 import { wallets as leapWallets } from "@cosmos-kit/leap";
 import { chains, assets } from "chain-registry";
 import "@interchain-ui/react/styles";
