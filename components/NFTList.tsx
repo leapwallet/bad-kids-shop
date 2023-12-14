@@ -223,7 +223,7 @@ export function NFTs({ collection }: { collection?: string }) {
     return result?.tokens?.tokens
       ?.filter((token: any) => token.owner.address !== address)
       .map((token: any) => {
-        let cta = "Get STARS";
+        let cta = "Buy Now";
         if (address) {
           cta =
             BN(balance).gt(token.listPrice.amount) && status === "Connected"
