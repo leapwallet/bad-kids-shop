@@ -6,8 +6,9 @@ import dynamic from "next/dynamic";
 import Text from "./Text";
 import { useEffect, useState } from "react";
 import { useChain } from "@cosmos-kit/react-lite";
+import { formatNumber, fromSmall } from "../config/mathutils";
 
-const ElementsContainer = dynamic(
+export const ElementsContainerDynamic = dynamic(
   () =>
     import("../components/ElementsContainer").then(
       (mod) => mod.ElementsContainer
@@ -38,7 +39,7 @@ export function Header() {
   }, [address]);
 
   return (
-    <section className="flex flex-wrap gap-4 items-center justify-between mb-16 bg-black-100 shadow-lg  p-4 fixed top-0 left-0 right-0 z-50">
+    <section className="flex flex-wrap gap-4 items-center justify-between mb-16 bg-gray-950 shadow-lg px-10 p-4 fixed top-0 left-0 right-0 z-50">
       <Image src={BadkidsLogo} alt="bad-kids" />
       <div className="flex gap-3">
         <button
@@ -51,12 +52,14 @@ export function Header() {
           </Text>
         </button>
 
-        <ElementsContainer
+        <ElementsContainerDynamic
           icon="https://assets.leapwallet.io/stars.png"
           title="Get STARS"
-          subtitle={`Balance: ${balance ?? "0"} STARS`}
+          subtitle={`Balance: ${formatNumber(
+            fromSmall(balance ?? "0").decimalPlaces(3)
+          )} STARS`}
         />
-        <WalletButton />
+        <WalletButton balance={balance} />
       </div>
     </section>
   );

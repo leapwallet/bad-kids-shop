@@ -10,8 +10,6 @@ declare global {
   }
 }
 
-import dynamic from "next/dynamic";
-
 // Define Modal Component
 export default function ConnectWalletSideCurtain({
   isOpen,

@@ -20,6 +20,7 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 import { ConnectWalletCard } from "./ConnectWalletCard";
 import Text from "../Text";
+import { set } from "lodash";
 
 const walletOrder: (keyof typeof COSMOS_KIT_WALLET_NAMES)[] = [
   "leap",
@@ -93,7 +94,6 @@ export function ConnectWalletSideCurtainContent({
   function onWalletClicked(wallet: MainWalletBase) {
     const { name } = wallet.walletInfo;
     return async () => {
-      console.log("wallet", wallet);
       if (name === COSMOS_KIT_WALLET_NAMES["keplr"] && !window.keplr) {
         window.open(KEPLR_WALLET_EXTENSION_URL, "_blank");
       }
@@ -131,9 +131,8 @@ export function ConnectWalletSideCurtainContent({
       //   }
       // }
 
-      console.log("Before connecting Step");
       await wallet.connect();
-      console.log("connecting Step");
+      setOpen(false);
     };
   }
 

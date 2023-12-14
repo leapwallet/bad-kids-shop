@@ -252,7 +252,6 @@ export function NFTs({ collection }: { collection?: string }) {
       .filter((nft: any) => nft.tokenId.includes(searchTerm))
       .sort((a: any, b: any) => {
         if (sortOrder === "low") {
-          console.log(a.listPrice.amount, b.listPrice.amount);
           return +a.listPrice.amount - +b.listPrice.amount;
         } else if (sortOrder === "high") {
           return +b.listPrice.amount - +a.listPrice.amount;
@@ -337,6 +336,7 @@ export function NFTs({ collection }: { collection?: string }) {
               nft={nft}
               key={nft.tokenId}
               onNFTClick={onnNFTClick}
+              balance={balance}
             />
           ))}
       </div>

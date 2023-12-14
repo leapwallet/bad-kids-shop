@@ -5,6 +5,28 @@ import { formatNumber, fromSmall } from "../config/mathutils";
 import Image from "next/image";
 import ArrowNorthWest from "../public/arrow-north-west.svg";
 import { MdAutoGraph } from "react-icons/md";
+import { ElementsContainerDynamic } from "./Header";
+import StargazeLogo from "../public/stargaze-logo.svg";
+
+export const renderLiquidityButton = ({ onClick }: any) => {
+  return (
+    <button
+      onClick={onClick}
+      className="flex gap-2 items-center justify-between border rounded-3xl px-5 py-2"
+    >
+      <Image
+        src={StargazeLogo}
+        height={16}
+        width={16}
+        alt="get stars"
+        style={{ filter: "invert(1)" }}
+      />
+      <Text size="sm" color="text-black-100 font-bold">
+        Get Stars
+      </Text>
+    </button>
+  );
+};
 
 type GenericCardProps = {
   nft: {
@@ -32,6 +54,7 @@ type GenericCardProps = {
     };
   };
   onNFTClick: (nft: any) => void;
+  balance?: string | null;
 };
 
 const Images = {
@@ -40,7 +63,7 @@ const Images = {
   },
 };
 
-export function GenericNFTCard({ nft, onNFTClick }: GenericCardProps) {
+export function GenericNFTCard({ nft, onNFTClick, balance }: GenericCardProps) {
   const { imageComponent } = useNFTImage({
     image: nft.image,
     mediaType: nft.media_type,
@@ -69,7 +92,7 @@ export function GenericNFTCard({ nft, onNFTClick }: GenericCardProps) {
   });
 
   return (
-    <div className="bg-black-100 relative flex w-full sm:w-[calc(50%-12px)] md:w-[calc(33%-16px)] lg:w-[calc(25%-18px)] group flex-col items-center justify-start gap-[2px] sm:gap-3 rounded-2xl p-0 sm:!p-4 p-4 ease transition-all duration-300 border-[0] sm:border border-gray-100 dark:border-gray-900 hover:shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)]">
+    <div className="bg-gray-950 relative flex w-full sm:w-[calc(50%-12px)] md:w-[calc(33%-16px)] lg:w-[calc(25%-18px)] group flex-col items-center justify-start gap-[2px] sm:gap-3 rounded-2xl p-0 sm:!p-4 p-4 ease transition-all duration-300 border-[0] sm:border border-gray-100 dark:border-gray-900 hover:shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)]">
       {imageComponent}
       <div className="absolute top-0 left-0 aspect-square w-full flex-col items-start justify-end p-5 ease transition-all duration-300 hidden group-hover:flex">
         <div className="flex shrink-0 flex-row items-center justify-end gap-1 rounded-full bg-gray-100 py-2 px-3 backdrop-blur-[10px] dark:bg-[#38383899]">
@@ -122,14 +145,29 @@ export function GenericNFTCard({ nft, onNFTClick }: GenericCardProps) {
         >
           <Image src={ArrowNorthWest} alt="link" height={10} width={10} />
         </button>
-        <button
-          onClick={() => onNFTClick(nft)}
-          className="flex bg-white-100 py-3 px-8 w-[70%] justify-center ml-auto rounded-3xl cursor-pointer"
-        >
-          <Text size="xs" color="text-black-100 text-center font-bold">
-            {nft.cta}
-          </Text>
-        </button>
+        {nft.cta === "Get Stars" ? (
+          <div className="flex bg-white-100  justify-center ml-auto rounded-3xl cursor-pointer">
+            <ElementsContainerDynamic
+              icon="https://assets.leapwallet.io/stars.png"
+              title={`Buy ${nft.name}`}
+              subtitle={`Balance: ${formatNumber(
+                fromSmall(balance ?? "0").decimalPlaces(3)
+              )} STARS • You need ${formatNumber(
+                fromSmall(nft.listPrice.amount).minus(fromSmall(balance ?? "0"))
+              )} STARS more to buy this Bad Kid`}
+              customRenderLiquidityButton={renderLiquidityButton}
+            />
+          </div>
+        ) : (
+          <button
+            onClick={() => onNFTClick(nft)}
+            className="flex bg-white-100 py-3 px-8 w-[70%] justify-center ml-auto rounded-3xl cursor-pointer"
+          >
+            <Text size="xs" color="text-black-100 text-center font-bold">
+              {nft.cta}
+            </Text>
+          </button>
+        )}
       </div>
     </div>
   );

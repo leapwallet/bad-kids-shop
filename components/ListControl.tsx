@@ -26,7 +26,7 @@ export function ListControl({
 
       <div className="flex items-center ml-auto justify-between">
         <button
-          className="flex items-center bg-black-100 px-4 py-2 rounded-3xl mr-2"
+          className="flex items-center bg-gray-950 px-4 py-2 rounded-3xl mr-2"
           style={{ boxShadow: "-11px 15px 23.4px 0px rgba(0, 0, 0, 0.41)" }}
         >
           <Image src={Search} height={16} width={16} alt="search" />
@@ -34,17 +34,17 @@ export function ListControl({
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
-            className="ml-2 font-bold text-sm text-white-100 bg-black-100 border-none outline-none"
+            className="ml-2 font-bold text-sm text-white-100 bg-gray-950 border-none outline-none"
             placeholder="Token ID"
           />
         </button>
         <button
-          className="flex items-center bg-black-100 px-4 py-2 rounded-3xl"
+          className="flex items-center bg-gray-950 px-4 py-2 rounded-3xl"
           style={{ boxShadow: "-11px 15px 23.4px 0px rgba(0, 0, 0, 0.41)" }}
         >
           <Image src={Sort} height={16} width={16} alt="sort" />
           <select
-            className="ml-2 font-bold text-white-100 text-sm bg-black-100 border-none outline-none"
+            className="ml-2 font-bold text-white-100 text-sm bg-gray-950 border-none outline-none"
             value={sortOrder}
             onChange={handleSortChange}
           >

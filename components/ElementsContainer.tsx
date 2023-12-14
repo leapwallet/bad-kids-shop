@@ -24,19 +24,23 @@ interface Props {
   icon?: string;
   title?: string;
   subtitle?: string;
+  customRenderLiquidityButton?: ({ onClick }: any) => JSX.Element;
 }
 
 export function ElementsContainer({
   icon = "https://assets.leapwallet.io/stars.png",
   title = "Buy Bad Kid #44",
   subtitle = "Price: 42K STARS",
+  customRenderLiquidityButton,
 }: Props) {
   const { address, openView } = useChain("stargaze");
   const walletClient = useElementsWalletClient();
   return (
     <div className="z-0">
       <LiquidityModal
-        renderLiquidityButton={renderLiquidityButton}
+        renderLiquidityButton={
+          customRenderLiquidityButton ?? renderLiquidityButton
+        }
         theme="dark"
         walletClientConfig={{
           userAddress: address,
@@ -49,7 +53,6 @@ export function ElementsContainer({
           icon: icon,
           title,
           subtitle,
-
           tabsConfig: {
             "cross-chain-swaps": {
               title: "Bridge from Ethereum",
