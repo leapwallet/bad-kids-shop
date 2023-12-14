@@ -185,9 +185,9 @@ export function NFTs({collection}: {collection?: string}) {
   const nfts = useMemo(() => {
     return result?.tokens?.tokens?.filter((token: any) => token.owner.address !== address)
       .map((token: any) => {
-        let cta = "Get Stars"
+        let cta = "Get STARS"
         if(address){
-          cta = BN(balance).gt(token.listPrice.amount) ? "Buy Now" : "Get Stars"
+          cta = BN(balance).gt(token.listPrice.amount) ? "Buy Now" : "Get STARS"
         }
 
         return {
