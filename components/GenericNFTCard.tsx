@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import { useNFTImage} from '../hooks/useNFTImage'
 import Text from './Text'
 import { formatNumber, fromSmall } from '../config/mathutils'
-import BN from 'bignumber.js'
 import Image from 'next/image'
 import ArrowNorthWest from '../public/arrow-north-west.svg'
 
@@ -12,6 +11,7 @@ type GenericCardProps = {
     media_type: string, 
     name: string, 
     tokenId: string,
+    cta: string,
     listPrice: {
       amount: string
       denom: string
@@ -67,13 +67,6 @@ export function GenericNFTCard({nft, onNFTClick}: GenericCardProps){
     },
   })
 
-  const nftNameString = useMemo(() => {
-    let name = nft?.tokenId ?? nft?.name
-    if (!isNaN(name as unknown as number)) {
-      return `#${name}`
-    }
-    return name
-  }, [nft?.name, nft?.tokenId])
   return (
       <div
       className='bg-black-100 relative flex w-full sm:w-[calc(50%-12px)] md:w-[calc(33%-16px)] lg:w-[calc(25%-18px)] group flex-col items-center justify-start gap-[2px] sm:gap-3 rounded-2xl p-0 sm:!p-4 p-4 ease transition-all duration-300 border-[0] sm:border border-gray-100 dark:border-gray-900 hover:shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)]'
@@ -114,7 +107,7 @@ export function GenericNFTCard({nft, onNFTClick}: GenericCardProps){
         </button>
         <button onClick={() => onNFTClick(nft)} className="flex bg-white-100 py-3 px-8 w-[70%] justify-center ml-auto rounded-3xl cursor-pointer">
           <Text size="xs" color="text-black-100 text-center font-bold">
-            Buy Now
+            {nft.cta}
           </Text>
         </button>
       </div>

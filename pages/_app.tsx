@@ -4,7 +4,6 @@ import { ChainProvider } from "@cosmos-kit/react";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 import { wallets as cosmostationWallets } from "@cosmos-kit/cosmostation";
 import { wallets as leapWallets } from "@cosmos-kit/leap";
-import { SignerOptions } from "@cosmos-kit/core";
 import { chains, assets } from "chain-registry";
 import "@interchain-ui/react/styles";
 import { ApolloProvider as GraphqlProvider } from '@apollo/client';
