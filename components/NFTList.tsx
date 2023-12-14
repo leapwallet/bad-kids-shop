@@ -48,8 +48,6 @@ function createBuyNftTx({
     funds: funds,
   });
 
-  console.log("logging execute contract tx", executeContractTx);
-
   return {
     typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
     value: executeContractTx.value,
