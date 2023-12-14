@@ -223,7 +223,7 @@ export function NFTs({ collection }: { collection?: string }) {
     return result?.tokens?.tokens
       ?.filter((token: any) => token.owner.address !== address)
       .map((token: any) => {
-        let cta = "Buy Now";
+        let cta = "Get STARS";
         if (address) {
           cta =
             BN(balance).gt(token.listPrice.amount) && status === "Connected"
@@ -262,12 +262,17 @@ export function NFTs({ collection }: { collection?: string }) {
   }, [result, balance, searchTerm, sortOrder]);
 
   const onnNFTClick = async (nft: any) => {
-    if (!address) {
-      openView();
+    //this is a hack to get around the fact that the elements does not expose a function to open the modal from other than renderLiquidityButton function
+    //this is not ideal but it works for now
+    const renderModalBtn = document.getElementById("open-liquidity-modal-btn");
+    const shouldOpenModal = !address || nft.cta === "Buy Now";
+    if (shouldOpenModal && renderModalBtn) {
+      renderModalBtn.click();
       return;
     }
-    if (nft.cta === "Get Stars") {
-      window.open("https://cosmos.leapwallet.io/transact/swap", "_blank");
+
+    if (!address) {
+      renderModalBtn?.click();
       return;
     }
 
