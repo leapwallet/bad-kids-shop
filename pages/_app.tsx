@@ -61,7 +61,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
                   name: "Bad Kids Shop",
                   description: "Bad Kids Shop",
                   url: "https://badkids.shop",
-                  icons: [],
+                  icons: [""],
                 },
               },
             }}

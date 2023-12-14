@@ -2,7 +2,7 @@ import { useQuery, gql } from '@apollo/client';
 
 
 import { GenericNFTCard } from "./GenericNFTCard";
-import { useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useRef, useState } from "react";
 import { toUtf8 } from "@cosmjs/encoding";
 import { useChain } from "@cosmos-kit/react";
 import { cosmwasm, getSigningCosmwasmClient } from "stargazejs";
@@ -11,6 +11,7 @@ import BN from 'bignumber.js'
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 
 import toast from "react-hot-toast";
+import { useRouter } from 'next/router';
 
 const { executeContract } = cosmwasm.wasm.v1.MessageComposer.withTypeUrl;
 
@@ -58,6 +59,11 @@ function createBuyNftTx({
 const getNFTTokensQuery = gql`
   query Tokens($collectionAddr: String!, $limit: Int, $offset: Int, $filterForSale: SaleType, $sortBy: TokenSort) {
   tokens(collectionAddr: $collectionAddr, limit: $limit, offset: $offset, filterForSale: $filterForSale, sortBy: $sortBy) {
+    pageInfo {
+      total
+      limit
+      offset
+    }
     tokens {
       description
       name
@@ -108,28 +114,32 @@ const BAD_KIDS_COLLECTION =
 const SASQUATCH_SOCIETY_COLLECTION =
   "stars1edsg4rct2h5t4wawysxhef0mzprpcfsn5v8cxklj65uf2kkpvs8shk4pre";
 
-export function NFTs() {
+export function NFTs({collection}: {collection?: string}) {
   const { address, chain, getOfflineSignerDirect, openView } = useChain("stargaze");
-
   const [balance, setBalance] = useState<string>("0");
-
 
   const {loading, error, data: result, fetchMore} = useQuery(getNFTTokensQuery, {
     variables: {
-      collectionAddr: BAD_KIDS_COLLECTION,
+      collectionAddr: collection ?? BAD_KIDS_COLLECTION,
       limit: 10,
       offset: 10,
       filterForSale: "FIXED_PRICE",
       sortBy: "PRICE_ASC",
     }
   });
+  const offset = useRef(0)
+  const total = useRef(0)
+  total.current = result?.tokens?.pageInfo?.total ?? 0
+  offset.current = result?.tokens?.pageInfo?.offset ?? 0
+
 
   useEffect(() => {
     const getBalance = async () => {
       const res = await fetch(`${chain.apis?.rest?.[0].address}/cosmos/bank/v1beta1/balances/${address}`)
       const response = await res.json()
-      const starsBalance = response.balances.find((balance: any) => balance.denom === "ustars").amount;
-      setBalance(starsBalance);
+      const starsBalance = response.balances.find((balance: any) => balance.denom === "ustars");
+
+      setBalance(starsBalance?.amount ?? "0");
     };
     if(address){
       getBalance();
@@ -140,16 +150,27 @@ export function NFTs() {
     const handleScroll = () => {
       const totalPageHeight = document.documentElement.scrollHeight;
       const scrollPoint = window.scrollY + window.innerHeight;
-      if (scrollPoint >= totalPageHeight) {
+      if (scrollPoint >= totalPageHeight && offset.current < total.current) {
         //toast(`Loading more Bad Kids`, {position: "bottom-center"})
         fetchMore({
           variables: {
-            offset: result?.tokens?.tokens?.length + 10,
+            offset: offset.current + 10,
           },
           updateQuery: (prev, { fetchMoreResult }) => {
             if (!fetchMoreResult) return prev;
+            const tokensSet = new Set();
+            const newTokens = [...prev.tokens.tokens]
+            
+            prev.tokens.tokens.forEach((token: any) => tokensSet.add(token.tokenId));
+            fetchMoreResult.tokens.tokens.forEach((token: any) => {
+              if(!tokensSet.has(token.tokenId)){
+                newTokens.push(token)
+              }
+            })
+
+
             return Object.assign({}, prev, {
-              tokens: { tokens: [...prev.tokens.tokens, ...fetchMoreResult.tokens.tokens] },
+              tokens: { pageInfo: fetchMoreResult.tokens.pageInfo,  tokens: newTokens },
             });
           }
         })
