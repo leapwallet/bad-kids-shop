@@ -60,7 +60,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
                 metadata: {
                   name: "Bad Kids Shop",
                   description: "Bad Kids Shop",
-                  url: window.location.origin,
+                  url: "https://badkids.shop",
                   icons: [],
                 },
               },
