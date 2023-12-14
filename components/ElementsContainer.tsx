@@ -1,4 +1,5 @@
 import { LiquidityModal } from '@leapwallet/elements'
+
 import { useChain } from "@cosmos-kit/react"
 import '@leapwallet/elements/styles.css'
 import { useElementsWalletClient } from '../config/walletclient'
@@ -8,7 +9,7 @@ import StargazeLogo from "../public/stargaze-logo.svg";
 
 const renderLiquidityButton = ({ onClick }: any) => {
   return (
-    <button onClick={onClick} className="flex gap-2 items-center justify-between border border-white-100 rounded-3xl px-5 py-2">
+    <button id="open-liquidity-modal-btn" onClick={onClick} className="flex gap-2 items-center justify-between border border-white-100 rounded-3xl px-5 py-2">
     <Image src={StargazeLogo} height={16} width={16} alt="get stars" />
     <Text size="sm" color="text-white-100 font-bold">
       Get Stars
