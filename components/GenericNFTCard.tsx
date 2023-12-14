@@ -55,6 +55,7 @@ type GenericCardProps = {
   };
   onNFTClick: (nft: any) => void;
   balance?: string | null;
+  isConnected?: boolean;
 };
 
 const Images = {
@@ -63,7 +64,12 @@ const Images = {
   },
 };
 
-export function GenericNFTCard({ nft, onNFTClick, balance }: GenericCardProps) {
+export function GenericNFTCard({
+  nft,
+  onNFTClick,
+  balance,
+  isConnected,
+}: GenericCardProps) {
   const { imageComponent } = useNFTImage({
     image: nft.image,
     mediaType: nft.media_type,
@@ -145,7 +151,7 @@ export function GenericNFTCard({ nft, onNFTClick, balance }: GenericCardProps) {
         >
           <Image src={ArrowNorthWest} alt="link" height={10} width={10} />
         </button>
-        {nft.cta === "Get Stars" ? (
+        {nft.cta === "Get Stars" && isConnected ? (
           <div className="flex bg-white-100  justify-center ml-auto rounded-3xl cursor-pointer">
             <ElementsContainerDynamic
               icon="https://assets.leapwallet.io/stars.png"

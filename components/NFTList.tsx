@@ -259,20 +259,14 @@ export function NFTs({ collection }: { collection?: string }) {
           return 0;
         }
       });
-  }, [result, balance, searchTerm, sortOrder]);
+  }, [result, balance, searchTerm, sortOrder, status]);
 
   const onnNFTClick = async (nft: any) => {
     //this is a hack to get around the fact that the elements does not expose a function to open the modal from other than renderLiquidityButton function
     //this is not ideal but it works for now
-    const renderModalBtn = document.getElementById("open-liquidity-modal-btn");
-    const shouldOpenModal = !address || nft.cta === "Buy Now";
-    if (shouldOpenModal && renderModalBtn) {
-      renderModalBtn.click();
-      return;
-    }
 
     if (!address) {
-      renderModalBtn?.click();
+      connect();
       return;
     }
 
@@ -342,6 +336,7 @@ export function NFTs({ collection }: { collection?: string }) {
               key={nft.tokenId}
               onNFTClick={onnNFTClick}
               balance={balance}
+              isConnected={status === "Connected"}
             />
           ))}
       </div>
