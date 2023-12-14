@@ -141,7 +141,7 @@ export function NFTs() {
       const totalPageHeight = document.documentElement.scrollHeight;
       const scrollPoint = window.scrollY + window.innerHeight;
       if (scrollPoint >= totalPageHeight) {
-        toast(`Loading more Bad Kids`, {position: "bottom-center"})
+        //toast(`Loading more Bad Kids`, {position: "bottom-center"})
         fetchMore({
           variables: {
             offset: result?.tokens?.tokens?.length + 10,
