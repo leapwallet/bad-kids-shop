@@ -1,5 +1,6 @@
 import { useQuery, gql } from '@apollo/client';
 
+
 import { GenericNFTCard } from "./GenericNFTCard";
 import { useEffect, useMemo, useState } from "react";
 import { toUtf8 } from "@cosmjs/encoding";
@@ -219,6 +220,7 @@ export function NFTs() {
   
       const signingCosmwasmClient = await getSigningCosmwasmClient({
         rpcEndpoint: chain.apis?.rpc?.[0].address ?? "",
+        //@ts-ignore
         signer: signer,
       });
   

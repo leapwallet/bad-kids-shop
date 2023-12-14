@@ -14,7 +14,7 @@ export function WalletButton(){
   } = useChain("stargaze");
   let text = "Connect Wallet";
   if (status === "Connected") {
-    text = sliceAddress(address);
+    text = sliceAddress(address ?? '');
   } else if (status === "Connecting") {
     text = "Connecting...";
   }

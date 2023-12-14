@@ -21,11 +21,12 @@ export function ListControl() {
         style={{ boxShadow: "-11px 15px 23.4px 0px rgba(0, 0, 0, 0.41)" }}
       >
         <Image src={Search} height={16} width={16} alt="search" />
-        <Text className="ml-2 font-bold">Token ID</Text>
+        <Text size="sm" className="ml-2 font-bold">Token ID</Text>
       </button>
       <button className="flex items-center bg-black-100 px-4 py-2 rounded-3xl">
         <Image src={Sort} height={16} width={16} alt="sort" />
         <Text
+          size="sm"
           className="ml-2 font-bold"
           style={{ boxShadow: "-11px 15px 23.4px 0px rgba(0, 0, 0, 0.41)" }}
         >

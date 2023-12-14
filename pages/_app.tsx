@@ -12,6 +12,7 @@ import { ApolloProvider as GraphqlProvider } from '@apollo/client';
 import { client } from "../config/apolloclient";
 import LeapUiTheme, { ThemeName } from "../components/ThemeProvider";
 import Head from "next/head";
+import { SignerOptions } from "@cosmos-kit/core";
 
 const updatedChains = chains.map((chain) => {
   if (chain.chain_id === "stargaze-1") {
@@ -50,6 +51,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
           <ChainProvider
             chains={updatedChains}
             assetLists={assets}
+            //@ts-ignore
             wallets={[...keplrWallets, ...cosmostationWallets, ...leapWallets]}
             walletConnectOptions={{
               signClient: {
