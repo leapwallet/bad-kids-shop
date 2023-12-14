@@ -96,7 +96,7 @@ export function GenericNFTCard({nft, onNFTClick}: GenericCardProps){
         <div>
           <p className="text-right text-base !leading-6 text-black-100 dark:text-white-100 font-bold">{formatNumber(fromSmall(nft.listPrice.amount))}</p>
           <p className="text-right w-full text-base !leading-6 text-black-100 dark:text-white-100">
-            Stars
+            STARS
           </p>
         </div>
       </div>
