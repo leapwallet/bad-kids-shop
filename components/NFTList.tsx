@@ -154,9 +154,10 @@ export function NFTs({ collection }: { collection?: string }) {
       limit: 30,
       offset: 30,
       filterForSale: "FIXED_PRICE",
-      sortBy: "PRICE_ASC",
+      sortBy: sortOrder === "low" ? "PRICE_ASC" : "PRICE_DESC",
     },
   });
+
   const offset = useRef(0);
   const total = useRef(0);
   total.current = result?.tokens?.pageInfo?.total ?? 0;
@@ -265,7 +266,14 @@ export function NFTs({ collection }: { collection?: string }) {
           },
         };
       })
-      .filter((nft: any) => nft.tokenId.includes(searchTerm));
+      .filter((nft: any) => nft.tokenId.includes(searchTerm))
+      .sort((a: any, b: any) => {
+        if (sortOrder === "low") {
+          return BN(a.listPrice.amount).gt(b.listPrice.amount) ? 1 : -1;
+        } else {
+          return BN(a.listPrice.amount).lt(b.listPrice.amount) ? 1 : -1;
+        }
+      });
   }, [result, balance, searchTerm, sortOrder, status]);
 
   const onnNFTClick = async (
@@ -377,7 +385,6 @@ export function NFTs({ collection }: { collection?: string }) {
         sortOrder={sortOrder}
         handleSortChange={handleSortChange}
       />
-
       <div className="flex flex-wrap gap-x-3 gap-y-3 rounded-3xl border-[0] border-gray-100 shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)] shadow-[0] dark:border-gray-900 sm:gap-x-6 sm:gap-y-8 sm:border mb-10">
         {nfts &&
           nfts.map((nft: any) => (
