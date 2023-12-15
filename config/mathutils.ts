@@ -9,7 +9,6 @@ function format(num: number) {
 }
 
 export function formatNumber(num: BN) {
-  console.log('num', num.toString())
   if (num.gte(1_000_000)) {
     return format(num.div(1_000_000).toNumber()) + "M";
   } else if (num.gte(1000)) {

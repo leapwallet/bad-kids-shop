@@ -93,7 +93,6 @@ export function Header() {
               const renderModalBtn = document.getElementById(
                 "open-liquidity-modal-btn"
               );
-              console.log(renderModalBtn);
               if (renderModalBtn) {
                 const titleElement = document.querySelector(
                   "body > div.vcai130.leap-elements > div > div > div > div._1sc81q01 > div > div > h2"
