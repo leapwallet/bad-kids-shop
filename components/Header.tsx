@@ -60,7 +60,11 @@ export function Header() {
 
   return (
     <section className="flex flex-wrap gap-x-3  gap-y-3 fixed backdrop-blur-md bg-[#212121DE]  items-center justify-between px-10 py-4 top-0 left-0 right-0 z-10">
-      <Image sizes="70%" src={BadkidsLogo} alt="bad-kids" className="flex" />
+      <Image
+        src={BadkidsLogo}
+        alt="bad-kids"
+        className="flex w-[70%] sm:w-[20%]"
+      />
 
       <button className="sm:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
         {!isMenuOpen ? (
