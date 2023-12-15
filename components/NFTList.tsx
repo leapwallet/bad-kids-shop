@@ -359,6 +359,7 @@ export function NFTs({ collection }: { collection?: string }) {
           toast.success(`Success! ${res.transactionHash}`, {
             className: "w-[400px]",
           });
+          refetch()
         })
         .catch((e: any) => {
           toast.dismiss(broadcastToast);
