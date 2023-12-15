@@ -53,7 +53,7 @@ type GenericCardProps = {
       contractAddress: string;
     };
   };
-  onNFTClick: (nft: any) => void;
+  onNFTClick: (nft: any, elementsTitle: string, elementsSubtitle: string) => void;
   balance?: string | null;
   isConnected?: boolean;
 };
@@ -96,6 +96,13 @@ export function GenericNFTCard({
       textDiv: "rounded-full",
     },
   });
+
+  const elementsTitle = `Buy ${nft.name}`
+  const elementsSubtitle = `Balance: ${formatNumber(
+    fromSmall(balance ?? "0").decimalPlaces(3)
+  )} STARS • You need ${formatNumber(
+    fromSmall(nft.listPrice.amount).minus(fromSmall(balance ?? "0"))
+  )} STARS more to buy this Bad Kid`
 
   return (
     <div className="bg-gray-950 relative flex w-full sm:w-[calc(50%-12px)] md:w-[calc(33%-16px)] lg:w-[calc(25%-18px)] group flex-col items-center justify-start gap-[2px] sm:gap-3 rounded-2xl p-0 sm:!p-4 p-4 ease transition-all duration-300 border-[0] sm:border border-gray-100 dark:border-gray-900 hover:shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)]">
@@ -151,29 +158,14 @@ export function GenericNFTCard({
         >
           <Image src={ArrowNorthWest} alt="link" height={10} width={10} />
         </button>
-        {nft.cta === "Get Stars" && isConnected ? (
-          <div className="flex bg-white-100  justify-center ml-auto rounded-3xl cursor-pointer">
-            <ElementsContainerDynamic
-              icon="https://assets.leapwallet.io/stars.png"
-              title={`Buy ${nft.name}`}
-              subtitle={`Balance: ${formatNumber(
-                fromSmall(balance ?? "0").decimalPlaces(3)
-              )} STARS • You need ${formatNumber(
-                fromSmall(nft.listPrice.amount).minus(fromSmall(balance ?? "0"))
-              )} STARS more to buy this Bad Kid`}
-              customRenderLiquidityButton={renderLiquidityButton}
-            />
-          </div>
-        ) : (
           <button
-            onClick={() => onNFTClick(nft)}
+            onClick={() => onNFTClick(nft, elementsTitle, elementsSubtitle)}
             className="flex bg-white-100 py-3 px-8 w-[70%] justify-center ml-auto rounded-3xl cursor-pointer"
           >
             <Text size="xs" color="text-black-100 text-center font-bold">
               {nft.cta}
             </Text>
           </button>
-        )}
       </div>
     </div>
   );
