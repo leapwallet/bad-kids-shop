@@ -1,86 +1,99 @@
-import { LiquidityModal } from '@leapwallet/elements'
+import { LiquidityModal } from "@leapwallet/elements";
 
-import { useChain } from "@cosmos-kit/react"
-import '@leapwallet/elements/styles.css'
-import { useElementsWalletClient } from '../config/walletclient'
-import Image from 'next/image'
-import Text from './Text'
+import { useChain } from "@cosmos-kit/react";
+import "@leapwallet/elements/styles.css";
+import { useElementsWalletClient } from "../config/walletclient";
+import Image from "next/image";
+import Text from "./Text";
 import StargazeLogo from "../public/stargaze-logo.svg";
-import { useEffect } from 'react'
+import { useEffect } from "react";
 
-const renderLiquidityButton = ({ onClick }: any) => {
+export const renderLiquidityButton = ({ onClick }: any) => {
   return (
-    <button id="open-liquidity-modal-btn" onClick={onClick} className="flex gap-2 items-center justify-between border border-white-100 rounded-3xl px-5 py-2">
-    <Image src={StargazeLogo} height={16} width={16} alt="get stars" />
-    <Text size="sm" color="text-white-100 font-bold">
-      Get STARS
-    </Text>
-  </button>
-  )
+    <button
+      onClick={onClick}
+      id="open-liquidity-modal-btn"
+      className="flex gap-2 items-center h-10 justify-between border border-white-100 rounded-3xl px-5 py-2"
+    >
+      <Image src={StargazeLogo} height={16} width={16} alt="get stars" />
+      <Text size="sm" color="text-white-100 font-bold">
+        Get STARS
+      </Text>
+    </button>
+  );
+};
+
+interface Props {
+  icon?: string;
+  title?: string;
+  subtitle?: string;
+  customRenderLiquidityButton?: ({ onClick }: any) => JSX.Element;
 }
 
-export function ElementsContainer(){
-  const {address, openView} = useChain('stargaze')
-  const walletClient = useElementsWalletClient()
+export function ElementsContainer({
+  icon = "https://assets.leapwallet.io/stars.png",
+  title = "Buy Bad Kid #44",
+  subtitle = "Price: 42K STARS",
+  customRenderLiquidityButton,
+}: Props) {
+  const { address, openView } = useChain("stargaze");
+  const walletClient = useElementsWalletClient();
   useEffect(() => {
-    const elementsModal = document.querySelector('.leap-elements')
-    if(elementsModal){
+    const elementsModal = document.querySelector(".leap-elements");
+    if (elementsModal) {
       //@ts-ignore
-      elementsModal.style['zIndex'] = 0
+      elementsModal.style["zIndex"] = 11;
     }
-  }, [])
+  }, []);
   return (
-    <div className="z-0">
+    <div className="z-99">
       <LiquidityModal
-        renderLiquidityButton={renderLiquidityButton}
-        theme='dark'
+        renderLiquidityButton={
+          customRenderLiquidityButton ?? renderLiquidityButton
+        }
+        theme="dark"
         walletClientConfig={{
           userAddress: address,
           walletClient: walletClient,
           connectWallet: async () => {
-            openView()
-          }
+            openView();
+          },
         }}
-        
         config={{
-          icon: 'https://assets.leapwallet.io/stars.png',
-          title: 'Buy Bad Kid #44',
-          subtitle: 'Price: 42K STARS',
-          
+          icon: icon,
+          title,
+          subtitle,
           tabsConfig: {
-
             "cross-chain-swaps": {
-              title: 'Bridge from Ethereum',
+              title: "Bridge from Ethereum",
               defaults: {
-                destinationChainId: 'stargaze-1',
-                destinationAssetSelector: ['denom', 'ustars'],
-              }
+                destinationChainId: "stargaze-1",
+                destinationAssetSelector: ["denom", "ustars"],
+              },
             },
             swap: {
-              title: 'Bridge from Cosmos',
+              title: "Bridge from Cosmos",
               defaults: {
-                sourceChainId: 'osmosis-1',
-                sourceAssetSelector: ['denom', 'uosmo'],
-                destinationChainId: 'stargaze-1'
-              }
+                sourceChainId: "osmosis-1",
+                sourceAssetSelector: ["denom", "uosmo"],
+                destinationChainId: "stargaze-1",
+              },
             },
             "fiat-on-ramp": {
               defaults: {
-                destinationAssetSelector: ['denom', 'ustars'],
-                destinationChainId: 'stargaze-1',
-              }
-
+                destinationAssetSelector: ["denom", "ustars"],
+                destinationChainId: "stargaze-1",
+              },
             },
             transfer: {
-              enabled: false
+              enabled: false,
             },
             "bridge-usdc": {
-              enabled: false
-            }
-            
-          }
+              enabled: false,
+            },
+          },
         }}
       />
     </div>
-  )
+  );
 }
