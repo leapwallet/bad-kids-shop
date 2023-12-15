@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import { ListControl } from "./ListControl";
 import { stat } from "fs";
 import GenericNFTCardSkeleton from "./GenericNFTCardSkeleton";
-import { getMarketplaceTokens, getNFTTokensQuery } from "../queries/tokens.query";
+import { getNFTTokensQuery } from "../queries/tokens.query";
 import { MarketplaceQueryClient } from "stargazejs/types/codegen/Marketplace.client";
 
 const { executeContract } = cosmwasm.wasm.v1.MessageComposer.withTypeUrl;
