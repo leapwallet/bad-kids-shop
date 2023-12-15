@@ -273,7 +273,7 @@ export function NFTs({ collection }: { collection?: string }) {
     nft: any,
     title: string,
     subtitle: string,
-    imgUrl: string
+    imgUrl?: string
   ) => {
     if (!address) {
       connect();
