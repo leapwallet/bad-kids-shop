@@ -1,6 +1,8 @@
 import Image from "next/image";
 import BadkidsLogo from "../public/bad_kids_logo.svg";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaBars, FaXTwitter } from "react-icons/fa6";
+import { MdOutlineClose } from "react-icons/md";
+
 import { WalletButton } from "../components/WalletButton";
 import dynamic from "next/dynamic";
 import Text from "./Text";
@@ -38,28 +40,43 @@ export function Header() {
     }
   }, [address]);
 
-  return (
-    <section className="flex flex-wrap gap-4 items-center justify-between mb-16 bg-gray-950 shadow-lg px-10 p-4 fixed top-0 left-0 right-0 z-50">
-      <Image src={BadkidsLogo} alt="bad-kids" />
-      <div className="flex gap-3">
-        <button
-          onClick={() => window.open("http://twitter.com/badkidsart", "_blank")}
-          className="flex flex-row gap-2 max-h-[38px] items-center justify-between border border-white-100 rounded-3xl px-5 py-2"
-        >
-          <FaXTwitter color="#FFF" size={16} />
-          <Text size="sm" color="text-white-100 font-bold">
-            Follow
-          </Text>
-        </button>
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-        <ElementsContainerDynamic
-          icon="https://assets.leapwallet.io/stars.png"
-          title="Get STARS"
-          subtitle={`Balance: ${formatNumber(
-            fromSmall(balance ?? "0").decimalPlaces(3)
-          )} STARS`}
-        />
-        <WalletButton balance={balance} />
+  return (
+    <section className="flex flex-wrap gap-x-3  gap-y-3 fixed backdrop-blur-md bg-[#212121DE]  items-center justify-between px-10 py-4 top-0 left-0 right-0 z-50">
+      <Image src={BadkidsLogo} alt="bad-kids" className="flex" />
+
+      <button className="sm:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        {!isMenuOpen ? (
+          <FaBars color="#FFF" size={16} />
+        ) : (
+          <MdOutlineClose color="#FFF" size={16} />
+        )}
+      </button>
+
+      <div id="nav-menu" className={` md:block ${isMenuOpen ? "" : "hidden"}`}>
+        <div className="flex flex-row gap-3 flex-wrap">
+          <button
+            onClick={() =>
+              window.open("http://twitter.com/badkidsart", "_blank")
+            }
+            className="flex flex-row gap-2  h-10 items-center justify-between border border-white-100 rounded-3xl px-5 py-2"
+          >
+            <FaXTwitter color="#FFF" size={16} />
+            <Text size="sm" color="text-white-100 font-bold">
+              Follow
+            </Text>
+          </button>
+
+          <ElementsContainerDynamic
+            icon="https://assets.leapwallet.io/stars.png"
+            title="Get STARS"
+            subtitle={`Balance: ${formatNumber(
+              fromSmall(balance ?? "0").decimalPlaces(3)
+            )} STARS`}
+          />
+          <WalletButton balance={balance} />
+        </div>
       </div>
     </section>
   );

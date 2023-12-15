@@ -12,17 +12,10 @@ export const renderLiquidityButton = ({ onClick }: any) => {
   return (
     <button
       onClick={onClick}
-      className="flex gap-2 items-center justify-between border rounded-3xl px-5 py-2"
+      className="flex flex-row bg-white-100 py-3 px-8 justify-center ml-auto rounded-3xl cursor-pointer"
     >
-      <Image
-        src={StargazeLogo}
-        height={16}
-        width={16}
-        alt="get stars"
-        style={{ filter: "invert(1)" }}
-      />
-      <Text size="sm" color="text-black-100 font-bold">
-        Get Stars
+      <Text size="xs" color="text-black-100 text-center font-bold">
+        {"Buy Now"}
       </Text>
     </button>
   );
@@ -70,7 +63,7 @@ export function GenericNFTCard({
   balance,
   isConnected,
 }: GenericCardProps) {
-  const { imageComponent } = useNFTImage({
+  const { imageComponent, imgUrl } = useNFTImage({
     image: nft.image,
     mediaType: nft.media_type,
     nftName: nft.name,
@@ -151,15 +144,17 @@ export function GenericNFTCard({
         >
           <Image src={ArrowNorthWest} alt="link" height={10} width={10} />
         </button>
-        {nft.cta === "Get Stars" && isConnected ? (
-          <div className="flex bg-white-100  justify-center ml-auto rounded-3xl cursor-pointer">
+        {nft.cta === "Get STARS" && isConnected ? (
+          <div className="flex bg-white-100 w-[70%]  justify-center ml-auto rounded-3xl cursor-pointer">
             <ElementsContainerDynamic
-              icon="https://assets.leapwallet.io/stars.png"
+              icon={imgUrl ?? "https://assets.leapwallet.io/stars.png"}
               title={`Buy ${nft.name}`}
               subtitle={`Balance: ${formatNumber(
-                fromSmall(balance ?? "0").decimalPlaces(3)
+                fromSmall(balance ?? "0").decimalPlaces(2)
               )} STARS • You need ${formatNumber(
-                fromSmall(nft.listPrice.amount).minus(fromSmall(balance ?? "0"))
+                fromSmall(nft.listPrice.amount)
+                  .minus(fromSmall(balance ?? "0"))
+                  .decimalPlaces(2)
               )} STARS more to buy this Bad Kid`}
               customRenderLiquidityButton={renderLiquidityButton}
             />
@@ -170,7 +165,7 @@ export function GenericNFTCard({
             className="flex bg-white-100 py-3 px-8 w-[70%] justify-center ml-auto rounded-3xl cursor-pointer"
           >
             <Text size="xs" color="text-black-100 text-center font-bold">
-              {nft.cta}
+              {"Buy Now"}
             </Text>
           </button>
         )}

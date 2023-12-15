@@ -20,7 +20,7 @@ export function WalletButton(
   }
 
   return (
-    <div className="flex items-center gap-2 justify-between border bg-white-100 border-white-100 rounded-3xl px-5 py-2">
+    <div className="flex items-center gap-2 h-10 justify-between border bg-white-100 border-white-100 rounded-3xl px-5 py-2">
       <button
         onClick={() => openView()}
         disabled={status === "Connecting" || status === "Connected"}
@@ -48,7 +48,11 @@ export function WalletButton(
           )}
           <Text
             size={status === "Connected" ? "xs" : "sm"}
-            color="text-black-100 font-bold"
+            color={
+              status === "Connected"
+                ? "text-black-100 "
+                : "text-black-100 font-bold"
+            }
             className={status === "Connected" ? "mt-[-6px] p-0" : "mt-0 p-0"}
           >
             {text}
@@ -58,7 +62,7 @@ export function WalletButton(
       {status === "Connected" && (
         <button onClick={disconnect}>
           <span title="Disconnect Wallet">
-            <IoMdCloseCircle size={24} title="Disconnect Wallet" />
+            <IoMdCloseCircle size={16} title="Disconnect Wallet" />
           </span>
         </button>
       )}

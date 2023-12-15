@@ -19,10 +19,12 @@ export default function Home() {
   }, [router.query]);
 
   return (
-    <div className="px-3 sm:px-14 py-8 sm:mt-16 mt-24">
+    <>
       <Header />
-      <NFTs collection={collection} />
-      <Toaster position="bottom-right" />
-    </div>
+      <div className="px-10 sm:px-14">
+        <NFTs collection={collection} />
+        <Toaster position="bottom-right" />
+      </div>
+    </>
   );
 }

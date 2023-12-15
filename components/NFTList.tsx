@@ -12,6 +12,7 @@ import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import toast from "react-hot-toast";
 import { ListControl } from "./ListControl";
 import { stat } from "fs";
+import GenericNFTCardSkeleton from "./GenericNFTCardSkeleton";
 
 const { executeContract } = cosmwasm.wasm.v1.MessageComposer.withTypeUrl;
 
@@ -131,6 +132,7 @@ export function NFTs({ collection }: { collection?: string }) {
   const { address, chain, status, getOfflineSignerDirect, openView, connect } =
     useChain("stargaze");
   const [balance, setBalance] = useState<string>("0");
+  const [isFetching, setIsFetching] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -138,16 +140,17 @@ export function NFTs({ collection }: { collection?: string }) {
     setSearchTerm(event.target.value);
   };
 
-  const [sortOrder, setSortOrder] = useState("none");
+  const [sortOrder, setSortOrder] = useState("low");
 
-  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortOrder(event.target.value);
+  const handleSortChange = (event: string) => {
+    setSortOrder(event);
   };
 
   const {
     loading,
     error,
     data: result,
+
     fetchMore,
   } = useQuery(getNFTTokensQuery, {
     variables: {
@@ -186,6 +189,7 @@ export function NFTs({ collection }: { collection?: string }) {
       const scrollPoint = window.scrollY + window.innerHeight;
       if (scrollPoint >= totalPageHeight && offset.current < total.current) {
         //toast(`Loading more Bad Kids`, {position: "bottom-center"})
+        setIsFetching(true);
         fetchMore({
           variables: {
             offset: offset.current + 10,
@@ -212,6 +216,9 @@ export function NFTs({ collection }: { collection?: string }) {
             });
           },
         });
+        setTimeout(() => {
+          setIsFetching(false);
+        }, 3000);
       }
     };
 
@@ -228,7 +235,7 @@ export function NFTs({ collection }: { collection?: string }) {
           cta =
             BN(balance).gt(token.listPrice.amount) && status === "Connected"
               ? "Buy Now"
-              : "Get Stars";
+              : "Get STARS";
         }
 
         return {
@@ -320,7 +327,7 @@ export function NFTs({ collection }: { collection?: string }) {
   };
 
   return (
-    <>
+    <div className="w-[90vw] mt-36 gap-3 flex flex-col ">
       <ListControl
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
@@ -328,7 +335,7 @@ export function NFTs({ collection }: { collection?: string }) {
         handleSortChange={handleSortChange}
       />
 
-      <div className="flex flex-wrap gap-x-3 gap-y-3 rounded-3xl border-[0] border-gray-100 mx-12 p-0 shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)] shadow-[0] dark:border-gray-900 sm:gap-x-6 sm:gap-y-8 sm:border sm:!p-6">
+      <div className="flex flex-wrap gap-x-3 gap-y-3 rounded-3xl border-[0] border-gray-100 shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)] shadow-[0] dark:border-gray-900 sm:gap-x-6 sm:gap-y-8 sm:border mb-10">
         {nfts &&
           nfts.map((nft: any) => (
             <GenericNFTCard
@@ -339,7 +346,11 @@ export function NFTs({ collection }: { collection?: string }) {
               isConnected={status === "Connected"}
             />
           ))}
+        {(isFetching || loading) &&
+          [1, 2, 3, 4, 5, 6, 7, 8].map((_, i) => {
+            return <GenericNFTCardSkeleton key={i} />;
+          })}
       </div>
-    </>
+    </div>
   );
 }

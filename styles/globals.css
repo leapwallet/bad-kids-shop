@@ -2,9 +2,9 @@
 
 @layer base {
   button,
-  [type='button'],
-  [type='reset'],
-  [type='submit'] {
+  [type="button"],
+  [type="reset"],
+  [type="submit"] {
     background: none;
   }
 }
@@ -33,51 +33,51 @@
 
 @layer base {
   @font-face {
-    font-family: 'Satoshi';
-    src: url('./fonts/Satoshi-Regular.woff2') format('woff2');
+    font-family: "Satoshi";
+    src: url("./fonts/Satoshi-Regular.woff2") format("woff2");
     font-weight: 400;
   }
 
   @font-face {
-    font-family: 'Satoshi';
-    src: url('./fonts/Satoshi-Medium.woff2') format('woff2');
+    font-family: "Satoshi";
+    src: url("./fonts/Satoshi-Medium.woff2") format("woff2");
     font-weight: 500;
   }
 
   @font-face {
-    font-family: 'Satoshi';
-    src: url('./fonts/Satoshi-Medium.woff2') format('woff2');
+    font-family: "Satoshi";
+    src: url("./fonts/Satoshi-Medium.woff2") format("woff2");
     font-weight: 600;
   }
 
   @font-face {
-    font-family: 'Satoshi';
-    src: url('./fonts/Satoshi-Bold.woff2') format('woff2');
+    font-family: "Satoshi";
+    src: url("./fonts/Satoshi-Bold.woff2") format("woff2");
     font-weight: 700;
   }
 
   @font-face {
-    font-family: 'Satoshi';
-    src: url('./fonts/Satoshi-Black.woff2') format('woff2');
+    font-family: "Satoshi";
+    src: url("./fonts/Satoshi-Black.woff2") format("woff2");
     font-weight: 800;
   }
 
   @font-face {
-    font-family: 'Satoshi';
-    src: url('./fonts/Satoshi-Light.woff2') format('woff2');
+    font-family: "Satoshi";
+    src: url("./fonts/Satoshi-Light.woff2") format("woff2");
     font-weight: 300;
   }
 
   @font-face {
-    font-family: 'Satoshi';
-    src: url('./fonts/Satoshi-Black.woff2') format('woff2');
+    font-family: "Satoshi";
+    src: url("./fonts/Satoshi-Black.woff2") format("woff2");
     font-weight: 900;
   }
 }
 
 @layer base {
   html {
-    font-family: 'Satoshi';
+    font-family: "Satoshi";
   }
 }
 
@@ -137,7 +137,7 @@ ul li {
 
 body {
   background-color: #212121;
-  font-family: 'Satoshi';
+  font-family: "Satoshi";
   font-size: 16px;
   background-position: center;
   background-repeat: no-repeat;
@@ -170,8 +170,8 @@ body {
   display: none;
 }
 
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   appearance: none;
   margin: 0;
@@ -213,17 +213,17 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 #toggle-switch::after {
-  content: '';
+  content: "";
   @apply absolute left-0.5 top-0.5 h-7 w-7 scale-110 transform rounded-full bg-white-100 transition duration-200;
 }
 
 #toggle-switch:checked:after {
-  content: '';
+  content: "";
   @apply translate-x-5 scale-110 transform;
 }
 
 .material-icons-round {
-  font-family: 'Material Icons Round';
+  font-family: "Material Icons Round";
   font-weight: normal;
   font-style: normal;
   font-size: 24px; /* Preferred icon size */
@@ -244,7 +244,7 @@ input[type='number']::-webkit-outer-spin-button {
   -moz-osx-font-smoothing: grayscale;
 
   /* Support for IE. */
-  font-feature-settings: 'liga';
+  font-feature-settings: "liga";
 }
 
 .Toastify__toast-theme--colored.Toastify__toast--info {
@@ -254,7 +254,7 @@ input[type='number']::-webkit-outer-spin-button {
   background: #ff9f0a !important;
   /* White/100 */
   color: #ffffff !important;
-  font-family: 'Satoshi', 'Helvetica', 'Arial', 'sans-serif';
+  font-family: "Satoshi", "Helvetica", "Arial", "sans-serif";
   /* Green/200 */
   border: 1px solid #ff9f0a !important;
   border-radius: 12px;
@@ -267,7 +267,7 @@ input[type='number']::-webkit-outer-spin-button {
   background: #ff9f0a !important;
   /* White/100 */
   color: #ffffff !important;
-  font-family: 'Satoshi', 'Helvetica', 'Arial', 'sans-serif';
+  font-family: "Satoshi", "Helvetica", "Arial", "sans-serif";
   /* Green/200 */
   border: 1px solid #ff9f0a !important;
   border-radius: 12px;
@@ -280,7 +280,7 @@ input[type='number']::-webkit-outer-spin-button {
   background: #29a874 !important;
   /* White/100 */
   color: #ffffff !important;
-  font-family: 'Satoshi', 'Helvetica', 'Arial', 'sans-serif';
+  font-family: "Satoshi", "Helvetica", "Arial", "sans-serif";
   /* Green/600 */
   border: 1px solid #29a874 !important;
   border-radius: 12px;
@@ -293,9 +293,26 @@ input[type='number']::-webkit-outer-spin-button {
   background: #d10014 !important;
   /* White/100 */
   color: #ffffff !important;
-  font-family: 'Satoshi', 'Helvetica', 'Arial', 'sans-serif';
+  font-family: "Satoshi", "Helvetica", "Arial", "sans-serif";
   /* Red/600 */
   border: 1px solid #d10014 !important;
   border-radius: 12px;
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
