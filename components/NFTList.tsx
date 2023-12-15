@@ -13,6 +13,8 @@ import toast from "react-hot-toast";
 import { ListControl } from "./ListControl";
 import { stat } from "fs";
 import GenericNFTCardSkeleton from "./GenericNFTCardSkeleton";
+import { getMarketplaceTokens, getNFTTokensQuery } from "../queries/tokens.query";
+import { MarketplaceQueryClient } from "stargazejs/types/codegen/Marketplace.client";
 
 const { executeContract } = cosmwasm.wasm.v1.MessageComposer.withTypeUrl;
 
@@ -57,72 +59,6 @@ function createBuyNftTx({
   };
 }
 
-const getNFTTokensQuery = gql`
-  query Tokens(
-    $collectionAddr: String!
-    $limit: Int
-    $offset: Int
-    $filterForSale: SaleType
-    $sortBy: TokenSort
-  ) {
-    tokens(
-      collectionAddr: $collectionAddr
-      limit: $limit
-      offset: $offset
-      filterForSale: $filterForSale
-      sortBy: $sortBy
-    ) {
-      pageInfo {
-        total
-        limit
-        offset
-      }
-      tokens {
-        description
-        name
-        rarityOrder
-        owner {
-          address
-        }
-        collection {
-          tokenCounts {
-            total
-          }
-          media {
-            type
-            url
-          }
-          name
-          contractAddress
-        }
-        listedAt
-        listPrice {
-          amount
-          denom
-        }
-        media {
-          type
-          url
-        }
-        metadata
-        traits {
-          name
-          rarity
-          rarityPercent
-          rarityScore
-        }
-
-        tokenId
-        tokenUri
-        saleType
-        owner {
-          address
-        }
-      }
-    }
-  }
-`;
-
 const BAD_KIDS_COLLECTION =
   "stars19jq6mj84cnt9p7sagjxqf8hxtczwc8wlpuwe4sh62w45aheseues57n420";
 const SASQUATCH_SOCIETY_COLLECTION =
@@ -152,7 +88,7 @@ export function NFTs({ collection }: { collection?: string }) {
     variables: {
       collectionAddr: collection ?? BAD_KIDS_COLLECTION,
       limit: 30,
-      offset: 30,
+      offset: 0,
       filterForSale: "FIXED_PRICE",
       sortBy: "PRICE_ASC",
     },
