@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import { useChain } from "@cosmos-kit/react-lite";
 import { formatNumber, fromSmall } from "../config/mathutils";
 
+import StargazeLogo from "../public/stargaze-logo.svg";
+
 export const ElementsContainerDynamic = dynamic(
   () =>
     import("../components/ElementsContainer").then(
@@ -17,6 +19,20 @@ export const ElementsContainerDynamic = dynamic(
     ),
   { ssr: false }
 );
+
+export const renderLiquidityButton = ({ onClick }: any) => {
+  return (
+    <button
+      onClick={onClick}
+      className="flex gap-2 mr-[-8px] items-center h-10 justify-between border border-white-100 rounded-3xl px-5 py-2"
+    >
+      <Image src={StargazeLogo} height={16} width={16} alt="get stars" />
+      <Text size="sm" color="text-white-100 font-bold">
+        Get STARS
+      </Text>
+    </button>
+  );
+};
 
 const fetchBalance = async (address: string, chain: any) => {
   const res = await fetch(
@@ -44,7 +60,7 @@ export function Header() {
 
   return (
     <section className="flex flex-wrap gap-x-3  gap-y-3 fixed backdrop-blur-md bg-[#212121DE]  items-center justify-between px-10 py-4 top-0 left-0 right-0 z-10">
-      <Image src={BadkidsLogo} alt="bad-kids" className="flex" />
+      <Image sizes="70%" src={BadkidsLogo} alt="bad-kids" className="flex" />
 
       <button className="sm:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
         {!isMenuOpen ? (
@@ -68,12 +84,50 @@ export function Header() {
             </Text>
           </button>
 
+          {renderLiquidityButton({
+            onClick: () => {
+              const renderModalBtn = document.getElementById(
+                "open-liquidity-modal-btn"
+              );
+              console.log(renderModalBtn);
+              if (renderModalBtn) {
+                const titleElement = document.querySelector(
+                  "body > div.vcai130.leap-elements > div > div > div > div._1sc81q01 > div > div > h2"
+                );
+                const subtitleElement = document.querySelector(
+                  "body > div.vcai130.leap-elements > div > div > div > div._1sc81q01 > div > div > p"
+                );
+                const imageSrc = document.querySelector(
+                  "body > div.vcai130.leap-elements > div > div > div > div._1sc81q01 > div > img"
+                );
+                if (titleElement) {
+                  titleElement.innerHTML = "Get STARS";
+                }
+                if (subtitleElement) {
+                  subtitleElement.innerHTML = `Balance: ${formatNumber(
+                    fromSmall(balance ?? "0").decimalPlaces(3)
+                  )} STARS`;
+                }
+                if (imageSrc) {
+                  imageSrc.setAttribute(
+                    "src",
+                    "https://assets.leapwallet.io/stars.png"
+                  );
+                }
+                renderModalBtn.click();
+                return;
+              }
+            },
+          })}
           <ElementsContainerDynamic
             icon="https://assets.leapwallet.io/stars.png"
             title="Get STARS"
             subtitle={`Balance: ${formatNumber(
               fromSmall(balance ?? "0").decimalPlaces(3)
             )} STARS`}
+            customRenderLiquidityButton={(_) => {
+              return <></>;
+            }}
           />
           <WalletButton balance={balance} />
         </div>
