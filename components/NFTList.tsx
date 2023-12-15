@@ -163,15 +163,15 @@ export function NFTs({ collection }: { collection?: string }) {
   offset.current = result?.tokens?.pageInfo?.offset ?? 0;
 
   const handleSortChange = (event: string) => {
-    if(sortOrder === event) {
-      return
+    if (sortOrder === event) {
+      return;
     }
     setSortOrder(event);
-    if(event === "low") {
+    if (event === "low") {
       refetch({
         sortBy: "PRICE_ASC",
       });
-    }else if(event === "high") {
+    } else if (event === "high") {
       refetch({
         sortBy: "PRICE_DESC",
       });
@@ -265,8 +265,7 @@ export function NFTs({ collection }: { collection?: string }) {
           },
         };
       })
-      .filter((nft: any) => nft.tokenId.includes(searchTerm))
-
+      .filter((nft: any) => nft.tokenId.includes(searchTerm));
   }, [result, balance, searchTerm, sortOrder, status]);
 
   const onnNFTClick = async (
@@ -359,7 +358,7 @@ export function NFTs({ collection }: { collection?: string }) {
           toast.success(`Success! ${res.transactionHash}`, {
             className: "w-[400px]",
           });
-          refetch()
+          refetch();
         })
         .catch((e: any) => {
           toast.dismiss(broadcastToast);

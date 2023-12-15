@@ -9,18 +9,7 @@ import StargazeLogo from "../public/stargaze-logo.svg";
 import { useEffect } from "react";
 
 export const renderLiquidityButton = ({ onClick }: any) => {
-  return (
-    <button
-      onClick={onClick}
-      id="open-liquidity-modal-btn"
-      className="flex gap-2 items-center h-10 justify-between border border-white-100 rounded-3xl px-5 py-2"
-    >
-      <Image src={StargazeLogo} height={16} width={16} alt="get stars" />
-      <Text size="sm" color="text-white-100 font-bold">
-        Get STARS
-      </Text>
-    </button>
-  );
+  return <button onClick={onClick} id="open-liquidity-modal-btn"></button>;
 };
 
 interface Props {
@@ -48,9 +37,7 @@ export function ElementsContainer({
   return (
     <div className="z-99">
       <LiquidityModal
-        renderLiquidityButton={
-          customRenderLiquidityButton ?? renderLiquidityButton
-        }
+        renderLiquidityButton={renderLiquidityButton}
         theme="dark"
         walletClientConfig={{
           userAddress: address,
