@@ -5,8 +5,6 @@ import { formatNumber, fromSmall } from "../config/mathutils";
 import Image from "next/image";
 import ArrowNorthWest from "../public/arrow-north-west.svg";
 import { MdAutoGraph } from "react-icons/md";
-import { ElementsContainerDynamic } from "./Header";
-import StargazeLogo from "../public/stargaze-logo.svg";
 
 export const renderLiquidityButton = ({ onClick }: any) => {
   return (

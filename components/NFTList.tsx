@@ -142,22 +142,17 @@ export function NFTs({ collection }: { collection?: string }) {
 
   const [sortOrder, setSortOrder] = useState("low");
 
-  const handleSortChange = (event: string) => {
-    setSortOrder(event);
-  };
-
   const {
     loading,
     error,
     data: result,
-
     fetchMore,
     refetch,
   } = useQuery(getNFTTokensQuery, {
     variables: {
       collectionAddr: collection ?? BAD_KIDS_COLLECTION,
-      limit: 50,
-      offset: 50,
+      limit: 30,
+      offset: 30,
       filterForSale: "FIXED_PRICE",
       sortBy: "PRICE_ASC",
     },
@@ -166,6 +161,22 @@ export function NFTs({ collection }: { collection?: string }) {
   const total = useRef(0);
   total.current = result?.tokens?.pageInfo?.total ?? 0;
   offset.current = result?.tokens?.pageInfo?.offset ?? 0;
+
+  const handleSortChange = (event: string) => {
+    if(sortOrder === event) {
+      return
+    }
+    setSortOrder(event);
+    if(event === "low") {
+      refetch({
+        sortBy: "PRICE_ASC",
+      });
+    }else if(event === "high") {
+      refetch({
+        sortBy: "PRICE_DESC",
+      });
+    }
+  };
 
   useEffect(() => {
     const getBalance = async () => {
@@ -255,15 +266,7 @@ export function NFTs({ collection }: { collection?: string }) {
         };
       })
       .filter((nft: any) => nft.tokenId.includes(searchTerm))
-      .sort((a: any, b: any) => {
-        if (sortOrder === "low") {
-          return +a.listPrice.amount - +b.listPrice.amount;
-        } else if (sortOrder === "high") {
-          return +b.listPrice.amount - +a.listPrice.amount;
-        } else {
-          return 0;
-        }
-      });
+
   }, [result, balance, searchTerm, sortOrder, status]);
 
   const onnNFTClick = async (

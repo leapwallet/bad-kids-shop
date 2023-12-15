@@ -8,12 +8,13 @@ export const useElementsWalletClient = (): WalletClient => {
 
 
   const walletClient: WalletClient = useMemo(() => {
+    if(!client) return {} as WalletClient;
     return {
       enable: async (chainIds: string | string[]) => {
         return client?.enable!(chainIds);
       },
       getAccount: async (chainId: string) => {
-        await client!.enable!(chainId);
+        await client?.enable!(chainId);
         const result = await client!.getAccount!(chainId);
         return {
           bech32Address: result.address,
@@ -22,17 +23,17 @@ export const useElementsWalletClient = (): WalletClient => {
         };
       },
       getSigner: async (chainId: string) => {
-        const signer = await client!.getOfflineSignerDirect!(chainId);
+        const signer = await client?.getOfflineSignerDirect!(chainId);
         const aminoSigner = await client!.getOfflineSignerAmino!(chainId);
 
         return {
           signDirect: async (signerAddress: string, signDoc: any) => {
-            const result = await signer.signDirect(signerAddress, signDoc);
+            const result = await signer?.signDirect(signerAddress, signDoc);
             return {
               signature: new Uint8Array(
-                Buffer.from(result.signature.signature, "base64")
+                Buffer.from(result?.signature?.signature ?? '', "base64")
               ),
-              signed: result.signed,
+              signed: result?.signed,
             };
           },
           signAmino: async (address: string, signDoc: any) => {

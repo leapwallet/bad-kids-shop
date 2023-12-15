@@ -9,8 +9,9 @@ function format(num: number) {
 }
 
 export function formatNumber(num: BN) {
-  if (num.gte(1000000)) {
-    return format(num.div(1000_000).toNumber()) + "M";
+  console.log('num', num.toString())
+  if (num.gte(1_000_000)) {
+    return format(num.div(1_000_000).toNumber()) + "M";
   } else if (num.gte(1000)) {
     return format(num.div(1000).toNumber()) + "K";
   } else {
