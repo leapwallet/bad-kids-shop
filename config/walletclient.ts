@@ -3,12 +3,13 @@ import { useWalletClient } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
 export const useElementsWalletClient = (): WalletClient => {
+
   const { client } = useWalletClient();
 
-  //@ts-ignore
+
   const walletClient: WalletClient = useMemo(() => {
     return {
-      enable: (chainIds: string | string[]) => {
+      enable: async (chainIds: string | string[]) => {
         return client?.enable!(chainIds);
       },
       getAccount: async (chainId: string) => {
