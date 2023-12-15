@@ -186,7 +186,7 @@ export function ConnectWalletSideCurtainContent({
           return (
             <div key={name + prettyName + index}>
               <ConnectWalletCard
-                onWalletClicked={() => onWalletClicked(wallet)}
+                onWalletClicked={() => onWalletClicked(wallet as MainWalletBase)}
                 name={name}
                 logo={logo as string}
                 prettyName={prettyName}
