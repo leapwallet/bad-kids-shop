@@ -152,11 +152,12 @@ export function NFTs({ collection }: { collection?: string }) {
     data: result,
 
     fetchMore,
+    refetch,
   } = useQuery(getNFTTokensQuery, {
     variables: {
       collectionAddr: collection ?? BAD_KIDS_COLLECTION,
-      limit: 10,
-      offset: 10,
+      limit: 50,
+      offset: 50,
       filterForSale: "FIXED_PRICE",
       sortBy: "PRICE_ASC",
     },
@@ -192,7 +193,7 @@ export function NFTs({ collection }: { collection?: string }) {
         setIsFetching(true);
         fetchMore({
           variables: {
-            offset: offset.current + 10,
+            offset: offset.current + 50,
           },
           updateQuery: (prev, { fetchMoreResult }) => {
             if (!fetchMoreResult) return prev;
@@ -232,10 +233,7 @@ export function NFTs({ collection }: { collection?: string }) {
       .map((token: any) => {
         let cta = "Buy Now";
         if (address) {
-          cta =
-            BN(balance).gt(token.listPrice.amount) && status === "Connected"
-              ? "Buy Now"
-              : "Get STARS";
+          cta = "Buy Now";
         }
 
         return {
@@ -268,17 +266,47 @@ export function NFTs({ collection }: { collection?: string }) {
       });
   }, [result, balance, searchTerm, sortOrder, status]);
 
-  const onnNFTClick = async (nft: any) => {
-    //this is a hack to get around the fact that the elements does not expose a function to open the modal from other than renderLiquidityButton function
-    //this is not ideal but it works for now
-
+  const onnNFTClick = async (
+    nft: any,
+    title: string,
+    subtitle: string,
+    imgUrl: string
+  ) => {
     if (!address) {
       connect();
       return;
     }
+    //this is a hack to get around the fact that the elements does not expose a function to open the modal from other than renderLiquidityButton function
+    //this is not ideal but it works for now
+    const renderModalBtn = document.getElementById("open-liquidity-modal-btn");
+    const shouldOpenModal = BN(nft.listPrice.amount).gt(balance);
+    if (renderModalBtn && shouldOpenModal) {
+      const titleElement = document.querySelector(
+        "body > div.vcai130.leap-elements > div > div > div > div._1sc81q01 > div > div > h2"
+      );
+      const subtitleElement = document.querySelector(
+        "body > div.vcai130.leap-elements > div > div > div > div._1sc81q01 > div > div > p"
+      );
+      const imageSrc = document.querySelector(
+        "body > div.vcai130.leap-elements > div > div > div > div._1sc81q01 > div > img"
+      );
+      if (titleElement && title) {
+        titleElement.innerHTML = title;
+      }
+      if (subtitleElement && subtitle) {
+        subtitleElement.innerHTML = subtitle;
+      }
+      if (imageSrc && imgUrl) {
+        imageSrc.setAttribute("src", imgUrl);
+      }
+      renderModalBtn.click();
+      return;
+    }
 
     try {
-      toast(`Please sign the transaction on your wallet`);
+      toast(`Please sign the transaction on your wallet`, {
+        className: "w-[400px]",
+      });
       const twoWeekExpiry = 14 * 24 * 60 * 60 * 1000;
       const tx = createBuyNftTx({
         sender: address,
@@ -318,9 +346,21 @@ export function NFTs({ collection }: { collection?: string }) {
         signatures: signedTx.signatures,
       }).finish();
 
-      const res = await signingCosmwasmClient.broadcastTx(txRaw);
-
-      toast.success(`Transaction sent successfully`);
+      const res = signingCosmwasmClient.broadcastTx(txRaw);
+      const broadcastToast = toast("Broadcasting transaction", {
+        duration: 1000 * 60,
+      });
+      res
+        .then((res: any) => {
+          toast.dismiss(broadcastToast);
+          toast.success(`Success! ${res.transactionHash}`, {
+            className: "w-[400px]",
+          });
+        })
+        .catch((e: any) => {
+          toast.dismiss(broadcastToast);
+          toast.error(`Error: ${e.message}`, { className: "w-[400px]" });
+        });
     } catch (e: any) {
       toast.error(`Error: ${e.message}`);
     }

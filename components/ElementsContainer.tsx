@@ -42,11 +42,11 @@ export function ElementsContainer({
     const elementsModal = document.querySelector(".leap-elements");
     if (elementsModal) {
       //@ts-ignore
-      elementsModal.style["zIndex"] = 0;
+      elementsModal.style["zIndex"] = 11;
     }
   }, []);
   return (
-    <div className="z-0">
+    <div className="z-99">
       <LiquidityModal
         renderLiquidityButton={
           customRenderLiquidityButton ?? renderLiquidityButton

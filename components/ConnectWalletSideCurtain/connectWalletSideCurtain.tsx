@@ -19,7 +19,7 @@ export default function ConnectWalletSideCurtain({
 }: WalletModalProps) {
   return (
     <>
-      <div className="relative z-[4]">
+      <div className="relative z-[11]">
         {isOpen && (
           <div
             className={

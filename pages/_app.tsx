@@ -71,6 +71,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           </ChainProvider>
         </LeapUiTheme>
+        p0
       </GraphqlProvider>
     </>
   );

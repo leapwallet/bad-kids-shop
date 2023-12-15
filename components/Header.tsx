@@ -43,7 +43,7 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <section className="flex flex-wrap gap-x-3  gap-y-3 fixed backdrop-blur-md bg-[#212121DE]  items-center justify-between px-10 py-4 top-0 left-0 right-0 z-50">
+    <section className="flex flex-wrap gap-x-3  gap-y-3 fixed backdrop-blur-md bg-[#212121DE]  items-center justify-between px-10 py-4 top-0 left-0 right-0 z-10">
       <Image src={BadkidsLogo} alt="bad-kids" className="flex" />
 
       <button className="sm:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
