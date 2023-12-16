@@ -19,6 +19,10 @@ function GenericNFTCardSkeleton() {
           <div className="h-4 bg-gray-300 rounded"></div>
           <div className="h-4 bg-gray-300 rounded w-5/6"></div>
         </div>
+        <div className="flex flex-row space-y-2 mt-auto">
+          <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
+          <div className="h-4 bg-gray-300 rounded w-5/6 ml-auto"></div>
+        </div>
       </div>
     </div>
   );

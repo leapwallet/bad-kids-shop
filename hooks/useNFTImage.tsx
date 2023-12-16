@@ -1,8 +1,10 @@
 import classNames from "classnames";
+import Image from "next/image";
 
 import React, { useMemo, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 
+import LoaderGif from "../public/badfroge.gif";
 const VIDEO_EXTENSIONS = ["mp4", "webm", "ogg"];
 
 export function imgOnError(defaultTokenLogo: string) {
@@ -69,10 +71,7 @@ export function useNFTImage({
               classNamesProp?.skeleton
             )}
           >
-            <Skeleton
-              containerClassName="w-full h-full !leading-none !block"
-              className="h-full w-full"
-            />
+            <Image src={LoaderGif} alt="Loading..." />
           </div>
         )}
         {isVideo ? (

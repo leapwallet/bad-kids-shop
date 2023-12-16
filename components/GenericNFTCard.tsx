@@ -116,10 +116,10 @@ export function GenericNFTCard({
         </div>
       </div>
       <div className="flex w-full flex-row items-start justify-between gap-2">
-        <div className="flex w-full flex-col items-start justify-start gap-[2px]">
+        <div className="flex w-[75%] flex-col items-start justify-start gap-[2px]">
           <div className="flex w-full flex-row items-center justify-start gap-1">
             <div className="h-5 w-5">{collectionImageComponent}</div>
-            <div className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-left text-base !leading-6 text-black-100 dark:text-white-100 font-bold">
+            <div className="flex-row overflow-hidden text-ellipsis whitespace-nowrap text-left text-base !leading-6 text-black-100 dark:text-white-100 font-bold">
               {nft?.name}
             </div>
           </div>

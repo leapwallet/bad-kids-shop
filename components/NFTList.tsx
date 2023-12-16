@@ -13,6 +13,13 @@ import toast from "react-hot-toast";
 import { ListControl } from "./ListControl";
 import { stat } from "fs";
 import GenericNFTCardSkeleton from "./GenericNFTCardSkeleton";
+import {
+  getNFTTokensQuery,
+  getNFTTokenByIDQuery,
+} from "../queries/tokens.query";
+import { MdArrowUpward } from "react-icons/md";
+import { MarketplaceQueryClient } from "stargazejs/types/codegen/Marketplace.client";
+import Text from "./Text";
 
 const { executeContract } = cosmwasm.wasm.v1.MessageComposer.withTypeUrl;
 
@@ -25,8 +32,8 @@ export type SORT_ORDERS =
   | "NAME_DESC"
   | "COLLECTION_ADDR_TOKEN_ID_ASC"
   | "TOKEN_ID_DESC"
-  | "LISTED_AT_ASC"
-  | "LISTED_AT_DESC";
+  | "LISTED_ASC"
+  | "LISTED_DESC";
 
 const STARGAZE_MARKET_CONTRACT =
   "stars1fvhcnyddukcqfnt7nlwv3thm5we22lyxyxylr9h77cvgkcn43xfsvgv0pl";
@@ -69,118 +76,6 @@ function createBuyNftTx({
   };
 }
 
-const getNFTTokensQuery = gql`
-  query Tokens(
-    $collectionAddr: String!
-    $limit: Int
-    $offset: Int
-    $filterForSale: SaleType
-    $sortBy: TokenSort
-  ) {
-    tokens(
-      collectionAddr: $collectionAddr
-      limit: $limit
-      offset: $offset
-      filterForSale: $filterForSale
-      sortBy: $sortBy
-    ) {
-      pageInfo {
-        total
-        limit
-        offset
-      }
-      tokens {
-        description
-        name
-        rarityOrder
-        owner {
-          address
-        }
-        collection {
-          tokenCounts {
-            total
-          }
-          media {
-            type
-            url
-          }
-          name
-          contractAddress
-        }
-        listedAt
-        listPrice {
-          amount
-          denom
-        }
-        media {
-          type
-          url
-        }
-        metadata
-        traits {
-          name
-          rarity
-          rarityPercent
-          rarityScore
-        }
-
-        tokenId
-        tokenUri
-        saleType
-        owner {
-          address
-        }
-      }
-    }
-  }
-`;
-
-const getNFTTokenByIDQuery = gql`
-  query Token($collectionAddr: String!, $tokenId: String!) {
-    token(collectionAddr: $collectionAddr, tokenId: $tokenId) {
-      description
-      name
-      rarityOrder
-      owner {
-        address
-      }
-      collection {
-        tokenCounts {
-          total
-        }
-        media {
-          type
-          url
-        }
-        name
-        contractAddress
-      }
-      listedAt
-      listPrice {
-        amount
-        denom
-      }
-      media {
-        type
-        url
-      }
-      metadata
-      traits {
-        name
-        rarity
-        rarityPercent
-        rarityScore
-      }
-      tokenId
-      tokenUri
-      saleType
-      owner {
-        address
-      }
-    }
-  }
-`;
-
 const BAD_KIDS_COLLECTION =
   "stars19jq6mj84cnt9p7sagjxqf8hxtczwc8wlpuwe4sh62w45aheseues57n420";
 const SASQUATCH_SOCIETY_COLLECTION =
@@ -191,11 +86,12 @@ export function NFTs({ collection }: { collection?: string }) {
     useChain("stargaze");
   const [balance, setBalance] = useState<string>("0");
   const [isFetching, setIsFetching] = useState(false);
+  const [isScrollToTopVisible, setIsScrollToTopVisible] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const handleSearchChange = (event: string) => {
+    setSearchTerm(event);
   };
 
   const [sortOrder, setSortOrder] = useState<SORT_ORDERS>("PRICE_ASC");
@@ -210,7 +106,7 @@ export function NFTs({ collection }: { collection?: string }) {
     variables: {
       collectionAddr: collection ?? BAD_KIDS_COLLECTION,
       limit: 30,
-      offset: 30,
+      offset: 0,
       filterForSale: "FIXED_PRICE",
       sortBy: sortOrder,
     },
@@ -219,7 +115,7 @@ export function NFTs({ collection }: { collection?: string }) {
   const {
     loading: loading2,
     error: error2,
-    data: result2,
+    data: searchedNFTResult,
     fetchMore: fetchMore2,
     refetch: refetch2,
   } = useQuery(getNFTTokenByIDQuery, {
@@ -251,8 +147,23 @@ export function NFTs({ collection }: { collection?: string }) {
     }
   }, [address]);
 
+  // Set the top cordinate to 0
+  // make scrolling smooth
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   useEffect(() => {
     const handleScroll = () => {
+      if (window.pageYOffset > 300) {
+        setIsScrollToTopVisible(true);
+      } else {
+        setIsScrollToTopVisible(false);
+      }
+
       const totalPageHeight = document.documentElement.scrollHeight;
       const scrollPoint = window.scrollY + window.innerHeight;
       if (scrollPoint >= totalPageHeight && offset.current < total.current) {
@@ -323,6 +234,38 @@ export function NFTs({ collection }: { collection?: string }) {
       })
       .filter((nft: any) => nft.tokenId.includes(searchTerm));
   }, [result, balance, searchTerm, status]);
+
+  const searchedNFT = useMemo(() => {
+    const token = searchedNFTResult?.token;
+
+    let cta = "Buy Now";
+    if (address) {
+      cta = "Buy Now";
+    }
+
+    if (!token || !token?.listPrice) {
+      console.log(token);
+      return null;
+    }
+
+    return {
+      image: token.media?.url,
+      media_type: token.media.type,
+      name: token.metadata.name,
+      tokenId: token.tokenId,
+      listPrice: token.listPrice,
+      traits: token.traits,
+      rarityOrder: token.rarityOrder,
+      cta,
+      collection: {
+        name: token.collection.name,
+        media_type: token.collection.media.type,
+        image: token.collection.media.url,
+        contractAddress: token.collection.contractAddress,
+        tokenCount: token.collection.tokenCounts.total,
+      },
+    };
+  }, [searchedNFTResult, balance, searchTerm, status]);
 
   const onnNFTClick = async (
     nft: any,
@@ -433,7 +376,19 @@ export function NFTs({ collection }: { collection?: string }) {
         sortOrder={sortOrder}
         handleSortChange={setSortOrder}
       />
+
       <div className="flex flex-wrap gap-x-3 gap-y-3 rounded-3xl border-[0] border-gray-100 shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)] shadow-[0] dark:border-gray-900 sm:gap-x-6 sm:gap-y-8 sm:border mb-10">
+        {loading2 && nfts?.length === 0 && <GenericNFTCardSkeleton key={1} />}
+
+        {searchedNFT && nfts?.length === 0 && (
+          <GenericNFTCard
+            nft={searchedNFT}
+            key={searchedNFT.tokenId}
+            onNFTClick={onnNFTClick}
+            balance={balance}
+            isConnected={status === "Connected"}
+          />
+        )}
         {nfts &&
           nfts.map((nft: any) => (
             <GenericNFTCard
@@ -449,6 +404,16 @@ export function NFTs({ collection }: { collection?: string }) {
             return <GenericNFTCardSkeleton key={i} />;
           })}
       </div>
+      {isScrollToTopVisible && (
+        <div
+          className="flex-row flex items-center gap-1 fixed  bottom-8 right-8 px-2 py-1 text-white-100 border border-white-100 rounded-3xl backdrop-blur-md bg-[#21212151]"
+          onClick={scrollToTop}
+        >
+          {/* Icon Arrow Up */}
+          <MdArrowUpward />
+          <button>Top</button>
+        </div>
+      )}
     </div>
   );
 }
