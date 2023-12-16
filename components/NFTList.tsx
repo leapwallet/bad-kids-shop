@@ -16,6 +16,18 @@ import GenericNFTCardSkeleton from "./GenericNFTCardSkeleton";
 
 const { executeContract } = cosmwasm.wasm.v1.MessageComposer.withTypeUrl;
 
+export type SORT_ORDERS =
+  | "PRICE_DESC"
+  | "PRICE_ASC"
+  | "RARITY_DESC"
+  | "RARITY_ASC"
+  | "NAME_ASC"
+  | "NAME_DESC"
+  | "COLLECTION_ADDR_TOKEN_ID_ASC"
+  | "TOKEN_ID_DESC"
+  | "LISTED_AT_ASC"
+  | "LISTED_AT_DESC";
+
 const STARGAZE_MARKET_CONTRACT =
   "stars1fvhcnyddukcqfnt7nlwv3thm5we22lyxyxylr9h77cvgkcn43xfsvgv0pl";
 
@@ -123,6 +135,52 @@ const getNFTTokensQuery = gql`
   }
 `;
 
+const getNFTTokenByIDQuery = gql`
+  query Token($collectionAddr: String!, $tokenId: String!) {
+    token(collectionAddr: $collectionAddr, tokenId: $tokenId) {
+      description
+      name
+      rarityOrder
+      owner {
+        address
+      }
+      collection {
+        tokenCounts {
+          total
+        }
+        media {
+          type
+          url
+        }
+        name
+        contractAddress
+      }
+      listedAt
+      listPrice {
+        amount
+        denom
+      }
+      media {
+        type
+        url
+      }
+      metadata
+      traits {
+        name
+        rarity
+        rarityPercent
+        rarityScore
+      }
+      tokenId
+      tokenUri
+      saleType
+      owner {
+        address
+      }
+    }
+  }
+`;
+
 const BAD_KIDS_COLLECTION =
   "stars19jq6mj84cnt9p7sagjxqf8hxtczwc8wlpuwe4sh62w45aheseues57n420";
 const SASQUATCH_SOCIETY_COLLECTION =
@@ -140,7 +198,7 @@ export function NFTs({ collection }: { collection?: string }) {
     setSearchTerm(event.target.value);
   };
 
-  const [sortOrder, setSortOrder] = useState("low");
+  const [sortOrder, setSortOrder] = useState<SORT_ORDERS>("PRICE_ASC");
 
   const {
     loading,
@@ -154,7 +212,20 @@ export function NFTs({ collection }: { collection?: string }) {
       limit: 30,
       offset: 30,
       filterForSale: "FIXED_PRICE",
-      sortBy: sortOrder === "low" ? "PRICE_ASC" : "PRICE_DESC",
+      sortBy: sortOrder,
+    },
+  });
+
+  const {
+    loading: loading2,
+    error: error2,
+    data: result2,
+    fetchMore: fetchMore2,
+    refetch: refetch2,
+  } = useQuery(getNFTTokenByIDQuery, {
+    variables: {
+      collectionAddr: collection ?? BAD_KIDS_COLLECTION,
+      tokenId: searchTerm,
     },
   });
 
@@ -162,22 +233,6 @@ export function NFTs({ collection }: { collection?: string }) {
   const total = useRef(0);
   total.current = result?.tokens?.pageInfo?.total ?? 0;
   offset.current = result?.tokens?.pageInfo?.offset ?? 0;
-
-  const handleSortChange = (event: string) => {
-    if (sortOrder === event) {
-      return;
-    }
-    setSortOrder(event);
-    if (event === "low") {
-      refetch({
-        sortBy: "PRICE_ASC",
-      });
-    } else if (event === "high") {
-      refetch({
-        sortBy: "PRICE_DESC",
-      });
-    }
-  };
 
   useEffect(() => {
     const getBalance = async () => {
@@ -266,15 +321,8 @@ export function NFTs({ collection }: { collection?: string }) {
           },
         };
       })
-      .filter((nft: any) => nft.tokenId.includes(searchTerm))
-      .sort((a: any, b: any) => {
-        if (sortOrder === "low") {
-          return BN(a.listPrice.amount).gt(b.listPrice.amount) ? 1 : -1;
-        } else {
-          return BN(a.listPrice.amount).lt(b.listPrice.amount) ? 1 : -1;
-        }
-      });
-  }, [result, balance, searchTerm, sortOrder, status]);
+      .filter((nft: any) => nft.tokenId.includes(searchTerm));
+  }, [result, balance, searchTerm, status]);
 
   const onnNFTClick = async (
     nft: any,
@@ -383,7 +431,7 @@ export function NFTs({ collection }: { collection?: string }) {
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
         sortOrder={sortOrder}
-        handleSortChange={handleSortChange}
+        handleSortChange={setSortOrder}
       />
       <div className="flex flex-wrap gap-x-3 gap-y-3 rounded-3xl border-[0] border-gray-100 shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)] shadow-[0] dark:border-gray-900 sm:gap-x-6 sm:gap-y-8 sm:border mb-10">
         {nfts &&
