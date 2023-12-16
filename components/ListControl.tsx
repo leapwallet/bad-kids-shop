@@ -18,7 +18,7 @@ export function ListControl({
   handleSortChange: (e: SORT_ORDERS) => void;
 }) {
   return (
-    <section className=" w-[90vw] gap-3 flex-row flex flex-wrap justify-between sm:!p-6">
+    <section className="w-[90vw] gap-3 flex-row flex flex-wrap justify-between sm:!p-6">
       <div className="flex flex-col flex-wrap">
         <Text size="md">Collection of 9,999 bad drawings of kids. </Text>
         <Text size="md">

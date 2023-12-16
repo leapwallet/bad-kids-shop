@@ -265,7 +265,7 @@ export function NFTs({ collection }: { collection?: string }) {
         tokenCount: token.collection.tokenCounts.total,
       },
     };
-  }, [searchedNFTResult, balance, searchTerm, status]);
+  }, [searchedNFTResult, balance]);
 
   const onnNFTClick = async (
     nft: any,
@@ -379,7 +379,11 @@ export function NFTs({ collection }: { collection?: string }) {
 
       <div className="flex flex-wrap gap-x-3 gap-y-3 rounded-3xl border-[0] border-gray-100 shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)] shadow-[0] dark:border-gray-900 sm:gap-x-6 sm:gap-y-8 sm:border mb-10">
         {loading2 && nfts?.length === 0 && <GenericNFTCardSkeleton key={1} />}
-
+        {!loading2 && !loading && nfts?.length === 0 && !searchedNFT && (
+          <Text className="p-4" size="sm">
+            {`No NFTs found with the token ID "${searchTerm}"`}
+          </Text>
+        )}
         {searchedNFT && nfts?.length === 0 && (
           <GenericNFTCard
             nft={searchedNFT}
