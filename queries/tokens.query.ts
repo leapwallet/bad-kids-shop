@@ -65,3 +65,49 @@ export const getNFTTokensQuery = gql`
     }
   }
 `;
+
+export const getNFTTokenByIDQuery = gql`
+  query Token($collectionAddr: String!, $tokenId: String!) {
+    token(collectionAddr: $collectionAddr, tokenId: $tokenId) {
+      description
+      name
+      rarityOrder
+      owner {
+        address
+      }
+      collection {
+        tokenCounts {
+          total
+        }
+        media {
+          type
+          url
+        }
+        name
+        contractAddress
+      }
+      listedAt
+      listPrice {
+        amount
+        denom
+      }
+      media {
+        type
+        url
+      }
+      metadata
+      traits {
+        name
+        rarity
+        rarityPercent
+        rarityScore
+      }
+      tokenId
+      tokenUri
+      saleType
+      owner {
+        address
+      }
+    }
+  }
+`;

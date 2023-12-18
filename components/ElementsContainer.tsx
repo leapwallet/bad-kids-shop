@@ -39,6 +39,7 @@ export function ElementsContainer({
       <LiquidityModal
         renderLiquidityButton={renderLiquidityButton}
         theme="dark"
+        onTxnComplete={() => {}}
         walletClientConfig={{
           userAddress: address,
           walletClient: walletClient,
