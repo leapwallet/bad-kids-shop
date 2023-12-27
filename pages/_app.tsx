@@ -49,7 +49,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
 
   const [cosmosCapsuleWallet, setCosmosCapsuleWallet] =
     useState<CosmosCapsuleWallet>();
-  const [wallets, setWallets] = useState([])
+  const [wallets, setWallets] = useState()
 
   
   useEffect(() => {
@@ -63,7 +63,8 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
         );
         const cosmosCapsuleWallet = new WalletClass({walletInfo: WalletInfo });
         setCosmosCapsuleWallet(cosmosCapsuleWallet);
-        setWallets([
+        // @ts-ignore: Disabling typecheck until we figureout proper way of adding cosmoscapsulewallet in cosmos-kit
+        setWallets([ 
           cosmosCapsuleWallet,
           ...keplrWallets,
           ...leapWallets,
