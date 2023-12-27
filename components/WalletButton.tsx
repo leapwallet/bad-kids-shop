@@ -12,7 +12,7 @@ export function WalletButton(
   { balance }: { balance?: string | null } = { balance: null }
 ) {
   const { openView, status, address, chain, disconnect } = useChain("stargaze");
-  console.log(address)
+  console.log(address) // leave it for debugging
   let text = "Connect Wallet";
   if (status === "Connected") {
     text = sliceAddress(address ?? "");
