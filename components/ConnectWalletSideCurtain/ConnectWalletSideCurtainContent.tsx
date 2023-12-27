@@ -79,9 +79,11 @@ export function ConnectWalletSideCurtainContent({
         .map((key) => {
           // @ts-ignore
           const element: MainWalletBase = _filteredWallets.find(
-            (wallet) =>
-              wallet.walletInfo.name === COSMOS_KIT_WALLET_NAMES[key] &&
-              ["leap", "keplr", "metaMask"].includes(key)
+            (wallet) => {
+              console.log(wallet.walletInfo.name)
+              return wallet.walletInfo.name === COSMOS_KIT_WALLET_NAMES[key] &&
+              ["leap", "keplr", "metaMask", "leap-cosmos-capsule"].includes(key)
+            }
           );
           return element;
         })
@@ -90,6 +92,8 @@ export function ConnectWalletSideCurtainContent({
         }),
     [_filteredWallets]
   );
+
+  console.log(_filteredWallets)
 
   function onWalletClicked(wallet: MainWalletBase) {
     const { name } = wallet.walletInfo;
@@ -136,6 +140,7 @@ export function ConnectWalletSideCurtainContent({
     };
   }
 
+  console.log(filteredWallets);
   return (
     <div className="flex w-[541px] max-w-[90vw] flex-col items-start justify-start rounded-[20px] bg-gray-50 shadow-[0px_7px_24px_0px_rgba(0,0,0,0.25)] dark:bg-gray-950">
       <div className="flex h-[55px] w-full flex-row items-center justify-between px-6 py-[9px]">
@@ -163,13 +168,14 @@ export function ConnectWalletSideCurtainContent({
         </div>
         {[
           filteredWallets[2],
-          {
-            walletInfo: {
-              name: COSMOS_KIT_WALLET_NAMES["leap-cosmos-capsule"],
-              prettyName: "Google",
-              logo: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg",
-            },
-          },
+          // {
+          //   walletInfo: {
+          //     name: COSMOS_KIT_WALLET_NAMES["leap-cosmos-capsule"],
+          //     prettyName: "Google",
+          //     logo: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg",
+          //   },
+          // },
+          filteredWallets[3]
         ]?.map((wallet, index: number) => {
           if (!wallet) {
             return null;
@@ -190,9 +196,9 @@ export function ConnectWalletSideCurtainContent({
                 name={name}
                 logo={logo as string}
                 prettyName={prettyName}
-                isComingSoon={
-                  name === COSMOS_KIT_WALLET_NAMES["leap-cosmos-capsule"]
-                }
+                // isComingSoon={
+                //   name === COSMOS_KIT_WALLET_NAMES["leap-cosmos-capsule"]
+                // }
               />
             </div>
           );

@@ -347,6 +347,7 @@ export function NFTs({ collection }: { collection?: string }) {
         signatures: signedTx.signatures,
       }).finish();
 
+      console.log('reached', txRaw);
       const res = signingCosmwasmClient.broadcastTx(txRaw);
       const broadcastToast = toast("Broadcasting transaction", {
         duration: 1000 * 60,
