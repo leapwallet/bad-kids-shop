@@ -27,6 +27,8 @@
     "@cosmos-kit/react": "2.8.4",
     "@emotion/react": "11.10.6",
     "@emotion/styled": "11.10.6",
+    "@leapwallet/cosmos-social-login-capsule-provider": "0.0.27",
+    "@leapwallet/cosmos-social-login-capsule-provider-ui": "0.0.41",
     "@leapwallet/elements": "^0.11.4",
     "@types/bignumber.js": "^5.0.0",
     "@urql/exchange-graphcache": "^6.4.0",

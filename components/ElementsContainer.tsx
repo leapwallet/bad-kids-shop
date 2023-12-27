@@ -1,7 +1,6 @@
 import { LiquidityModal } from "@leapwallet/elements";
 
 import { useChain } from "@cosmos-kit/react";
-import "@leapwallet/elements/styles.css";
 import { useElementsWalletClient } from "../config/walletclient";
 import Image from "next/image";
 import Text from "./Text";

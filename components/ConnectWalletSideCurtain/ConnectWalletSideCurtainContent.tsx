@@ -79,9 +79,10 @@ export function ConnectWalletSideCurtainContent({
         .map((key) => {
           // @ts-ignore
           const element: MainWalletBase = _filteredWallets.find(
-            (wallet) =>
-              wallet.walletInfo.name === COSMOS_KIT_WALLET_NAMES[key] &&
-              ["leap", "keplr", "metaMask"].includes(key)
+            (wallet) => {
+              return wallet.walletInfo.name === COSMOS_KIT_WALLET_NAMES[key] &&
+              ["leap", "keplr", "metaMask", "leap-cosmos-capsule"].includes(key)
+            }
           );
           return element;
         })
@@ -163,13 +164,14 @@ export function ConnectWalletSideCurtainContent({
         </div>
         {[
           filteredWallets[2],
-          {
-            walletInfo: {
-              name: COSMOS_KIT_WALLET_NAMES["leap-cosmos-capsule"],
-              prettyName: "Google",
-              logo: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg",
-            },
-          },
+          // {
+          //   walletInfo: {
+          //     name: COSMOS_KIT_WALLET_NAMES["leap-cosmos-capsule"],
+          //     prettyName: "Google",
+          //     logo: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg",
+          //   },
+          // },
+          filteredWallets[3]
         ]?.map((wallet, index: number) => {
           if (!wallet) {
             return null;
@@ -190,9 +192,9 @@ export function ConnectWalletSideCurtainContent({
                 name={name}
                 logo={logo as string}
                 prettyName={prettyName}
-                isComingSoon={
-                  name === COSMOS_KIT_WALLET_NAMES["leap-cosmos-capsule"]
-                }
+                // isComingSoon={
+                //   name === COSMOS_KIT_WALLET_NAMES["leap-cosmos-capsule"]
+                // }
               />
             </div>
           );
