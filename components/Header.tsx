@@ -45,7 +45,7 @@ const fetchBalance = async (address: string, chain: any) => {
   return starsBalance?.amount ?? "0";
 };
 
-export function Header() {
+export function Header({ openEmbeddedWalletModal}: {openEmbeddedWalletModal: Function }) {
   const { address, chain } = useChain("stargaze");
 
   const [balance, setBalance] = useState(null);
@@ -132,7 +132,7 @@ export function Header() {
               return <></>;
             }}
           />
-          <WalletButton balance={balance} />
+          <WalletButton balance={balance || null} openEmbeddedWalletModal={openEmbeddedWalletModal} />
         </div>
       </div>
     </section>

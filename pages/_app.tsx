@@ -1,6 +1,7 @@
 import "../styles/globals.css";
+import "@leapwallet/embedded-wallet-sdk-react/styles.css"
 import type { AppProps } from "next/app";
-import { ChainProvider } from "@cosmos-kit/react";
+import { ChainProvider, useChain } from "@cosmos-kit/react";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 import { wallets as leapWallets } from "@cosmos-kit/leap";
 import { chains, assets } from "chain-registry";
@@ -14,7 +15,7 @@ import Head from "next/head";
 import { SignerOptions } from "@cosmos-kit/core";
 import ConnectWalletSideCurtain from "../components/ConnectWalletSideCurtain/connectWalletSideCurtain";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "@leapwallet/elements/styles.css";
 
 if (typeof global.self === "undefined") {
@@ -74,6 +75,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
 
     fn();
   });
+
 
   if(!cosmosCapsuleWallet) {
     return <>Loading</>

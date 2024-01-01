@@ -8,9 +8,11 @@ import { useEffect, useState } from "react";
 import { formatNumber, fromSmall } from "../config/mathutils";
 import { IoMdCloseCircle } from "react-icons/io";
 
-export function WalletButton(
-  { balance }: { balance?: string | null } = { balance: null }
-) {
+interface WalletButtonOptions { 
+  balance?: string | null, openEmbeddedWalletModal: Function 
+}
+
+export function WalletButton({ balance, openEmbeddedWalletModal }: WalletButtonOptions) {
   const { openView, status, address, chain, disconnect } = useChain("stargaze");
   console.log(address) // leave it for debugging
   let text = "Connect Wallet";
@@ -23,9 +25,18 @@ export function WalletButton(
   return (
     <div className="flex items-center gap-2 h-10 justify-between border bg-white-100 border-white-100 rounded-3xl px-5 py-2">
       <button
-        onClick={() => openView()}
-        disabled={status === "Connecting" || status === "Connected"}
+        onClick={() => { 
+          if(status === 'Connected') { 
+            openEmbeddedWalletModal();
+          }
+          else {
+            openView();
+          }
+          
+      }}
+        disabled={status === "Connecting"}
         className="flex items-center gap-2 justify-between "
+        
       >
         <Image
           color="#000"
