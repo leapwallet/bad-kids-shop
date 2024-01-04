@@ -10,7 +10,7 @@ import { isMobile } from "react-device-detect";
 import CheckOnDesktop from "../public/check-on-desktop.svg";
 import Image from "next/image";
 import { useChain } from "@cosmos-kit/react";
-import { AccountModal, defaultBlurs, defaultBorderRadii } from "@leapwallet/embedded-wallet-sdk-react";
+import { AccountModal, Actions, defaultBlurs, defaultBorderRadii } from "@leapwallet/embedded-wallet-sdk-react";
 
 export default function Home() {
   const [collection, setCollection] = useState<string | undefined>();
@@ -55,6 +55,9 @@ export default function Home() {
       fontFamily: "inherit",
     };
 
+    const navigate = (path:string) => {
+      window.open(`https://cosmos.leapwallet.io${path}`)
+    }
 
     return (mounted && isModalOpen) ? 
                   <AccountModal
@@ -64,6 +67,40 @@ export default function Home() {
                     address={address || ''}
                     isOpen={isModalOpen}
                     onClose={()=>{ setIsModalOpen(false) }}
+                    config={{
+                      actionListConfig: {
+                        [Actions.SEND]: {
+                          onClick: (chainId) =>
+                            navigate(
+                              `/transact/send?sourceChainId=${chainId}`,
+                            ),
+                        },
+                        [Actions.IBC]: {
+                          onClick: (chainId) =>
+                            navigate(
+                              `/transact/send?sourceChainId=${chainId}`,
+                            ),
+                        },
+                        [Actions.SWAP]: {
+                          onClick: (chainId) =>
+                            navigate(
+                              `/transact/swap?sourceChainId=${chainId}`,
+                            ),
+                        },
+                        [Actions.BRIDGE]: {
+                          onClick: (chainId) =>
+                            navigate(
+                              `/transact/bridge?destinationChainId=${chainId}`,
+                            ),
+                        },
+                        [Actions.BUY]: {
+                          onClick: (chainId) =>
+                            navigate(
+                              `/transact/buy?destinationChainId=${chainId}`,
+                            ),
+                        },
+                      },
+                    }}
                   /> : null
 }
 
