@@ -1,5 +1,20 @@
 # Bad Kids Shop
 
+# Your Next.js Project
+
+Brief description of your Next.js project.
+
+## Environment Variables
+
+### Setting up Environment Variables
+
+1. Create a `.env.local` file in the root of your project.
+
+   ```plaintext
+   // .env.local
+
+   NEXT_PUBLIC_API_URL=https://api.example.com
+   NEXT_PUBLIC_API_KEY=your-api-key
 
 
 ## Table of Contents
@@ -7,8 +22,10 @@
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
+- [Environment Variables](#environment-variables)
+  - [Setting up Environment Variables](#setting-up-environment-variables)
+  - [Accessing Environment Variables](#accessing-environment-variables)
 - [Usage](#usage)
-- [Folder Structure](#folder-structure)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -42,6 +59,51 @@ List any software or tools that need to be installed before running the project.
    # or
    yarn
    ```
+
+## Environment Variables
+
+Optional environament variables
+
+```env
+NEXT_PUBLIC_NODE_REST_ENDPOINT= // get from https://chains.cosmos.directory/stargaze
+NEXT_PUBLIC_NODE_RPC_ENDPOINT= // get from https://chains.cosmos.directory/stargaze
+NEXT_PUBLIC_STARGAZE_GRAPHQL_ENDPOINT= // https://graphql.mainnet.stargaze-apis.com/graphql
+
+NEXT_PUBLIC_STARGAZE_MARKET_CONTRACT= //stars1fvhcnyddukcqfnt7nlwv3thm5we22lyxyxylr9h77cvgkcn43xfsvgv0pl
+NEXT_PUBLIC_BAD_KIDS_COLLECTION_ID= //stars19jq6mj84cnt9p7sagjxqf8hxtczwc8wlpuwe4sh62w45aheseues57n420
+```
+
+Mandatory environment variables for Social login support, connect with [capsule](https://usecapsule.com)
+
+```
+NEXT_PUBLIC_CAPSULE_KEY= 
+NEXT_PUBLIC_CAPSULE_ENV=
+```
+
+Mandatory environment variable for wallet connect
+
+```
+NEXT_PUBLIC_WC_PROJECT_ID= 
+```
+
+### Setting up Environment Variables
+
+1. Create a `.env.local` file in the root of your project.
+
+   ```plaintext
+   // .env.local
+
+   NEXT_PUBLIC_NODE_REST_ENDPOINT=
+   NEXT_PUBLIC_NODE_RPC_ENDPOINT=
+   NEXT_PUBLIC_STARGAZE_GRAPHQL_ENDPOINT=
+   NEXT_PUBLIC_STARGAZE_MARKET_CONTRACT=
+   NEXT_PUBLIC_BAD_KIDS_COLLECTION_ID=
+
+   
+   NEXT_PUBLIC_WC_PROJECT_ID=
+   NEXT_PUBLIC_CAPSULE_KEY= 
+   NEXT_PUBLIC_CAPSULE_ENV=
+  ```
 
 ## Usage
 
