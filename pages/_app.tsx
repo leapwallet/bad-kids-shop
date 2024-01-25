@@ -7,12 +7,12 @@ import { wallets as leapWallets } from "@cosmos-kit/leap";
 import { chains, assets } from "chain-registry";
 import "@interchain-ui/react/styles";
 import { ApolloProvider as GraphqlProvider } from "@apollo/client";
-import { CosmosCapsuleWallet } from "../leap-social-login/main-wallet";
+import { LeapCapsuleWallet } from "@cosmos-kit/leap-capsule-social-login";
 
 import { client } from "../config/apolloclient";
 import LeapUiTheme, { ThemeName } from "../components/ThemeProvider";
 import Head from "next/head";
-import { SignerOptions } from "@cosmos-kit/core";
+import { SignerOptions, Wallet } from "@cosmos-kit/core";
 import ConnectWalletSideCurtain from "../components/ConnectWalletSideCurtain/connectWalletSideCurtain";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
@@ -29,10 +29,10 @@ const updatedChains = chains.map((chain) => {
       apis: {
         ...chain.apis,
         rest: [
-          { address: "https://leap-node-proxy.numia.xyz/stargaze-lcd" },
+          { address: process.env.NEXT_PUBLIC_NODE_REST_ENDPOINT || "https://rest.stargaze-apis.com/" },
         ].concat(chain.apis?.rest ?? []),
         rpc: [
-          { address: "https://leap-node-proxy.numia.xyz/stargaze-rpc" },
+          { address: process.env.NEXT_PUBLIC_NODE_REST_ENDPOINT ||  "https://rpc.stargaze-apis.com/" },
         ].concat(chain.apis?.rpc ?? []),
       },
     };
@@ -49,7 +49,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
   };
 
   const [cosmosCapsuleWallet, setCosmosCapsuleWallet] =
-    useState<CosmosCapsuleWallet>();
+    useState<LeapCapsuleWallet>();
   const [wallets, setWallets] = useState()
 
   
@@ -57,12 +57,12 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
     const fn = async () => {
       if (!cosmosCapsuleWallet) {
         const WalletClass = await import(
-          "../leap-social-login/main-wallet"
-        ).then((m) => m.CosmosCapsuleWallet);
-        const WalletInfo = await import("../leap-social-login/registry").then(
+          "@cosmos-kit/leap-capsule-social-login"
+        ).then((m) => m.LeapCapsuleWallet);
+        const WalletInfo: Wallet = await import("../leap-social-login/registry").then(
           (m) => m.LeapCapsuleInfo,
         );
-        const cosmosCapsuleWallet = new WalletClass({walletInfo: WalletInfo });
+        const cosmosCapsuleWallet = new WalletClass(WalletInfo);
         setCosmosCapsuleWallet(cosmosCapsuleWallet);
         // @ts-ignore: Disabling typecheck until we figureout proper way of adding cosmoscapsulewallet in cosmos-kit
         setWallets([ 
@@ -98,7 +98,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
             wallets={wallets}
             walletConnectOptions={{
               signClient: {
-                projectId: "a8510432ebb71e6948cfd6cde54b70f7",
+                projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID || '',
                 relayUrl: "wss://relay.walletconnect.org",
                 metadata: {
                   name: "Bad Kids Shop",
@@ -144,10 +144,6 @@ const TransactionSigningModal = dynamic(
 
 export function CustomCapsuleModalViewX() {
   const [showCapsuleModal, setShowCapsuleModal] = useState(false);
-
-  window.openCapsuleModal = () => {
-    setShowCapsuleModal(true);
-  }
 
   return (
     <>

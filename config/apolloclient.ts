@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 export const client = new ApolloClient({
-  uri: "https://graphql.mainnet.stargaze-apis.com/graphql",
+  uri: process.env.NEXT_PUBLIC_STARGAZE_GRAPHQL_ENDPOINT || "https://graphql.mainnet.stargaze-apis.com/graphql",
   cache: new InMemoryCache({
     typePolicies: {
       Tokens: {
