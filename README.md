@@ -1,4 +1,7 @@
 # Bad Kids Shop
+
+![image](https://github.com/leapwallet/bad-kids-shop/assets/110881421/74d0bad9-54d3-4d58-ae44-b77334b34b6b)
+
 Welcome to the Badkids Shop repository! This project is an open-source initiative designed to create a seamless, Shopify-like experience for NFT transactions in the Cosmos ecosystem. It is tailored for both newcomers and veterans, simplifying the process of exploring and purchasing NFTs from any Stargaze NFT collection.
 
 Check out our sample website for the BadKids collection here: https://badkids.shop/
@@ -7,23 +10,27 @@ Check out our sample website for the BadKids collection here: https://badkids.sh
 
 1. **NFT Listings**: Displaying NFTs with images, IDs, and current prices. This includes a redirection to the NFT page on Stargaze’s marketplace, and offers flexible sorting options.
     
-    https://lh7-us.googleusercontent.com/bkVrqvw-p5y6RXIa5xUgZZMRj79zbmmtwgTx3YPr9H7BD-bfGNDVgWp27ybIFHsoknuGgvA-_ziqF_lTjdaU4m7Vv3oE5IqtRLa_q6RzYntRUjG63VgumfW3R-urkJcxPgjMYKc7GVGUqtu6lKi53C4
+![image (1)](https://github.com/leapwallet/bad-kids-shop/assets/110881421/44c730c0-cd71-4a79-9bd5-ab991d6d5912)
+
     
 2. **Wallet Connectivity**: Integrating multiple methods for secure transactions:
     1. Connect and sign a transaction using MetaMask (utilizes Leap’s MetaMask Snaps).
     2. Log in with email and sign transactions (utilizes [Leap’s Social login SDK](https://x.com/leap_cosmos/status/1730626232168092141?s=20)).
     3. Connect with Leap or Keplr.
     
-    https://lh7-us.googleusercontent.com/9A0bMjUVA-fI1okaeqMeuy0SwglQmUaJkP-RZgLKqQoZ0wLd3yc9XG66blXmwMXlghrCvPcIbeh5GG-mIe3gXZ98bPtzO-KyPmUzXb4YPHxwQ7a9eYS32TGSRtIqPXZ_JhB34V4V81iiatLOdrfTKnk
+<img width="1000" alt="image (2)" src="https://github.com/leapwallet/bad-kids-shop/assets/110881421/280c9286-6543-4c7e-85a5-3602978c280d">
+
     
 3. **Get STARS Feature**: Simplifies the process of acquiring the required STARS tokens using assets from other Cosmos chains, EVM chains, or fiat, without having to navigate between different interfaces. This feature is powered by [Leap’s Elements SDK](https://x.com/leap_cosmos/status/1686051798086479872?s=20).
     
-    https://lh7-us.googleusercontent.com/jSgOHgvgsNAVcZXzL6oZ3kISq9b5ylMeH5z-VirHspnfhczMcqVdTla8bxO2Xv_FcTyfC64rJUzIt5gN-6dvaTrNlMOrV5VQkZ09cRsWMYyAeoJAwvWKWUEd9FJBLQVaabHnQmSVcckK0UW605G5Km0
+![image (3)](https://github.com/leapwallet/bad-kids-shop/assets/110881421/16e201c5-8d34-4fda-b247-021de0e273d3)
+
     
 4. **Follow on 'X' Button**: Redirects users to your collection’s social media pages.
 
-Our repository is structured to enable easy customization and deployment for your NFT projects.
 
+
+Our repository is structured to enable easy customization and deployment for your NFT projects.
 
 ## Table of Contents
 
