@@ -1,20 +1,28 @@
 # Bad Kids Shop
+Welcome to the Badkids Shop repository! This project is an open-source initiative designed to create a seamless, Shopify-like experience for NFT transactions in the Cosmos ecosystem. It is tailored for both newcomers and veterans, simplifying the process of exploring and purchasing NFTs from any Stargaze NFT collection.
 
-# Your Next.js Project
+Check out our sample website for the BadKids collection here: https://badkids.shop/
 
-Brief description of your Next.js project.
+**Key features include:**
 
-## Environment Variables
+1. **NFT Listings**: Displaying NFTs with images, IDs, and current prices. This includes a redirection to the NFT page on Stargaze’s marketplace, and offers flexible sorting options.
+    
+    https://lh7-us.googleusercontent.com/bkVrqvw-p5y6RXIa5xUgZZMRj79zbmmtwgTx3YPr9H7BD-bfGNDVgWp27ybIFHsoknuGgvA-_ziqF_lTjdaU4m7Vv3oE5IqtRLa_q6RzYntRUjG63VgumfW3R-urkJcxPgjMYKc7GVGUqtu6lKi53C4
+    
+2. **Wallet Connectivity**: Integrating multiple methods for secure transactions:
+    1. Connect and sign a transaction using MetaMask (utilizes Leap’s MetaMask Snaps).
+    2. Log in with email and sign transactions (utilizes [Leap’s Social login SDK](https://x.com/leap_cosmos/status/1730626232168092141?s=20)).
+    3. Connect with Leap or Keplr.
+    
+    https://lh7-us.googleusercontent.com/9A0bMjUVA-fI1okaeqMeuy0SwglQmUaJkP-RZgLKqQoZ0wLd3yc9XG66blXmwMXlghrCvPcIbeh5GG-mIe3gXZ98bPtzO-KyPmUzXb4YPHxwQ7a9eYS32TGSRtIqPXZ_JhB34V4V81iiatLOdrfTKnk
+    
+3. **Get STARS Feature**: Simplifies the process of acquiring the required STARS tokens using assets from other Cosmos chains, EVM chains, or fiat, without having to navigate between different interfaces. This feature is powered by [Leap’s Elements SDK](https://x.com/leap_cosmos/status/1686051798086479872?s=20).
+    
+    https://lh7-us.googleusercontent.com/jSgOHgvgsNAVcZXzL6oZ3kISq9b5ylMeH5z-VirHspnfhczMcqVdTla8bxO2Xv_FcTyfC64rJUzIt5gN-6dvaTrNlMOrV5VQkZ09cRsWMYyAeoJAwvWKWUEd9FJBLQVaabHnQmSVcckK0UW605G5Km0
+    
+4. **Follow on 'X' Button**: Redirects users to your collection’s social media pages.
 
-### Setting up Environment Variables
-
-1. Create a `.env.local` file in the root of your project.
-
-   ```plaintext
-   // .env.local
-
-   NEXT_PUBLIC_API_URL=https://api.example.com
-   NEXT_PUBLIC_API_KEY=your-api-key
+Our repository is structured to enable easy customization and deployment for your NFT projects.
 
 
 ## Table of Contents
