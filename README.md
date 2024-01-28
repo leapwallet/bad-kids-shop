@@ -144,4 +144,4 @@ Explain how others can contribute to your project. Include information about pul
 
 ## License
 
-This project is licensed under the [License Name] - see the [LICENSE.MIT](LICENSE.MIT) file for details.
+This project is licensed under MIT - see the [LICENSE.MIT](LICENSE.MIT) file for details.
