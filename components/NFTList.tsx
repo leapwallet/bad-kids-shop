@@ -1,7 +1,7 @@
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 
 import { GenericNFTCard } from "./GenericNFTCard";
-import { use, useEffect, useMemo, useRef, useState } from "react";
+import {  useEffect, useMemo, useRef, useState } from "react";
 import { toUtf8 } from "@cosmjs/encoding";
 import { useChain } from "@cosmos-kit/react";
 import { cosmwasm, getSigningCosmwasmClient } from "stargazejs";
@@ -11,14 +11,12 @@ import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 
 import toast from "react-hot-toast";
 import { ListControl } from "./ListControl";
-import { stat } from "fs";
 import GenericNFTCardSkeleton from "./GenericNFTCardSkeleton";
 import {
   getNFTTokensQuery,
   getNFTTokenByIDQuery,
 } from "../queries/tokens.query";
 import { MdArrowUpward } from "react-icons/md";
-import { MarketplaceQueryClient } from "stargazejs/types/codegen/Marketplace.client";
 import Text from "./Text";
 
 const { executeContract } = cosmwasm.wasm.v1.MessageComposer.withTypeUrl;
@@ -35,7 +33,7 @@ export type SORT_ORDERS =
   | "LISTED_ASC"
   | "LISTED_DESC";
 
-const STARGAZE_MARKET_CONTRACT =
+const STARGAZE_MARKET_CONTRACT = process.env.NEXT_PUBLIC_STARGAZE_MARKET_CONTRACT ||
   "stars1fvhcnyddukcqfnt7nlwv3thm5we22lyxyxylr9h77cvgkcn43xfsvgv0pl";
 
 function createBuyNftTx({
@@ -76,10 +74,8 @@ function createBuyNftTx({
   };
 }
 
-const BAD_KIDS_COLLECTION =
+const BAD_KIDS_COLLECTION = process.env.NEXT_PUBLIC_BAD_KIDS_COLLECTION_ID ||
   "stars19jq6mj84cnt9p7sagjxqf8hxtczwc8wlpuwe4sh62w45aheseues57n420";
-const SASQUATCH_SOCIETY_COLLECTION =
-  "stars1edsg4rct2h5t4wawysxhef0mzprpcfsn5v8cxklj65uf2kkpvs8shk4pre";
 
 export function NFTs({ collection }: { collection?: string }) {
   const { address, chain, status, getOfflineSignerDirect, openView, connect } =
