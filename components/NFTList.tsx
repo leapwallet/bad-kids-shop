@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 
 import { GenericNFTCard } from "./GenericNFTCard";
-import {  useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toUtf8 } from "@cosmjs/encoding";
 import { useChain } from "@cosmos-kit/react";
 import { cosmwasm, getSigningCosmwasmClient } from "stargazejs";
@@ -33,7 +33,8 @@ export type SORT_ORDERS =
   | "LISTED_ASC"
   | "LISTED_DESC";
 
-const STARGAZE_MARKET_CONTRACT = process.env.NEXT_PUBLIC_STARGAZE_MARKET_CONTRACT ||
+const STARGAZE_MARKET_CONTRACT =
+  process.env.NEXT_PUBLIC_STARGAZE_MARKET_CONTRACT ||
   "stars1fvhcnyddukcqfnt7nlwv3thm5we22lyxyxylr9h77cvgkcn43xfsvgv0pl";
 
 function createBuyNftTx({
@@ -74,10 +75,17 @@ function createBuyNftTx({
   };
 }
 
-const BAD_KIDS_COLLECTION = process.env.NEXT_PUBLIC_BAD_KIDS_COLLECTION_ID ||
+const BAD_KIDS_COLLECTION =
+  process.env.NEXT_PUBLIC_BAD_KIDS_COLLECTION_ID ||
   "stars19jq6mj84cnt9p7sagjxqf8hxtczwc8wlpuwe4sh62w45aheseues57n420";
 
-export function NFTs({ collection }: { collection?: string }) {
+export function NFTs({
+  collection,
+  setIsElementsModalOpen,
+}: {
+  collection?: string;
+  setIsElementsModalOpen: (value: boolean) => void;
+}) {
   const { address, chain, status, getOfflineSignerDirect, openView, connect } =
     useChain("stargaze");
   const [balance, setBalance] = useState<string>("0");
@@ -273,30 +281,10 @@ export function NFTs({ collection }: { collection?: string }) {
       connect();
       return;
     }
-    //this is a hack to get around the fact that the elements does not expose a function to open the modal from other than renderLiquidityButton function
-    //this is not ideal but it works for now
-    const renderModalBtn = document.getElementById("open-liquidity-modal-btn");
+
     const shouldOpenModal = BN(nft.listPrice.amount).gt(balance);
-    if (renderModalBtn && shouldOpenModal) {
-      const titleElement = document.querySelector(
-        "body > div.vcai130.leap-elements > div > div > div > div._1sc81q01 > div > div > h2"
-      );
-      const subtitleElement = document.querySelector(
-        "body > div.vcai130.leap-elements > div > div > div > div._1sc81q01 > div > div > p"
-      );
-      const imageSrc = document.querySelector(
-        "body > div.vcai130.leap-elements > div > div > div > div._1sc81q01 > div > img"
-      );
-      if (titleElement && title) {
-        titleElement.innerHTML = title;
-      }
-      if (subtitleElement && subtitle) {
-        subtitleElement.innerHTML = subtitle;
-      }
-      if (imageSrc && imgUrl) {
-        imageSrc.setAttribute("src", imgUrl);
-      }
-      renderModalBtn.click();
+    if (shouldOpenModal) {
+      setIsElementsModalOpen(true);
       return;
     }
 
