@@ -6,19 +6,6 @@ import Image from "next/image";
 import ArrowNorthWest from "../public/arrow-north-west.svg";
 import { MdAutoGraph } from "react-icons/md";
 
-export const renderLiquidityButton = ({ onClick }: any) => {
-  return (
-    <button
-      onClick={onClick}
-      className="flex flex-row bg-white-100 py-3 px-8 justify-center ml-auto rounded-3xl cursor-pointer"
-    >
-      <Text size="xs" color="text-black-100 text-center font-bold">
-        {"Buy Now"}
-      </Text>
-    </button>
-  );
-};
-
 type GenericCardProps = {
   nft: {
     image: string;
