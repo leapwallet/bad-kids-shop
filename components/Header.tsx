@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { FaBars, FaXTwitter } from "react-icons/fa6";
 import { MdOutlineClose } from "react-icons/md";
-import BadkidsLogo from "../public/bad_kids_logo.svg";
+import CelestineSlothsSociety from "../public/celestine-sloths-society.png";
 
 import { useChain } from "@cosmos-kit/react-lite";
 import dynamic from "next/dynamic";
@@ -52,8 +52,8 @@ export function Header({
   return (
     <section className="flex flex-wrap gap-x-3  gap-y-3 fixed backdrop-blur-md bg-[#212121DE]  items-center justify-between px-10 py-4 top-0 left-0 right-0 z-10">
       <Image
-        src={BadkidsLogo}
-        alt="bad-kids"
+        src={CelestineSlothsSociety}
+        alt="celestine-sloths"
         className="flex w-[70%] sm:w-[20%]"
       />
 
@@ -69,7 +69,7 @@ export function Header({
         <div className="flex flex-row gap-3 flex-wrap">
           <button
             onClick={() =>
-              window.open("http://twitter.com/badkidsart", "_blank")
+              window.open("https://twitter.com/CelestineSloths", "_blank")
             }
             className="flex flex-row gap-2 h-10 items-center justify-between border border-white-100 rounded-3xl px-5 py-2"
           >

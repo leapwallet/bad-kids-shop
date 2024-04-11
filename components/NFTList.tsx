@@ -77,7 +77,7 @@ function createBuyNftTx({
 
 const BAD_KIDS_COLLECTION =
   process.env.NEXT_PUBLIC_BAD_KIDS_COLLECTION_ID ||
-  "stars19jq6mj84cnt9p7sagjxqf8hxtczwc8wlpuwe4sh62w45aheseues57n420";
+  "stars10n0m58ztlr9wvwkgjuek2m2k0dn5pgrhfw9eahg9p8e5qtvn964suc995j";
 
 export function NFTs({
   collection,
@@ -171,7 +171,6 @@ export function NFTs({
       const totalPageHeight = document.documentElement.scrollHeight;
       const scrollPoint = window.scrollY + window.innerHeight;
       if (scrollPoint >= totalPageHeight && offset.current < total.current) {
-        //toast(`Loading more Bad Kids`, {position: "bottom-center"})
         setIsFetching(true);
         fetchMore({
           variables: {

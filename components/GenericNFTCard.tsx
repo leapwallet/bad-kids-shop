@@ -85,7 +85,7 @@ export function GenericNFTCard({
     fromSmall(balance ?? "0").decimalPlaces(3)
   )} STARS • You need ${formatNumber(
     fromSmall(nft.listPrice.amount).minus(fromSmall(balance ?? "0"))
-  )} STARS more to buy this Bad Kid`;
+  )} STARS more to buy this Celestine Sloth`;
 
   return (
     <div className="bg-gray-950 relative flex w-full sm:w-[calc(50%-12px)] md:w-[calc(33%-16px)] lg:w-[calc(25%-18px)] group flex-col items-center justify-start gap-[2px] sm:gap-3 rounded-2xl p-0 sm:!p-4 p-4 ease transition-all duration-300 border-[0] sm:border border-gray-100 dark:border-gray-900 hover:shadow-[0_7px_24px_0px_rgba(0,0,0,0.25)]">
