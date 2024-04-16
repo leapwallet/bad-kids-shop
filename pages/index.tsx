@@ -110,32 +110,26 @@ export default function Home() {
 
   return (
     <>
-      {isMobile ? (
-        <div className="h-[100vh] w-[100vw] justify-center items-center p-10">
-          <Image src={CheckOnDesktop} alt="get stars" className="m-auto" />
-        </div>
-      ) : (
-        <div>
-          <Header
-            openEmbeddedWalletModal={() => {
-              setIsModalOpen(true);
-            }}
+      <div>
+        <Header
+          openEmbeddedWalletModal={() => {
+            setIsModalOpen(true);
+          }}
+          setIsElementsModalOpen={setIsElementsModalOpen}
+        />
+        <div className="px-10 sm:px-14 justify-center align-middle items-center self-center origin-center">
+          <NFTs
             setIsElementsModalOpen={setIsElementsModalOpen}
+            collection={collection}
           />
-          <div className="px-10 sm:px-14 justify-center align-middle items-center self-center origin-center">
-            <NFTs
-              setIsElementsModalOpen={setIsElementsModalOpen}
-              collection={collection}
-            />
-            <Toaster position="bottom-right" />
-          </div>
-          <ClientAccountModal />
-          <ElementsContainerDynamic
-            isOpen={isElementsModalOpen}
-            setIsOpen={setIsElementsModalOpen}
-          />
+          <Toaster position="bottom-right" />
         </div>
-      )}
+        <ClientAccountModal />
+        <ElementsContainerDynamic
+          isOpen={isElementsModalOpen}
+          setIsOpen={setIsElementsModalOpen}
+        />
+      </div>
     </>
   );
 }
