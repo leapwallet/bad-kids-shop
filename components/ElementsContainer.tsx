@@ -38,6 +38,7 @@ export function ElementsContainer({ isOpen, setIsOpen }: Props) {
           isOpen={isOpen}
           title="Get STARS"
           setIsOpen={setIsOpen}
+          className="max-w-[95vw]"
           defaultValues={{
             destinationChainId: "stargaze-1",
             destinationAsset: "ustars",
