@@ -20,9 +20,13 @@ export function ListControl({
   return (
     <section className="w-[90vw] gap-3 flex-row flex flex-wrap justify-between sm:!p-6">
       <div className="flex flex-col flex-wrap">
-        <Text size="md">Collection of 9,999 bad drawings of kids. </Text>
         <Text size="md">
-          Some people like the pictures and some people are bad kids themselves.
+          The Celestine Sloth Society is a leisurely consortium of 2500 serene
+          sloths.
+        </Text>
+        <Text size="md">
+          This eclectic mix hails from every corner of space and time across the
+          Cosmoverse.
         </Text>
       </div>
       <div className="ml-auto flex items-center flex-wrap gap-3 justify-center bg-gray-950 px-4 py-2 rounded-3xl text-white-100 ">
