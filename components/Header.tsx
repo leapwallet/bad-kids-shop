@@ -3,7 +3,7 @@ import { FaBars, FaXTwitter } from "react-icons/fa6";
 import { MdOutlineClose } from "react-icons/md";
 import BadkidsLogo from "../public/bad_kids_logo.svg";
 
-import { useChain } from "@cosmos-kit/react-lite";
+import { useChain } from "@cosmos-kit/react";
 import dynamic from "next/dynamic";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { WalletButton } from "../components/WalletButton";
