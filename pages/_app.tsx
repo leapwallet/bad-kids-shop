@@ -17,6 +17,7 @@ import ConnectWalletSideCurtain from "../components/ConnectWalletSideCurtain/con
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import "@leapwallet/elements/styles.css";
+import { OAuthMethod } from "@leapwallet/cosmos-social-login-capsule-provider";
 
 if (typeof global.self === "undefined") {
   (global as any).self = global;
@@ -32,7 +33,7 @@ const updatedChains = chains.map((chain) => {
           { address: process.env.NEXT_PUBLIC_NODE_REST_ENDPOINT || "https://rest.stargaze-apis.com/" },
         ].concat(chain.apis?.rest ?? []),
         rpc: [
-          { address: process.env.NEXT_PUBLIC_NODE_REST_ENDPOINT ||  "https://rpc.stargaze-apis.com/" },
+          { address: process.env.NEXT_PUBLIC_NODE_REST_ENDPOINT || "https://rpc.stargaze-apis.com/" },
         ].concat(chain.apis?.rpc ?? []),
       },
     };
@@ -52,7 +53,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
     useState<LeapCapsuleWallet>();
   const [wallets, setWallets] = useState()
 
-  
+
   useEffect(() => {
     const fn = async () => {
       if (!cosmosCapsuleWallet) {
@@ -65,7 +66,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
         const cosmosCapsuleWallet = new WalletClass(WalletInfo);
         setCosmosCapsuleWallet(cosmosCapsuleWallet);
         // @ts-ignore: Disabling typecheck until we figureout proper way of adding cosmoscapsulewallet in cosmos-kit
-        setWallets([ 
+        setWallets([
           cosmosCapsuleWallet,
           ...keplrWallets,
           ...leapWallets,
@@ -77,10 +78,10 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
   });
 
 
-  if(!cosmosCapsuleWallet) {
+  if (!cosmosCapsuleWallet) {
     return <>Loading</>
   }
-  
+
   return (
     <>
       <Head>
@@ -112,11 +113,11 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
           >
             <Component {...pageProps} />
             {!!cosmosCapsuleWallet && (
-                <CustomCapsuleModalViewX/>
+              <CustomCapsuleModalViewX />
             )}
           </ChainProvider>
         </LeapUiTheme>
-        p0
+
       </GraphqlProvider>
     </>
   );
@@ -154,13 +155,14 @@ export function CustomCapsuleModalViewX() {
         onAfterLoginSuccessful={() => {
           window.successFromCapsuleModal();
         }}
-        onLoginFailure = {
+        onLoginFailure={
           () => {
             window.failureFromCapsuleModal();
           }
         }
+        oAuthMethods={[OAuthMethod.GOOGLE, OAuthMethod.DISCORD, OAuthMethod.APPLE, OAuthMethod.FACEBOOK, OAuthMethod.TWITTER]}
       />
-      <TransactionSigningModal dAppInfo={{name: "Bad Kid"}} />
+      <TransactionSigningModal dAppInfo={{ name: "Bad Kids Shop" }} />
     </>
   );
 }

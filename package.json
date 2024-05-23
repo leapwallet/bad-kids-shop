@@ -1,5 +1,5 @@
 {
-  "name": "@cosmology/connect-chain",
+  "name": "bad-kids-shop",
   "version": "0.15.5",
   "private": true,
   "scripts": {
@@ -24,12 +24,12 @@
     "@cosmos-kit/cosmostation": "2.3.11",
     "@cosmos-kit/keplr": "2.3.13",
     "@cosmos-kit/leap": "2.3.10",
-    "@cosmos-kit/leap-capsule-social-login": "^0.3.12",
+    "@cosmos-kit/leap-capsule-social-login": "0.6.0",
     "@cosmos-kit/react": "2.8.4",
     "@emotion/react": "11.10.6",
     "@emotion/styled": "11.10.6",
-    "@leapwallet/cosmos-social-login-capsule-provider": "0.0.28",
-    "@leapwallet/cosmos-social-login-capsule-provider-ui": "0.0.47",
+    "@leapwallet/cosmos-social-login-capsule-provider": "0.0.33",
+    "@leapwallet/cosmos-social-login-capsule-provider-ui": "0.0.50",
     "@leapwallet/elements": "1.0.1",
     "@leapwallet/embedded-wallet-sdk-react": "^0.3.7",
     "@types/bignumber.js": "^5.0.0",
