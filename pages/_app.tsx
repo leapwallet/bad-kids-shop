@@ -1,5 +1,8 @@
 import "../styles/globals.css";
-import "@leapwallet/embedded-wallet-sdk-react/styles.css"
+import "@leapwallet/embedded-wallet-sdk-react/styles.css";
+import "@leapwallet/cosmos-social-login-capsule-provider-ui/styles.css";
+import "@leapwallet/react-ui/styles.css";
+
 import type { AppProps } from "next/app";
 import { ChainProvider, useChain } from "@cosmos-kit/react";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
@@ -30,10 +33,18 @@ const updatedChains = chains.map((chain) => {
       apis: {
         ...chain.apis,
         rest: [
-          { address: process.env.NEXT_PUBLIC_NODE_REST_ENDPOINT || "https://rest.stargaze-apis.com/" },
+          {
+            address:
+              process.env.NEXT_PUBLIC_NODE_REST_ENDPOINT ||
+              "https://rest.stargaze-apis.com/",
+          },
         ].concat(chain.apis?.rest ?? []),
         rpc: [
-          { address: process.env.NEXT_PUBLIC_NODE_REST_ENDPOINT || "https://rpc.stargaze-apis.com/" },
+          {
+            address:
+              process.env.NEXT_PUBLIC_NODE_REST_ENDPOINT ||
+              "https://rpc.stargaze-apis.com/",
+          },
         ].concat(chain.apis?.rpc ?? []),
       },
     };
@@ -51,8 +62,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
 
   const [cosmosCapsuleWallet, setCosmosCapsuleWallet] =
     useState<LeapCapsuleWallet>();
-  const [wallets, setWallets] = useState()
-
+  const [wallets, setWallets] = useState();
 
   useEffect(() => {
     const fn = async () => {
@@ -60,26 +70,21 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
         const WalletClass = await import(
           "@cosmos-kit/leap-capsule-social-login"
         ).then((m) => m.LeapCapsuleWallet);
-        const WalletInfo: Wallet = await import("../leap-social-login/registry").then(
-          (m) => m.LeapCapsuleInfo,
-        );
+        const WalletInfo: Wallet = await import(
+          "../leap-social-login/registry"
+        ).then((m) => m.LeapCapsuleInfo);
         const cosmosCapsuleWallet = new WalletClass(WalletInfo);
         setCosmosCapsuleWallet(cosmosCapsuleWallet);
         // @ts-ignore: Disabling typecheck until we figureout proper way of adding cosmoscapsulewallet in cosmos-kit
-        setWallets([
-          cosmosCapsuleWallet,
-          ...keplrWallets,
-          ...leapWallets,
-        ]);
+        setWallets([cosmosCapsuleWallet, ...keplrWallets, ...leapWallets]);
       }
     };
 
     fn();
   });
 
-
   if (!cosmosCapsuleWallet) {
-    return <>Loading</>
+    return <>Loading</>;
   }
 
   return (
@@ -99,7 +104,7 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
             wallets={wallets}
             walletConnectOptions={{
               signClient: {
-                projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID || '',
+                projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID || "",
                 relayUrl: "wss://relay.walletconnect.org",
                 metadata: {
                   name: "Bad Kids Shop",
@@ -112,12 +117,9 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
             signerOptions={signerOptions}
           >
             <Component {...pageProps} />
-            {!!cosmosCapsuleWallet && (
-              <CustomCapsuleModalViewX />
-            )}
+            {!!cosmosCapsuleWallet && <CustomCapsuleModalViewX />}
           </ChainProvider>
         </LeapUiTheme>
-
       </GraphqlProvider>
     </>
   );
@@ -125,44 +127,46 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
 
 export default CreateCosmosApp;
 
-
 const CCUI = dynamic(
   () =>
     import("@leapwallet/cosmos-social-login-capsule-provider-ui").then(
-      (m) => m.CustomCapsuleModalView,
+      (m) => m.CustomCapsuleModalView
     ),
-  { ssr: false },
+  { ssr: false }
 );
-
 
 const TransactionSigningModal = dynamic(
   () =>
     import("@leapwallet/cosmos-social-login-capsule-provider-ui").then(
-      (m) => m.TransactionSigningModal,
+      (m) => m.TransactionSigningModal
     ),
-  { ssr: false },
+  { ssr: false }
 );
 
 export function CustomCapsuleModalViewX() {
   const [showCapsuleModal, setShowCapsuleModal] = useState(false);
 
   return (
-    <>
+    <div className="leap-ui dark">
       <CCUI
         showCapsuleModal={showCapsuleModal}
         setShowCapsuleModal={setShowCapsuleModal}
-        theme={'dark'}
+        theme={"dark"}
         onAfterLoginSuccessful={() => {
           window.successFromCapsuleModal();
         }}
-        onLoginFailure={
-          () => {
-            window.failureFromCapsuleModal();
-          }
-        }
-        oAuthMethods={[OAuthMethod.GOOGLE, OAuthMethod.DISCORD, OAuthMethod.APPLE, OAuthMethod.FACEBOOK, OAuthMethod.TWITTER]}
+        onLoginFailure={() => {
+          window.failureFromCapsuleModal();
+        }}
+        oAuthMethods={[
+          OAuthMethod.GOOGLE,
+          OAuthMethod.DISCORD,
+          OAuthMethod.APPLE,
+          OAuthMethod.FACEBOOK,
+          OAuthMethod.TWITTER,
+        ]}
       />
       <TransactionSigningModal dAppInfo={{ name: "Bad Kids Shop" }} />
-    </>
+    </div>
   );
 }
