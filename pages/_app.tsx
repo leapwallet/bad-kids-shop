@@ -159,7 +159,12 @@ export function CustomCapsuleModalViewX() {
   }, []);
 
   return (
-    <div className="leap-ui dark fixed z-[9999]">
+    <div
+      className="leap-ui dark fixed z-[9999]"
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
       <CCUI
         showCapsuleModal={showCapsuleModal}
         setShowCapsuleModal={setShowCapsuleModal}
