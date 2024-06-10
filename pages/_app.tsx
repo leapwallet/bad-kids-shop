@@ -144,16 +144,22 @@ const TransactionSigningModal = dynamic(
 
 export function CustomCapsuleModalViewX() {
   const [showCapsuleModal, setShowCapsuleModal] = useState(false);
-  const [oAuthMethods, setOAuthMethods] = useState<Array<any>>([])
+  const [oAuthMethods, setOAuthMethods] = useState<Array<any>>([]);
 
   useEffect(() => {
-    import("@leapwallet/cosmos-social-login-capsule-provider").then((capsuleProvider) => {
-      setOAuthMethods([capsuleProvider.OAuthMethod.GOOGLE, capsuleProvider.OAuthMethod.FACEBOOK, capsuleProvider.OAuthMethod.TWITTER])
-    })
-  }, [])
+    import("@leapwallet/cosmos-social-login-capsule-provider").then(
+      (capsuleProvider) => {
+        setOAuthMethods([
+          capsuleProvider.OAuthMethod.GOOGLE,
+          capsuleProvider.OAuthMethod.FACEBOOK,
+          capsuleProvider.OAuthMethod.TWITTER,
+        ]);
+      }
+    );
+  }, []);
 
   return (
-    <div className="leap-ui dark">
+    <div className="leap-ui dark fixed z-[9999]">
       <CCUI
         showCapsuleModal={showCapsuleModal}
         setShowCapsuleModal={setShowCapsuleModal}
@@ -161,11 +167,9 @@ export function CustomCapsuleModalViewX() {
         onAfterLoginSuccessful={() => {
           window.successFromCapsuleModal();
         }}
-        onLoginFailure={
-          () => {
-            window.failureFromCapsuleModal();
-          }
-        }
+        onLoginFailure={() => {
+          window.failureFromCapsuleModal();
+        }}
         oAuthMethods={oAuthMethods}
       />
       <TransactionSigningModal dAppInfo={{ name: "Bad Kids Shop" }} />
