@@ -17,7 +17,6 @@ import ConnectWalletSideCurtain from "../components/ConnectWalletSideCurtain/con
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import "@leapwallet/elements/styles.css";
-import { OAuthMethod } from "@leapwallet/cosmos-social-login-capsule-provider";
 
 if (typeof global.self === "undefined") {
   (global as any).self = global;
@@ -145,6 +144,13 @@ const TransactionSigningModal = dynamic(
 
 export function CustomCapsuleModalViewX() {
   const [showCapsuleModal, setShowCapsuleModal] = useState(false);
+  const [oAuthMethods, setOAuthMethods] = useState<Array<any>>([])
+
+  useEffect(() => {
+    import("@leapwallet/cosmos-social-login-capsule-provider").then((capsuleProvider) => {
+      setOAuthMethods([capsuleProvider.OAuthMethod.GOOGLE, capsuleProvider.OAuthMethod.FACEBOOK, capsuleProvider.OAuthMethod.TWITTER])
+    })
+  }, [])
 
   return (
     <>
@@ -160,7 +166,7 @@ export function CustomCapsuleModalViewX() {
             window.failureFromCapsuleModal();
           }
         }
-        oAuthMethods={[OAuthMethod.GOOGLE, OAuthMethod.DISCORD, OAuthMethod.APPLE, OAuthMethod.FACEBOOK, OAuthMethod.TWITTER]}
+        oAuthMethods={oAuthMethods}
       />
       <TransactionSigningModal dAppInfo={{ name: "Bad Kids Shop" }} />
     </>
