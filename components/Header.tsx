@@ -1,19 +1,19 @@
-import Image from 'next/image';
-import { FaBars, FaXTwitter } from 'react-icons/fa6';
-import { MdOutlineClose } from 'react-icons/md';
-import BadkidsLogo from '../public/bad_kids_logo.svg';
+import Image from "next/image";
+import { FaBars, FaXTwitter } from "react-icons/fa6";
+import { MdOutlineClose } from "react-icons/md";
+import BadkidsLogo from "../public/bad_kids_logo.svg";
 
-import { useChain } from '@cosmos-kit/react';
-import dynamic from 'next/dynamic';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { WalletButton } from '../components/WalletButton';
-import Text from './Text';
+import { useChain } from "@cosmos-kit/react";
+import dynamic from "next/dynamic";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { WalletButton } from "../components/WalletButton";
+import Text from "./Text";
 
-import StargazeLogo from '../public/stargaze-logo.svg';
+import StargazeLogo from "../public/stargaze-logo.svg";
 
 export const ElementsContainerDynamic = dynamic(
   () =>
-    import('../components/ElementsContainer').then(
+    import("../components/ElementsContainer").then(
       (mod) => mod.ElementsContainer
     ),
   { ssr: false }
@@ -25,9 +25,9 @@ const fetchBalance = async (address: string, chain: any) => {
   );
   const response = await res.json();
   const starsBalance = response.balances.find(
-    (balance: any) => balance.denom === 'ustars'
+    (balance: any) => balance.denom === "ustars"
   );
-  return starsBalance?.amount ?? '0';
+  return starsBalance?.amount ?? "0";
 };
 
 export function Header({
@@ -37,7 +37,7 @@ export function Header({
   openEmbeddedWalletModal: Function;
   setIsElementsModalOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const { address, chain } = useChain('stargaze');
+  const { address, chain } = useChain("stargaze");
 
   const [balance, setBalance] = useState(null);
 
@@ -65,11 +65,11 @@ export function Header({
         )}
       </button>
 
-      <div id="nav-menu" className={` md:block ${isMenuOpen ? '' : 'hidden'}`}>
+      <div id="nav-menu" className={` md:block ${isMenuOpen ? "" : "hidden"}`}>
         <div className="flex flex-row gap-3 flex-wrap">
           <button
             onClick={() =>
-              window.open('http://twitter.com/badkidsart', '_blank')
+              window.open("http://twitter.com/badkidsart", "_blank")
             }
             className="flex flex-row gap-2 h-10 items-center justify-between border border-white-100 rounded-3xl px-5 py-2"
           >

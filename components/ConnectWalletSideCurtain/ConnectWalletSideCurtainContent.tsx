@@ -3,11 +3,11 @@ import {
   State,
   WalletModalProps,
   WalletStatus
-} from '@cosmos-kit/core';
-import { useManager, useWallet, useWalletClient } from '@cosmos-kit/react';
+} from "@cosmos-kit/core";
+import { useManager, useWallet, useWalletClient } from "@cosmos-kit/react";
 
-import { MdOutlineClose } from 'react-icons/md';
-import HorizontalDivider from '../divider';
+import { MdOutlineClose } from "react-icons/md";
+import HorizontalDivider from "../divider";
 import {
   COSMOSTATION_WALLET_EXTENSION_URL,
   COSMOS_KIT_WALLET_NAMES,
@@ -15,21 +15,21 @@ import {
   LEAP_WALLET_EXTENSION_URL,
   METAMASK_WALLET_EXTENSION_URL,
   SUPPORTED_WALLETS
-} from '../../config/constants';
+} from "../../config/constants";
 // import { Images } from "images";
-import React, { useEffect, useMemo, useState } from 'react';
-import { ConnectWalletCard } from './ConnectWalletCard';
-import Text from '../Text';
-import { set } from 'lodash';
+import React, { useEffect, useMemo, useState } from "react";
+import { ConnectWalletCard } from "./ConnectWalletCard";
+import Text from "../Text";
+import { set } from "lodash";
 
 const walletOrder: (keyof typeof COSMOS_KIT_WALLET_NAMES)[] = [
-  'leap',
-  'keplr',
-  'metaMask',
-  'cosmostation',
-  'leap-mobile',
-  'keplr-mobile',
-  'leap-cosmos-capsule'
+  "leap",
+  "keplr",
+  "metaMask",
+  "cosmostation",
+  "leap-mobile",
+  "keplr-mobile",
+  "leap-cosmos-capsule"
 ];
 
 export const isFlask = async () => {
@@ -37,10 +37,10 @@ export const isFlask = async () => {
 
   try {
     const clientVersion = await provider?.request({
-      method: 'web3_clientVersion'
+      method: "web3_clientVersion"
     });
 
-    const isFlaskDetected = (clientVersion as string[])?.includes('MetaMask');
+    const isFlaskDetected = (clientVersion as string[])?.includes("MetaMask");
 
     return Boolean(provider && isFlaskDetected);
   } catch {
@@ -81,7 +81,7 @@ export function ConnectWalletSideCurtainContent({
           const element: MainWalletBase = _filteredWallets.find((wallet) => {
             return (
               wallet.walletInfo.name === COSMOS_KIT_WALLET_NAMES[key] &&
-              ['leap', 'keplr', 'metaMask', 'leap-cosmos-capsule'].includes(key)
+              ["leap", "keplr", "metaMask", "leap-cosmos-capsule"].includes(key)
             );
           });
           return element;
@@ -95,28 +95,28 @@ export function ConnectWalletSideCurtainContent({
   function onWalletClicked(wallet: MainWalletBase) {
     const { name } = wallet.walletInfo;
     return async () => {
-      if (name === COSMOS_KIT_WALLET_NAMES['keplr'] && !window.keplr) {
-        window.open(KEPLR_WALLET_EXTENSION_URL, '_blank');
+      if (name === COSMOS_KIT_WALLET_NAMES["keplr"] && !window.keplr) {
+        window.open(KEPLR_WALLET_EXTENSION_URL, "_blank");
       }
 
       if (
-        name === COSMOS_KIT_WALLET_NAMES['cosmostation'] &&
+        name === COSMOS_KIT_WALLET_NAMES["cosmostation"] &&
         !window.cosmostation
       ) {
-        window.open(COSMOSTATION_WALLET_EXTENSION_URL, '_blank');
+        window.open(COSMOSTATION_WALLET_EXTENSION_URL, "_blank");
       }
 
-      if (name === COSMOS_KIT_WALLET_NAMES['leap'] && !window.leap) {
-        window.open(LEAP_WALLET_EXTENSION_URL, '_blank');
+      if (name === COSMOS_KIT_WALLET_NAMES["leap"] && !window.leap) {
+        window.open(LEAP_WALLET_EXTENSION_URL, "_blank");
       }
 
-      if (name === COSMOS_KIT_WALLET_NAMES['metaMask']) {
+      if (name === COSMOS_KIT_WALLET_NAMES["metaMask"]) {
         const flaskInstalled = await isFlask();
         if (!flaskInstalled) {
           console.error(
-            'Unable to find flask installed. Please install MetaMask Flask and complete Onboarding on Flask. If you have already installed MetaMask Flask, kindly make sure to disable all other ethereum wallets.'
+            "Unable to find flask installed. Please install MetaMask Flask and complete Onboarding on Flask. If you have already installed MetaMask Flask, kindly make sure to disable all other ethereum wallets."
           );
-          window.open(METAMASK_WALLET_EXTENSION_URL, '_blank');
+          window.open(METAMASK_WALLET_EXTENSION_URL, "_blank");
           return;
         }
       }
@@ -173,10 +173,10 @@ export function ConnectWalletSideCurtainContent({
             // eslint-disable-next-line prefer-const
             walletInfo: { name, prettyName, logo }
           } = wallet;
-          if (name === COSMOS_KIT_WALLET_NAMES['metaMask']) {
-            prettyName = 'MetaMask';
+          if (name === COSMOS_KIT_WALLET_NAMES["metaMask"]) {
+            prettyName = "MetaMask";
             logo =
-              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/1024px-MetaMask_Fox.svg.png';
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/1024px-MetaMask_Fox.svg.png";
           }
           return (
             <div key={name + prettyName + index}>
@@ -212,10 +212,10 @@ export function ConnectWalletSideCurtainContent({
             // eslint-disable-next-line prefer-const
             walletInfo: { name, prettyName, logo }
           } = wallet;
-          if (name === COSMOS_KIT_WALLET_NAMES['metaMask']) {
-            prettyName = 'MetaMask';
+          if (name === COSMOS_KIT_WALLET_NAMES["metaMask"]) {
+            prettyName = "MetaMask";
             logo =
-              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/1024px-MetaMask_Fox.svg.png';
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/1024px-MetaMask_Fox.svg.png";
           }
           return (
             <div key={name + prettyName + index}>

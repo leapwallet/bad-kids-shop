@@ -1,5 +1,5 @@
-import { WalletType } from '@leapwallet/elements';
-import { useMemo } from 'react';
+import { WalletType } from "@leapwallet/elements";
+import { useMemo } from "react";
 
 export const useConnectedWalletType = (
   walletName: string | undefined,
@@ -10,17 +10,17 @@ export const useConnectedWalletType = (
       return undefined;
     }
     switch (walletName) {
-      case 'leap-extension':
+      case "leap-extension":
         return WalletType.LEAP;
-      case 'keplr-extension':
+      case "keplr-extension":
         return WalletType.KEPLR;
-      case 'leap-cosmos-mobile':
+      case "leap-cosmos-mobile":
         return WalletType.WC_LEAP_MOBILE;
-      case 'keplr-cosmos-mobile':
+      case "keplr-cosmos-mobile":
         return WalletType.WC_KEPLR_MOBILE;
-      case 'leap-metamask-cosmos-snap':
+      case "leap-metamask-cosmos-snap":
         return WalletType.METAMASK_SNAP_LEAP;
-      case 'leap-capsule-social-login':
+      case "leap-capsule-social-login":
         return WalletType.CAPSULE;
       default:
         return undefined;

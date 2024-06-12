@@ -6,12 +6,12 @@ import {
   ReactNode,
   ReactElement,
   useCallback
-} from 'react';
+} from "react";
 
 export enum ThemeName {
-  LIGHT = 'light',
-  DARK = 'dark',
-  SYSTEM = 'system'
+  LIGHT = "light",
+  DARK = "dark",
+  SYSTEM = "system"
 }
 export type UseThemeProps = {
   setTheme: (theme: ThemeName) => void;
@@ -37,7 +37,7 @@ const ThemeContext = createContext<UseThemeProps>({
 export const useTheme = () => useContext(ThemeContext);
 
 export default function LeapUiTheme({
-  storageKey = 'theme',
+  storageKey = "theme",
   defaultTheme = ThemeName.DARK,
   forcedTheme,
   children
@@ -48,7 +48,7 @@ export default function LeapUiTheme({
     (theme: ThemeName) => {
       let newTheme = theme;
       if (newTheme === ThemeName.SYSTEM)
-        newTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        newTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
           ? ThemeName.DARK
           : ThemeName.LIGHT;
 

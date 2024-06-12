@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import LoaderGif from '../public/badfroge.gif';
-import Image from 'next/image';
+import LoaderGif from "../public/badfroge.gif";
+import Image from "next/image";
 
 function GenericNFTCardSkeleton() {
   return (

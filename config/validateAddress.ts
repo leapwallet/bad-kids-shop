@@ -1,4 +1,4 @@
-import bech32 from 'bech32';
+import bech32 from "bech32";
 export function getBlockChainFromAddress(address: string): string | undefined {
   try {
     const words = bech32.decode(address);
@@ -29,7 +29,7 @@ export function isValidAddressWithPrefix(
 ): boolean {
   const validAddressLengths = [39, 59];
   const validAddressLength = validAddressLengths.includes(
-    address.replace(blockchainPrefix, '').length
+    address.replace(blockchainPrefix, "").length
   );
   return (
     validAddressLength &&

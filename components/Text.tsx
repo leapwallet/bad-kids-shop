@@ -1,8 +1,8 @@
-import classNames from 'classnames';
-import React, { PropsWithChildren, ReactNode } from 'react';
+import classNames from "classnames";
+import React, { PropsWithChildren, ReactNode } from "react";
 
 export type TextProps = {
-  readonly size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'jumbo';
+  readonly size: "xs" | "sm" | "md" | "lg" | "xl" | "xxl" | "jumbo";
   readonly children?: ReactNode;
   readonly className?: string;
   readonly color?: string;
@@ -24,18 +24,18 @@ export default function Text(props: PropsWithChildren<TextProps>) {
         `flex shrink  font-satoshi`,
 
         {
-          'text-xs': size === 'xs',
-          'text-sm': size === 'sm',
-          'text-md': size === 'md',
-          'text-lg': size === 'lg',
-          'text-xl': size === 'xl',
-          'text-xxl': size === 'xxl',
-          'text-jumbo': size === 'jumbo'
+          "text-xs": size === "xs",
+          "text-sm": size === "sm",
+          "text-md": size === "md",
+          "text-lg": size === "lg",
+          "text-xl": size === "xl",
+          "text-xxl": size === "xxl",
+          "text-jumbo": size === "jumbo"
         },
         color,
         className,
         {
-          'text-black-100 dark:text-white-100': color === undefined
+          "text-black-100 dark:text-white-100": color === undefined
         }
       )}
     >

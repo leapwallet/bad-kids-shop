@@ -1,6 +1,6 @@
-import React from 'react';
-import { FaAngleRight } from 'react-icons/fa6';
-import Text from '../Text';
+import React from "react";
+import { FaAngleRight } from "react-icons/fa6";
+import Text from "../Text";
 
 export function ConnectWalletCard({
   onWalletClicked,
@@ -31,7 +31,7 @@ export function ConnectWalletCard({
           }}
           className="h-10 w-10 rounded-lg"
           style={{
-            filter: isComingSoon ? 'grayscale(100%)' : undefined
+            filter: isComingSoon ? "grayscale(100%)" : undefined
           }}
         />
         <div className="flex flex-col items-start justify-center">
