@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
-import { useNFTImage } from "../hooks/useNFTImage";
-import Text from "./Text";
-import { formatNumber, fromSmall } from "../config/mathutils";
-import Image from "next/image";
-import ArrowNorthWest from "../public/arrow-north-west.svg";
-import { MdAutoGraph } from "react-icons/md";
+import React, { useMemo } from 'react';
+import { useNFTImage } from '../hooks/useNFTImage';
+import Text from './Text';
+import { formatNumber, fromSmall } from '../config/mathutils';
+import Image from 'next/image';
+import ArrowNorthWest from '../public/arrow-north-west.svg';
+import { MdAutoGraph } from 'react-icons/md';
 
 type GenericCardProps = {
   nft: {
@@ -43,26 +43,26 @@ type GenericCardProps = {
 
 const Images = {
   Misc: {
-    Sell: "https://assets.leapwallet.io/dashboard/images/misc/sell.svg",
-  },
+    Sell: 'https://assets.leapwallet.io/dashboard/images/misc/sell.svg'
+  }
 };
 
 export function GenericNFTCard({
   nft,
   onNFTClick,
   balance,
-  isConnected,
+  isConnected
 }: GenericCardProps) {
   const { imageComponent, imgUrl } = useNFTImage({
     image: nft.image,
     mediaType: nft.media_type,
     nftName: nft.name,
     classNamesProp: {
-      img: "rounded-lg",
-      video: "rounded-lg",
-      skeleton: "rounded-lg",
-      textDiv: "rounded-lg",
-    },
+      img: 'rounded-lg',
+      video: 'rounded-lg',
+      skeleton: 'rounded-lg',
+      textDiv: 'rounded-lg'
+    }
   });
 
   const { imageComponent: collectionImageComponent } = useNFTImage({
@@ -73,18 +73,18 @@ export function GenericNFTCard({
     nftName: nft?.collection?.name,
     fallbackImg: Images.Misc.Sell,
     classNamesProp: {
-      img: "rounded-full",
-      video: "rounded-full",
-      skeleton: "rounded-full",
-      textDiv: "rounded-full",
-    },
+      img: 'rounded-full',
+      video: 'rounded-full',
+      skeleton: 'rounded-full',
+      textDiv: 'rounded-full'
+    }
   });
 
   const elementsTitle = `Buy ${nft.name}`;
   const elementsSubtitle = `Balance: ${formatNumber(
-    fromSmall(balance ?? "0").decimalPlaces(3)
+    fromSmall(balance ?? '0').decimalPlaces(3)
   )} STARS • You need ${formatNumber(
-    fromSmall(nft.listPrice.amount).minus(fromSmall(balance ?? "0"))
+    fromSmall(nft.listPrice.amount).minus(fromSmall(balance ?? '0'))
   )} STARS more to buy this Bad Kid`;
 
   return (
@@ -134,7 +134,7 @@ export function GenericNFTCard({
           onClick={() =>
             window.open(
               `https://stargaze.zone/m/${nft.collection.contractAddress}/${nft.tokenId}`,
-              "_blank"
+              '_blank'
             )
           }
           className="flex items-center justify-center h-[32px] w-[32px] bg-transparent border-white-100 border rounded-full cursor-pointer"
@@ -148,7 +148,7 @@ export function GenericNFTCard({
           className="flex bg-white-100 py-3 px-8 w-[70%] justify-center ml-auto rounded-3xl cursor-pointer"
         >
           <Text size="xs" color="text-black-100 text-center font-bold">
-            {"Buy Now"}
+            {'Buy Now'}
           </Text>
         </button>
       </div>

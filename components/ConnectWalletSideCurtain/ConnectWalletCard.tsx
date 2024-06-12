@@ -1,13 +1,13 @@
-import React from "react";
-import { FaAngleRight } from "react-icons/fa6";
-import Text from "../Text";
+import React from 'react';
+import { FaAngleRight } from 'react-icons/fa6';
+import Text from '../Text';
 
 export function ConnectWalletCard({
   onWalletClicked,
   name,
   logo,
   prettyName,
-  isComingSoon = false,
+  isComingSoon = false
 }: {
   onWalletClicked: (name: string) => () => Promise<void>;
   name: string;
@@ -20,7 +20,7 @@ export function ConnectWalletCard({
       className="flex cursor-pointer items-center justify-between py-3 px-6 transition-all duration-300 ease-in-out hover:bg-[#2B2B2BFA]"
       onClick={isComingSoon ? undefined : onWalletClicked(name)}
       style={{
-        opacity: isComingSoon ? 0.5 : 1,
+        opacity: isComingSoon ? 0.5 : 1
       }}
     >
       <div className="flex flex-grow items-center justify-start gap-3">
@@ -31,7 +31,7 @@ export function ConnectWalletCard({
           }}
           className="h-10 w-10 rounded-lg"
           style={{
-            filter: isComingSoon ? "grayscale(100%)" : undefined,
+            filter: isComingSoon ? 'grayscale(100%)' : undefined
           }}
         />
         <div className="flex flex-col items-start justify-center">

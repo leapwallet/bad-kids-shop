@@ -1,9 +1,9 @@
-import classNames from "classnames";
-import React from "react";
+import classNames from 'classnames';
+import React from 'react';
 
 export default function HorizontalDivider({
   outerClassName,
-  innerClassName,
+  innerClassName
 }: {
   outerClassName?: string;
   innerClassName?: string;
@@ -11,13 +11,13 @@ export default function HorizontalDivider({
   return (
     <div
       className={classNames(
-        "flex w-full flex-row items-center justify-center",
+        'flex w-full flex-row items-center justify-center',
         outerClassName
       )}
     >
       <div
         className={classNames(
-          "w-full bg-gray-800 pt-[1px] opacity-40",
+          'w-full bg-gray-800 pt-[1px] opacity-40',
           innerClassName
         )}
       ></div>

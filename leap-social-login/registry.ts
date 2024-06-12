@@ -1,4 +1,4 @@
-import { Wallet } from '@cosmos-kit/core'
+import { Wallet } from '@cosmos-kit/core';
 
 export const LeapCapsuleInfo: Wallet = {
   name: 'leap-cosmos-capsule',
@@ -7,14 +7,14 @@ export const LeapCapsuleInfo: Wallet = {
   mode: 'extension',
   mobileDisabled: false,
   rejectMessage: {
-    source: 'Request rejected',
+    source: 'Request rejected'
   },
   downloads: [
     {
       device: 'desktop',
       browser: 'chrome',
-      link: 'https://chrome.google.com/webstore/detail/metamask-flask-developmen/ljfoeinjpaedjfecbmggjgodbgkmjkjk',
-    },
+      link: 'https://chrome.google.com/webstore/detail/metamask-flask-developmen/ljfoeinjpaedjfecbmggjgodbgkmjkjk'
+    }
   ],
-  connectEventNamesOnWindow: ['leap_keystorechange'],
-}
+  connectEventNamesOnWindow: ['leap_keystorechange']
+};
