@@ -43,15 +43,15 @@ type GenericCardProps = {
 
 const Images = {
   Misc: {
-    Sell: "https://assets.leapwallet.io/dashboard/images/misc/sell.svg",
-  },
+    Sell: "https://assets.leapwallet.io/dashboard/images/misc/sell.svg"
+  }
 };
 
 export function GenericNFTCard({
   nft,
   onNFTClick,
   balance,
-  isConnected,
+  isConnected
 }: GenericCardProps) {
   const { imageComponent, imgUrl } = useNFTImage({
     image: nft.image,
@@ -61,8 +61,8 @@ export function GenericNFTCard({
       img: "rounded-lg",
       video: "rounded-lg",
       skeleton: "rounded-lg",
-      textDiv: "rounded-lg",
-    },
+      textDiv: "rounded-lg"
+    }
   });
 
   const { imageComponent: collectionImageComponent } = useNFTImage({
@@ -76,8 +76,8 @@ export function GenericNFTCard({
       img: "rounded-full",
       video: "rounded-full",
       skeleton: "rounded-full",
-      textDiv: "rounded-full",
-    },
+      textDiv: "rounded-full"
+    }
   });
 
   const elementsTitle = `Buy ${nft.name}`;

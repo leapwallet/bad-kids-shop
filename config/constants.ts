@@ -10,7 +10,7 @@ export const COSMOS_KIT_WALLET_NAMES = {
   "keplr-mobile": "keplr-mobile",
   cosmostation: "cosmostation-extension",
   "mystic-labs-snaps": "cosmos-extension-metamask",
-  "leap-cosmos-capsule": "leap-cosmos-capsule",
+  "leap-cosmos-capsule": "leap-cosmos-capsule"
 };
 
 export const SUPPORTED_WALLETS = [
@@ -20,7 +20,7 @@ export const SUPPORTED_WALLETS = [
   COSMOS_KIT_WALLET_NAMES["keplr-mobile"],
   COSMOS_KIT_WALLET_NAMES["leap-mobile"],
   COSMOS_KIT_WALLET_NAMES["cosmostation"],
-  COSMOS_KIT_WALLET_NAMES["leap-cosmos-capsule"],
+  COSMOS_KIT_WALLET_NAMES["leap-cosmos-capsule"]
   // COSMOS_KIT_WALLET_NAMES['mystic-labs-snaps'],
   // 'cosmostation-mobile',
 ];
@@ -32,7 +32,7 @@ export const CHAIN_NAME_TO_TESTNET_CHAIN_NAME: Record<string, string> = {
   juno: "junotestnet",
   secret: "pulsar",
   // stargaze: 'stargazetestnet',                   // Stargaze is not working with cosmos-kit, maybe it can be related to data on chain-registry
-  mars: "mars",
+  mars: "mars"
 };
 
 export const LEAP_WALLET_EXTENSION_URL =
@@ -116,7 +116,7 @@ export const ALL_CHAINS = [
   "sentinel",
   "kichain",
   "bandchain",
-  "xpla",
+  "xpla"
 ];
 
 export const TESTNETS_AS_MAINNETS: [] = [];
@@ -164,7 +164,7 @@ export const INITIAL_SUPPORTED_CHAINS: Record<string, Array<string>> = {
     "gitopia",
     "celestia",
     // 'dydx',
-    "passage",
+    "passage"
     // 'sge',
     // 'sifchain',
     // 'assetmantle',
@@ -248,7 +248,7 @@ export const INITIAL_SUPPORTED_CHAINS: Record<string, Array<string>> = {
     "sentinel",
     "kichain",
     "bandchain",
-    "xpla",
+    "xpla"
   ],
   [COSMOS_KIT_WALLET_NAMES["cosmostation"]]: [
     "cosmos",
@@ -278,7 +278,7 @@ export const INITIAL_SUPPORTED_CHAINS: Record<string, Array<string>> = {
     "desmos",
     "teritori",
     "bitsong",
-    "persistenceNew",
+    "persistenceNew"
   ],
   "cosmostation-mobile": [
     "cosmos",
@@ -310,7 +310,7 @@ export const INITIAL_SUPPORTED_CHAINS: Record<string, Array<string>> = {
     "teritori",
     "bitsong",
     "celestia",
-    "dydx",
+    "dydx"
   ],
   [COSMOS_KIT_WALLET_NAMES["keplr"]]: [
     "cosmos",
@@ -341,7 +341,7 @@ export const INITIAL_SUPPORTED_CHAINS: Record<string, Array<string>> = {
     "quicksilver",
     "dydx",
     "celestia",
-    "neutron",
+    "neutron"
   ],
   [COSMOS_KIT_WALLET_NAMES["keplr-mobile"]]: [
     "cosmos",
@@ -375,7 +375,7 @@ export const INITIAL_SUPPORTED_CHAINS: Record<string, Array<string>> = {
     "persistenceNew",
     "kyve",
     "quasar",
-    "quicksilver",
+    "quicksilver"
     // 'seiTestnet2',
     // 'teritori',
     // 'kujira',
@@ -459,7 +459,7 @@ export const INITIAL_SUPPORTED_CHAINS: Record<string, Array<string>> = {
     "nolus",
     "gitopia",
     "dydx",
-    "celestia",
+    "celestia"
   ],
   [COSMOS_KIT_WALLET_NAMES["mystic-labs-snaps"]]: ["cosmos", "celestia"],
   [COSMOS_KIT_WALLET_NAMES["leap-cosmos-capsule"]]: [
@@ -504,7 +504,7 @@ export const INITIAL_SUPPORTED_CHAINS: Record<string, Array<string>> = {
     "gitopia",
     "celestia",
     "dydx",
-    "passage",
+    "passage"
     // 'sge',
     // 'sifchain',
     // 'assetmantle',
@@ -518,5 +518,5 @@ export const INITIAL_SUPPORTED_CHAINS: Record<string, Array<string>> = {
     // 'coreum',
     // 'planq',
   ],
-  "default-value": [],
+  "default-value": []
 };

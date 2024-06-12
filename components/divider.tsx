@@ -3,7 +3,7 @@ import React from "react";
 
 export default function HorizontalDivider({
   outerClassName,
-  innerClassName,
+  innerClassName
 }: {
   outerClassName?: string;
   innerClassName?: string;

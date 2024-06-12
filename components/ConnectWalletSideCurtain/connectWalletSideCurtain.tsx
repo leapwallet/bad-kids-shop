@@ -3,19 +3,11 @@ import React from "react";
 import { WalletModalProps } from "@cosmos-kit/core";
 import { ConnectWalletSideCurtainContent } from "./ConnectWalletSideCurtainContent";
 
-declare global {
-  interface Window {
-    leap: any;
-    keplr: any;
-    cosmostation: any;
-  }
-}
-
 // Define Modal Component
 export default function ConnectWalletSideCurtain({
   isOpen,
   setOpen,
-  walletRepo,
+  walletRepo
 }: WalletModalProps) {
   return (
     <>

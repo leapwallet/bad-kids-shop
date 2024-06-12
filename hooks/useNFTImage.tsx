@@ -26,7 +26,7 @@ export function useNFTImage({
   nftName,
   classNamesProp,
   fallbackImg = `https://assets.leapwallet.io/dashboard/images/logos/generic-light.svg`,
-  videoOptions = { autoPlay: false, showControls: false },
+  videoOptions = { autoPlay: false, showControls: false }
 }: {
   image?: string;
   mediaType?: string;
@@ -140,7 +140,7 @@ export function useNFTImage({
       isVideo,
       nftName,
       videoOptions?.autoPlay,
-      videoOptions?.showControls,
+      videoOptions?.showControls
     ]
   );
 
@@ -164,7 +164,7 @@ export function useNFTImage({
             onError={imgOnError(fallbackImg)}
           />
         </>
-      ),
+      )
     };
   }
 

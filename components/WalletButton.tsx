@@ -8,13 +8,17 @@ import { useEffect, useState } from "react";
 import { formatNumber, fromSmall } from "../config/mathutils";
 import { IoMdCloseCircle } from "react-icons/io";
 
-interface WalletButtonOptions { 
-  balance?: string | null, openEmbeddedWalletModal: Function 
+interface WalletButtonOptions {
+  balance?: string | null;
+  openEmbeddedWalletModal: Function;
 }
 
-export function WalletButton({ balance, openEmbeddedWalletModal }: WalletButtonOptions) {
+export function WalletButton({
+  balance,
+  openEmbeddedWalletModal
+}: WalletButtonOptions) {
   const { openView, status, address, chain, disconnect } = useChain("stargaze");
-  console.log(address) // leave it for debugging
+  console.log(address); // leave it for debugging
   let text = "Connect Wallet";
   if (status === "Connected") {
     text = sliceAddress(address ?? "");
@@ -25,25 +29,22 @@ export function WalletButton({ balance, openEmbeddedWalletModal }: WalletButtonO
   return (
     <div className="flex items-center gap-2 h-10 justify-between border bg-white-100 border-white-100 rounded-3xl px-5 py-2">
       <button
-        onClick={() => { 
-          if(status === 'Connected') { 
+        onClick={() => {
+          if (status === "Connected") {
             openEmbeddedWalletModal();
-          }
-          else {
+          } else {
             openView();
           }
-          
-      }}
+        }}
         disabled={status === "Connecting"}
         className="flex items-center gap-2 justify-between "
-        
       >
         <Image
           color="#000"
           src={WalletIcon}
           alt="wallet"
           style={{
-            filter: "invert(1)",
+            filter: "invert(1)"
           }}
           height={16}
           width={16}
@@ -72,7 +73,7 @@ export function WalletButton({ balance, openEmbeddedWalletModal }: WalletButtonO
         </div>
       </button>
       {status === "Connected" && (
-        <button onClick={disconnect}>
+        <button onClick={() => disconnect()}>
           <span title="Disconnect Wallet">
             <IoMdCloseCircle size={16} title="Disconnect Wallet" />
           </span>

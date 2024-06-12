@@ -14,7 +14,7 @@ import {
   AccountModal,
   Actions,
   defaultBlurs,
-  defaultBorderRadii,
+  defaultBorderRadii
 } from "@leapwallet/embedded-wallet-sdk-react";
 
 export default function Home() {
@@ -51,11 +51,11 @@ export default function Home() {
         error: "#420006",
         errorBackground: "#FFEBED",
         success: "#29A874",
-        successBackground: "#DAF6EB",
+        successBackground: "#DAF6EB"
       },
       borderRadii: defaultBorderRadii,
       blurs: defaultBlurs,
-      fontFamily: "inherit",
+      fontFamily: "inherit"
     };
 
     const navigate = (path: string) => {
@@ -76,25 +76,25 @@ export default function Home() {
           actionListConfig: {
             [Actions.SEND]: {
               onClick: (chainId) =>
-                navigate(`/transact/send?sourceChainId=${chainId}`),
+                navigate(`/transact/send?sourceChainId=${chainId}`)
             },
             [Actions.IBC]: {
               onClick: (chainId) =>
-                navigate(`/transact/send?sourceChainId=${chainId}`),
+                navigate(`/transact/send?sourceChainId=${chainId}`)
             },
             [Actions.SWAP]: {
               onClick: (chainId) =>
-                navigate(`/transact/swap?sourceChainId=${chainId}`),
+                navigate(`/transact/swap?sourceChainId=${chainId}`)
             },
             [Actions.BRIDGE]: {
               onClick: (chainId) =>
-                navigate(`/transact/bridge?destinationChainId=${chainId}`),
+                navigate(`/transact/bridge?destinationChainId=${chainId}`)
             },
             [Actions.BUY]: {
               onClick: (chainId) =>
-                navigate(`/transact/buy?destinationChainId=${chainId}`),
-            },
-          },
+                navigate(`/transact/buy?destinationChainId=${chainId}`)
+            }
+          }
         }}
       />
     ) : null;

@@ -32,7 +32,7 @@ const fetchBalance = async (address: string, chain: any) => {
 
 export function Header({
   openEmbeddedWalletModal,
-  setIsElementsModalOpen,
+  setIsElementsModalOpen
 }: {
   openEmbeddedWalletModal: Function;
   setIsElementsModalOpen: Dispatch<SetStateAction<boolean>>;

@@ -10,7 +10,7 @@ export function ListControl({
   searchTerm,
   handleSearchChange,
   sortOrder,
-  handleSortChange,
+  handleSortChange
 }: {
   searchTerm: string;
   handleSearchChange: (e: string) => void;

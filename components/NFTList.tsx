@@ -14,7 +14,7 @@ import { ListControl } from "./ListControl";
 import GenericNFTCardSkeleton from "./GenericNFTCardSkeleton";
 import {
   getNFTTokensQuery,
-  getNFTTokenByIDQuery,
+  getNFTTokenByIDQuery
 } from "../queries/tokens.query";
 import { MdArrowUpward } from "react-icons/md";
 import Text from "./Text";
@@ -42,7 +42,7 @@ function createBuyNftTx({
   collection,
   tokenId,
   expiry,
-  funds,
+  funds
 }: {
   sender: string;
   collection: string;
@@ -55,23 +55,23 @@ function createBuyNftTx({
       buy_now: {
         collection: collection,
         token_id: tokenId,
-        expires: expiry,
-      },
+        expires: expiry
+      }
     },
     memo: "",
-    funds: funds,
+    funds: funds
   };
 
   const executeContractTx = executeContract({
     sender: sender,
     contract: STARGAZE_MARKET_CONTRACT,
     msg: toUtf8(JSON.stringify(tx.msg)),
-    funds: funds,
+    funds: funds
   });
 
   return {
     typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
-    value: executeContractTx.value,
+    value: executeContractTx.value
   };
 }
 
@@ -81,7 +81,7 @@ const BAD_KIDS_COLLECTION =
 
 export function NFTs({
   collection,
-  setIsElementsModalOpen,
+  setIsElementsModalOpen
 }: {
   collection?: string;
   setIsElementsModalOpen: (value: boolean) => void;
@@ -105,15 +105,15 @@ export function NFTs({
     error,
     data: result,
     fetchMore,
-    refetch,
+    refetch
   } = useQuery(getNFTTokensQuery, {
     variables: {
       collectionAddr: collection ?? BAD_KIDS_COLLECTION,
       limit: 30,
       offset: 0,
       filterForSale: "FIXED_PRICE",
-      sortBy: sortOrder,
-    },
+      sortBy: sortOrder
+    }
   });
 
   const {
@@ -121,12 +121,12 @@ export function NFTs({
     error: error2,
     data: searchedNFTResult,
     fetchMore: fetchMore2,
-    refetch: refetch2,
+    refetch: refetch2
   } = useQuery(getNFTTokenByIDQuery, {
     variables: {
       collectionAddr: collection ?? BAD_KIDS_COLLECTION,
-      tokenId: searchTerm,
-    },
+      tokenId: searchTerm
+    }
   });
 
   const offset = useRef(0);
@@ -156,7 +156,7 @@ export function NFTs({
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: "smooth"
     });
   };
 
@@ -175,7 +175,7 @@ export function NFTs({
         setIsFetching(true);
         fetchMore({
           variables: {
-            offset: offset.current + 50,
+            offset: offset.current + 50
           },
           updateQuery: (prev, { fetchMoreResult }) => {
             if (!fetchMoreResult) return prev;
@@ -194,10 +194,10 @@ export function NFTs({
             return Object.assign({}, prev, {
               tokens: {
                 pageInfo: fetchMoreResult.tokens.pageInfo,
-                tokens: newTokens,
-              },
+                tokens: newTokens
+              }
             });
-          },
+          }
         });
         setTimeout(() => {
           setIsFetching(false);
@@ -232,8 +232,8 @@ export function NFTs({
             media_type: token.collection.media.type,
             image: token.collection.media.url,
             contractAddress: token.collection.contractAddress,
-            tokenCount: token.collection.tokenCounts.total,
-          },
+            tokenCount: token.collection.tokenCounts.total
+          }
         };
       })
       .filter((nft: any) => nft.tokenId.includes(searchTerm));
@@ -266,8 +266,8 @@ export function NFTs({
         media_type: token.collection.media.type,
         image: token.collection.media.url,
         contractAddress: token.collection.contractAddress,
-        tokenCount: token.collection.tokenCounts.total,
-      },
+        tokenCount: token.collection.tokenCounts.total
+      }
     };
   }, [searchedNFTResult, balance]);
 
@@ -290,7 +290,7 @@ export function NFTs({
 
     try {
       toast(`Please sign the transaction on your wallet`, {
-        className: "w-[400px]",
+        className: "w-[400px]"
       });
       const twoWeekExpiry = 14 * 24 * 60 * 60 * 1000;
       const tx = createBuyNftTx({
@@ -301,9 +301,9 @@ export function NFTs({
         funds: [
           {
             denom: nft.listPrice.denom,
-            amount: nft.listPrice.amount,
-          },
-        ],
+            amount: nft.listPrice.amount
+          }
+        ]
       });
 
       const signer = getOfflineSignerDirect();
@@ -311,35 +311,35 @@ export function NFTs({
       const signingCosmwasmClient = await getSigningCosmwasmClient({
         rpcEndpoint: chain.apis?.rpc?.[0].address ?? "",
         //@ts-ignore
-        signer: signer,
+        signer: signer
       });
 
       const fee = {
         amount: [
           {
             amount: "0",
-            denom: "ustars",
-          },
+            denom: "ustars"
+          }
         ],
-        gas: "1000000",
+        gas: "1000000"
       };
 
       const signedTx = await signingCosmwasmClient.sign(address, [tx], fee, "");
       const txRaw = TxRaw.encode({
         bodyBytes: signedTx.bodyBytes,
         authInfoBytes: signedTx.authInfoBytes,
-        signatures: signedTx.signatures,
+        signatures: signedTx.signatures
       }).finish();
 
       const res = signingCosmwasmClient.broadcastTx(txRaw);
       const broadcastToast = toast("Broadcasting transaction", {
-        duration: 1000 * 60,
+        duration: 1000 * 60
       });
       res
         .then((res: any) => {
           toast.dismiss(broadcastToast);
           toast.success(`Success! ${res.transactionHash}`, {
-            className: "w-[400px]",
+            className: "w-[400px]"
           });
           refetch();
         })

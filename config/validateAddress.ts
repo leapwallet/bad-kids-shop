@@ -1,4 +1,4 @@
-import bech32 from 'bech32';
+import bech32 from "bech32";
 export function getBlockChainFromAddress(address: string): string | undefined {
   try {
     const words = bech32.decode(address);
@@ -23,10 +23,19 @@ function isBech32(value: string, prefix: string): boolean {
  * @param {string} blockchainPrefix - blockchain prefix e.g 'terra', 'osmo', 'one',  etc
  * @returns {boolean} - true/false
  */
-export function isValidAddressWithPrefix(address: string, blockchainPrefix: string): boolean {
+export function isValidAddressWithPrefix(
+  address: string,
+  blockchainPrefix: string
+): boolean {
   const validAddressLengths = [39, 59];
-  const validAddressLength = validAddressLengths.includes(address.replace(blockchainPrefix, '').length);
-  return validAddressLength && address.startsWith(blockchainPrefix) && isBech32(address, blockchainPrefix);
+  const validAddressLength = validAddressLengths.includes(
+    address.replace(blockchainPrefix, "").length
+  );
+  return (
+    validAddressLength &&
+    address.startsWith(blockchainPrefix) &&
+    isBech32(address, blockchainPrefix)
+  );
 }
 
 export function isValidAddress(address: string): boolean {

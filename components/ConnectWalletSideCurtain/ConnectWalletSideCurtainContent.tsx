@@ -2,7 +2,7 @@ import {
   MainWalletBase,
   State,
   WalletModalProps,
-  WalletStatus,
+  WalletStatus
 } from "@cosmos-kit/core";
 import { useManager, useWallet, useWalletClient } from "@cosmos-kit/react";
 
@@ -14,7 +14,7 @@ import {
   KEPLR_WALLET_EXTENSION_URL,
   LEAP_WALLET_EXTENSION_URL,
   METAMASK_WALLET_EXTENSION_URL,
-  SUPPORTED_WALLETS,
+  SUPPORTED_WALLETS
 } from "../../config/constants";
 // import { Images } from "images";
 import React, { useEffect, useMemo, useState } from "react";
@@ -29,7 +29,7 @@ const walletOrder: (keyof typeof COSMOS_KIT_WALLET_NAMES)[] = [
   "cosmostation",
   "leap-mobile",
   "keplr-mobile",
-  "leap-cosmos-capsule",
+  "leap-cosmos-capsule"
 ];
 
 export const isFlask = async () => {
@@ -37,7 +37,7 @@ export const isFlask = async () => {
 
   try {
     const clientVersion = await provider?.request({
-      method: "web3_clientVersion",
+      method: "web3_clientVersion"
     });
 
     const isFlaskDetected = (clientVersion as string[])?.includes("MetaMask");
@@ -51,7 +51,7 @@ export const isFlask = async () => {
 export function ConnectWalletSideCurtainContent({
   setOpen,
   isOpen,
-  walletRepo,
+  walletRepo
 }: WalletModalProps) {
   const { client } = useWalletClient();
   // const { search } = useLocation();
@@ -78,12 +78,12 @@ export function ConnectWalletSideCurtainContent({
       walletOrder
         .map((key) => {
           // @ts-ignore
-          const element: MainWalletBase = _filteredWallets.find(
-            (wallet) => {
-              return wallet.walletInfo.name === COSMOS_KIT_WALLET_NAMES[key] &&
+          const element: MainWalletBase = _filteredWallets.find((wallet) => {
+            return (
+              wallet.walletInfo.name === COSMOS_KIT_WALLET_NAMES[key] &&
               ["leap", "keplr", "metaMask", "leap-cosmos-capsule"].includes(key)
-            }
-          );
+            );
+          });
           return element;
         })
         .sort((a, b) => {
@@ -124,13 +124,6 @@ export function ConnectWalletSideCurtainContent({
       if (walletStatus === WalletStatus.Connected) {
         await mainWallet?.disconnect();
       }
-      // if(name === COSMOS_KIT_WALLET_NAMES['leap-cosmos-capsule']) {
-      //   const chainWallets = wallet?.getChainWalletList()
-      //   if(chainWallets && chainWallets?.length !== 0) {
-      //     const firstChainWallet = chainWallets[0];
-      //     return await firstChainWallet.connect();
-      //   }
-      // }
 
       await wallet.connect();
       setOpen(false);
@@ -178,7 +171,7 @@ export function ConnectWalletSideCurtainContent({
           }
           let {
             // eslint-disable-next-line prefer-const
-            walletInfo: { name, prettyName, logo },
+            walletInfo: { name, prettyName, logo }
           } = wallet;
           if (name === COSMOS_KIT_WALLET_NAMES["metaMask"]) {
             prettyName = "MetaMask";
@@ -188,7 +181,9 @@ export function ConnectWalletSideCurtainContent({
           return (
             <div key={name + prettyName + index}>
               <ConnectWalletCard
-                onWalletClicked={() => onWalletClicked(wallet as MainWalletBase)}
+                onWalletClicked={() =>
+                  onWalletClicked(wallet as MainWalletBase)
+                }
                 name={name}
                 logo={logo as string}
                 prettyName={prettyName}
@@ -215,7 +210,7 @@ export function ConnectWalletSideCurtainContent({
           }
           let {
             // eslint-disable-next-line prefer-const
-            walletInfo: { name, prettyName, logo },
+            walletInfo: { name, prettyName, logo }
           } = wallet;
           if (name === COSMOS_KIT_WALLET_NAMES["metaMask"]) {
             prettyName = "MetaMask";
