@@ -30,8 +30,6 @@ export const SnapshotCard: React.FC = () => {
 
     const ethChainId = 1 // Ethereum Mainnet ID
     const isWrongNetwork = !!wagmiChain && wagmiChain.id !== ethChainId
-    console.log(isConnected)
-    console.log(isWrongNetwork)
     return (
         <>
             {isConnected && isWrongNetwork && (

@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react"
 import { useForm, FormProvider } from "react-hook-form"
 import { useAccount as useEthereumAccount } from "wagmi"
 import { Stack, Text, Box, Button, Input, useToast } from "@chakra-ui/react"
-import { signWithKeplr } from '../utlis/keplr';
-// import { InputEthereumAddress } from "../_cards/SnapshotCard/InputEthereumAddress"
-// import { InputSommelierAddress } from "../_cards/SnapshotCard/InputSommelierAddress"
+import { signWithKeplr } from '../../utlis/keplr';
+import { useChain } from '@cosmos-kit/react';
+import { InputEthereumAddress } from './InputEthereumAddress';
+import { InputSommelierAddress } from './InputSommelierAddress';
 interface SnapshotFormProps {
     wrongNetwork: boolean
 }
 
-interface SnapshotFormValues {
+export interface SnapshotFormValues {
     eth_address: string
     somm_address: string
 }
@@ -29,6 +30,8 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
     const [stakedSommTokens, setStakedSommTokens] = useState<
         number | null
     >(null)
+
+    const { getOfflineSignerDirect, connect, isWalletConnected } = useChain("stargaze");
 
     useEffect(() => {
         const checkRegistration = async () => {
@@ -61,19 +64,9 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
         checkRegistration()
     }, [isEthereumConnected, wrongNetwork, ethAddress, sommAddress])
 
-    // if (!isEthereumConnected || wrongNetwork) {
-    //   return (
-    //     <Stack spacing={4} align="center">
-    //       <ConnectButton
-    //         overridechainid={"ethereum"}
-    //         unstyled
-    //         height="69px"
-    //         fontSize="21px"
-    //       >
-    //         Connect Ethereum Wallet
-    //       </ConnectButton>
-    //     </Stack>
-    //   )
+    // if (!isEthereumConnected || wrongNetwork || !isWalletConnected) {
+    //     connect();
+    //     return <></>;
     // }
 
     const onSubmit = async (data: SnapshotFormValues) => {
@@ -89,40 +82,50 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
             })
             return
         }
+
         try {
-            const checkResponse = await fetch("/api/checkRegistration", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    ethAddress: data.eth_address,
-                    sommAddress: data.somm_address,
-                }),
-            })
+            // const checkResponse = await fetch("/api/checkRegistration", {
+            //     method: "POST",
+            //     headers: { "Content-Type": "application/json" },
+            //     body: JSON.stringify({
+            //         ethAddress: data.eth_address,
+            //         sommAddress: data.somm_address,
+            //     }),
+            // })
+            //
+            // const checkData = await checkResponse.json()
+            //
+            // if (checkResponse.status === 409) {
+            //     toast({
+            //         title: "Already Registered",
+            //         status: "warning",
+            //         description: (
+            //             `${checkData.message}. You can still proceed to sign and
+            //                     update your registration.`
+            //         ),
+            //         isClosable: true,
+            //         duration: null,
+            //     })
+            // } else if (!checkResponse.ok) {
+            //     throw new Error(
+            //         checkData.message || "Failed to check registration"
+            //     )
+            // }
 
-            const checkData = await checkResponse.json()
-
-            if (checkResponse.status === 409) {
-                toast({
-                    title: "Already Registered",
-                    status: "warning",
-                    description: (
-                        `${checkData.message}. You can still proceed to sign and
-                                update your registration.`
-                    ),
-                    isClosable: true,
-                    duration: null,
-                })
-            } else if (!checkResponse.ok) {
-                throw new Error(
-                    checkData.message || "Failed to check registration"
-                )
+            if (!isWalletConnected) {
+                connect();
+                return <></>;
             }
+
+            const signer = getOfflineSignerDirect();
+
 
             const {
                 signature,
                 pubKey,
                 data: encodedData,
             } = await signWithKeplr(
+                signer,
                 data.somm_address,
                 data.eth_address,
                 data.somm_address
@@ -168,7 +171,6 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
             })
         }
     }
-    console.log("HERE")
 
     return (
         <FormProvider {...methods}>
@@ -176,8 +178,8 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
                 <Stack spacing={4}>
                     <Text color="white">{registrationMessage ?? ""}</Text>
 
-                    <Input disabled={true} />
-                    <Input disabled={true} />
+                    <InputEthereumAddress />
+                    <InputSommelierAddress />
                     <Text color="white">
                         {stakedSommTokens !== null &&
                             `Staked SOMM tokens: ${stakedSommTokens}`}
@@ -188,7 +190,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
                         type="submit"
                         colorScheme="purple"
                         isDisabled={
-                            !isEthereumConnected || wrongNetwork || !isFormFilled
+                            !isEthereumConnected || wrongNetwork || !isFormFilled || !isWalletConnected
                         }
                     >
                         Sign

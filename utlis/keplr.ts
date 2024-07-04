@@ -1,4 +1,7 @@
+import { OfflineDirectSigner } from '@cosmjs/proto-signing';
+
 export const signWithKeplr = async (
+  signer: OfflineDirectSigner,
   sommelierAddress: string,
   ethAddress: string,
   sommAddress: string
@@ -7,16 +10,15 @@ export const signWithKeplr = async (
     throw new Error("Please install Keplr extension")
   }
 
-  const chainId = "sommelier-3"
+  const chainId = "stargaze"
   await window.keplr.enable(chainId)
 
-  if (typeof window.getOfflineSigner !== "function") {
+  if (!signer) {
     throw new Error(
       "Keplr extension is not installed or not available in this context."
     )
   }
 
-  const signer = window.getOfflineSigner(chainId)
   const accounts = await signer.getAccounts()
 
   if (accounts[0].address !== sommelierAddress) {

@@ -1,7 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import { NFTs } from "../components/NFTList";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { isValidAddressWithPrefix } from "../config/validateAddress";
 
 export default function Home() {
