@@ -5,14 +5,16 @@ import {
     HStack,
     InputProps,
     FormErrorMessage,
-    Image,
-    Box, useToast,
+    Box,
+    useToast,
 } from "@chakra-ui/react"
 import React from "react"
 import { useFormContext } from "react-hook-form"
 import Link from 'next/link';
 import { SnapshotFormValues } from './SnapshotCard';
 import { useChain } from '@cosmos-kit/react';
+import KeplrLogo from "../../public/keplr.png"
+import Image from "next/image";
 
 export const InputSommelierAddress: React.FC<InputProps> = ({
                                                                 children,
@@ -81,9 +83,9 @@ export const InputSommelierAddress: React.FC<InputProps> = ({
                         Import from Keplr
                     </Text>
                     <Image
-                        src="/assets/images/keplr.png"
+                        src={KeplrLogo}
                         alt="Keplr logo"
-                        width={4}
+                        width={10}
                     />
                 </HStack>
             </HStack>
