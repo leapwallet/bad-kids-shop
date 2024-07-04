@@ -55,6 +55,9 @@ export function Header({
         src={CelestineSlothsSociety}
         alt="celestine-sloths"
         className="flex w-[70%] sm:w-[20%]"
+        onClick={() => {
+          router.push('/');
+        }}
       />
 
       <button className="sm:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
