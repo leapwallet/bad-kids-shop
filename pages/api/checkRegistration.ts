@@ -17,11 +17,11 @@ export default async function handler(
 
   let message = ""
   if (existingSommRegistration && existingEthRegistration) {
-    message = `Both your ETH address ${ethAddress} and SOMM address ${starsAddress} are already registered.`
+    message = `Both your ETH address ${ethAddress} and Stargaze address ${starsAddress} are already registered.`
   } else if (existingEthRegistration) {
     message = `The ETH address ${ethAddress} is already registered.`
   } else if (existingSommRegistration) {
-    message = `The SOMM address ${starsAddress} is already registered.`
+    message = `The Stargaze address ${starsAddress} is already registered.`
   }
 
   if (message) {
