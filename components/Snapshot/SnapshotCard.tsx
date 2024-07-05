@@ -8,6 +8,7 @@ export interface SnapshotFormValues {
     eth_address: string;
     stars_address: string;
 }
+export const STARGAZE_CHAIN_ID = "stargaze"
 
 export const SnapshotCard: React.FC = () => {
     const { isConnected } = useAccount();
@@ -93,7 +94,7 @@ export const SnapshotCard: React.FC = () => {
                     </Text>
                     <br />
                     <FormProvider {...methods}>
-                        <SnapshotForm wrongNetwork={isWrongNetwork} labelColor="white" />
+                        <SnapshotForm wrongNetwork={isWrongNetwork} />
                     </FormProvider>
                 </Box>
                 {/*<CampaignTable />*/}

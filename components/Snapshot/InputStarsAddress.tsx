@@ -11,8 +11,7 @@ import {
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import Link from 'next/link';
-import { SnapshotFormValues } from './SnapshotCard';
-import { useChain, useWallet } from '@cosmos-kit/react';
+import { SnapshotFormValues, STARGAZE_CHAIN_ID } from './SnapshotCard';
 import KeplrLogo from "../../public/keplr.png";
 import Image from "next/image";
 
@@ -24,19 +23,18 @@ export const InputStarsAddress: React.FC<InputProps> = ({
     const { register, setValue, getFieldState } =
         useFormContext<SnapshotFormValues>();
     const isError = !!getFieldState("stars_address").error;
-    const { connect, isWalletConnected, address } =
-        useChain("stargaze");
 
     const [isAutofilled, setIsAutofilled] = useState(false);  // State to track autofill
 
     const onAutofillClick = async () => {
-        if (!isWalletConnected) {
-            await connect("keplr-extension");
-            return;
+        const offlineSigner = window.keplr.getOfflineSigner(STARGAZE_CHAIN_ID);
+        const accounts = await offlineSigner.getAccounts();
+        if (!accounts[0].address) {
+            window.keplr.enable("stargaze")
         }
         try {
-            if (!address) throw new Error("Address not defined");
-            setValue("stars_address", address, { shouldValidate: true });
+            if (!accounts[0].address) throw new Error("Address not defined");
+            setValue("stars_address", accounts[0].address, { shouldValidate: true });
             setIsAutofilled(true);  // Set autofilled to true when an address is imported
         } catch (e) {
             setIsAutofilled(false);  // Reset autofilled to false on error
@@ -46,10 +44,8 @@ export const InputStarsAddress: React.FC<InputProps> = ({
                 description: (
                     <Text>
                         <>
-                            <Link href="https://www.keplr.app/download" passHref={true}>
-                                <a target="_blank" style={{ color: 'white' }}>
-                                    Please install Keplr extension
-                                </a>
+                            <Link href="https://www.keplr.app/download" target="_blank" passHref={true} style={{ color: 'white' }}>
+                                Please install Keplr extension
                             </Link>
                         </>
                     </Text>

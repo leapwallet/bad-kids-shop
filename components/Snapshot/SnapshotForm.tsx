@@ -6,6 +6,7 @@ import { useChain } from '@cosmos-kit/react';
 import { InputEthereumAddress } from './InputEthereumAddress';
 import { InputStarsAddress } from './InputStarsAddress';
 import { signWithKeplr } from '../../utlis/keplr';
+import { STARGAZE_CHAIN_ID } from './SnapshotCard';
 interface SnapshotFormProps {
     wrongNetwork: boolean
 }
@@ -28,7 +29,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
 
     const [registrationMessage, setRegistrationMessage] = useState("")
 
-    const { connect, isWalletConnected, getOfflineSignerDirect } = useChain("stargaze");
+    const { connect, isWalletConnected, getOfflineSignerDirect } = useChain(STARGAZE_CHAIN_ID);
 
     useEffect(() => {
         const checkRegistration = async () => {

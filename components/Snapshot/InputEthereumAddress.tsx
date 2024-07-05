@@ -24,7 +24,7 @@ export const InputEthereumAddress: React.FC<
     const isError = !!getFieldState("eth_address").error;
 
 
-    const { address, isConnected, isConnecting } = useAccount()
+    const { address } = useAccount()
     const { connect } = useConnect({
         connector: new InjectedConnector(),
     })
@@ -42,8 +42,8 @@ export const InputEthereumAddress: React.FC<
         try {
             if (!address) {
                 connect();
-                return;
             }
+            if (!address) return
             setValue("eth_address", address, {
                 shouldValidate: true,
             });
