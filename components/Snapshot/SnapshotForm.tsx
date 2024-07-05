@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useForm, FormProvider } from "react-hook-form"
 import { useAccount as useEthereumAccount } from "wagmi"
-import { Stack, Text, Box, Button, Input, useToast } from "@chakra-ui/react"
+import { Stack, Text, Button, useToast } from "@chakra-ui/react"
 import { signWithKeplr } from '../../utlis/keplr';
 import { useChain } from '@cosmos-kit/react';
 import { InputEthereumAddress } from './InputEthereumAddress';
@@ -27,9 +27,6 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
 
 
     const [registrationMessage, setRegistrationMessage] = useState("")
-    const [stakedSommTokens, setStakedSommTokens] = useState<
-        number | null
-    >(null)
 
     const { getOfflineSignerDirect, connect, isWalletConnected } = useChain("stargaze");
 
@@ -63,11 +60,6 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
 
         checkRegistration()
     }, [isEthereumConnected, wrongNetwork, ethAddress, sommAddress])
-
-    // if (!isEthereumConnected || wrongNetwork || !isWalletConnected) {
-    //     connect();
-    //     return <></>;
-    // }
 
     const onSubmit = async (data: SnapshotFormValues) => {
         if (!isEthereumConnected || wrongNetwork) {
@@ -180,10 +172,6 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
 
                     <InputEthereumAddress />
                     <InputSommelierAddress />
-                    <Text color="white">
-                        {stakedSommTokens !== null &&
-                            `Staked SOMM tokens: ${stakedSommTokens}`}
-                    </Text>
                     <Button
                         height="69px"
                         fontSize="21px"

@@ -9,20 +9,20 @@ import {
     useToast,
 } from "@chakra-ui/react"
 import { isAddress } from 'viem'
-import React, { useState } from "react"
+import React from "react"
 import { useFormContext } from "react-hook-form"
-import { useAccount } from "wagmi"
 import { SnapshotFormValues } from './SnapshotCard';
+import { useChain } from '@cosmos-kit/react';
 
 export const InputEthereumAddress: React.FC<
     InputProps & { disabled?: boolean }
 > = ({ disabled, ...rest }) => {
     const toast = useToast()
-    const { register, setValue, getValues, getFieldState } =
+    const { register, setValue, getFieldState } =
         useFormContext<SnapshotFormValues>()
     const isError = !!getFieldState("eth_address").error
-    const [isActive, setActive] = useState(false)
-    const { address, isConnected } = useAccount()
+
+    const { username: address } = useChain("stargaze");
 
     const onAutofillClick = async () => {
         try {
@@ -59,8 +59,6 @@ export const InputEthereumAddress: React.FC<
                 </HStack>
             </HStack>
             <Box
-                onFocus={() => setActive(true)}
-                onBlur={() => setActive(false)}
                 boxShadow={isError ? "redOutline1" : "purpleOutline1"}
                 borderRadius="16px"
             >

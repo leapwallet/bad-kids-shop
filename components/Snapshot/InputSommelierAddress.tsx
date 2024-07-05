@@ -21,12 +21,11 @@ export const InputSommelierAddress: React.FC<InputProps> = ({
                                                                 ...rest
                                                             }) => {
     const toast = useToast()
-    const { register, setValue, getValues, getFieldState } =
+    const { register, setValue, getFieldState } =
         useFormContext<SnapshotFormValues>()
     const isError = !!getFieldState("somm_address").error
     const { getOfflineSignerDirect, connect, isWalletConnected } =
-        useChain("stargaze");
-
+        useChain("sommelier");
 
     const onAutofillClick = async () => {
         if (!isWalletConnected) {
