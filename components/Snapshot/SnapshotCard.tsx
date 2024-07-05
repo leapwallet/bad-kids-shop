@@ -89,7 +89,7 @@ export const SnapshotCard: React.FC = () => {
         Snapshot
     </Heading>
                     <Text mb={4} color="white">
-                        Link your wallets for bonus SOMM rewards and/or participate in partner campaigns.
+                        Link your wallets for bonus rewards and/or participate in partner campaigns.
                     </Text>
                     <br />
                     <FormProvider {...methods}>

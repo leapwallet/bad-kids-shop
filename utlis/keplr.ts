@@ -1,4 +1,5 @@
 import { OfflineDirectSigner } from '@cosmjs/proto-signing';
+import { log } from 'console';
 
 export const signWithKeplr = async (
   signer: OfflineDirectSigner,
@@ -9,6 +10,7 @@ export const signWithKeplr = async (
   if (!window.keplr) {
     throw new Error("Please install Keplr extension")
   }
+  console.log(signer)
 
   const chainId = "stargaze"
   await window.keplr.enable(chainId)
@@ -20,10 +22,11 @@ export const signWithKeplr = async (
   }
 
   const accounts = await signer.getAccounts()
+  console.log(signer)
 
   if (accounts[0].address !== sommelierAddress) {
     throw new Error(
-      "Keplr account does not match the provided Sommelier address"
+      "Keplr account does not match the provided Stargaze address"
     )
   }
 
@@ -32,8 +35,13 @@ export const signWithKeplr = async (
     starsAddress: starsAddress,
   }
 
+
   // Serialize the message content to a string for signing
   const message = JSON.stringify(messageContent)
+  console.log(chainId)
+  console.log(accounts[0].address)
+  console.log(message)
+  console.log(window.keplr)
 
   // Sign the message
   const { signature } = await window.keplr.signArbitrary(
@@ -41,6 +49,7 @@ export const signWithKeplr = async (
     accounts[0].address,
     message
   )
+  console.log(signature)
 
   // Obtain the public key in Base64 format
   const pubKey = Buffer.from(accounts[0].pubkey).toString("base64")
@@ -56,6 +65,7 @@ export const signWithKeplr = async (
     pubKey: pubKey,
     data: dataString, // Add this line
   }
+  console.log(messageBundle)
 
   return messageBundle
 }
