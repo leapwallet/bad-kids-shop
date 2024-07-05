@@ -54,7 +54,7 @@ export function Header({
       <Image
         src={CelestineSlothsSociety}
         alt="celestine-sloths"
-        className="flex w-[70%] sm:w-[20%]"
+        className="flex w-[70%] sm:w-[20%] cursor-pointer"
         onClick={() => {
           router.push('/');
         }}
