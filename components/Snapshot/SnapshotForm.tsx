@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react"
 import { useForm, FormProvider } from "react-hook-form"
 import { useAccount as useEthereumAccount } from "wagmi"
 import { Stack, Text, Button, useToast } from "@chakra-ui/react"
-import { signWithKeplr } from '../../utlis/keplr';
 import { useChain } from '@cosmos-kit/react';
 import { InputEthereumAddress } from './InputEthereumAddress';
-import { InputSommelierAddress } from './InputSommelierAddress';
+import { InputStarsAddress } from './InputStarsAddress';
+import { signWithKeplr } from '../../utlis/keplr';
 interface SnapshotFormProps {
     wrongNetwork: boolean
 }
@@ -28,7 +28,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
 
     const [registrationMessage, setRegistrationMessage] = useState("")
 
-    const { getOfflineSignerDirect, connect, isWalletConnected } = useChain("stargaze");
+    const { connect, isWalletConnected, getOfflineSignerDirect } = useChain("stargaze");
 
     useEffect(() => {
         const checkRegistration = async () => {
@@ -84,9 +84,9 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
                     starsAddress: data.stars_address,
                 }),
             })
-            
+
             const checkData = await checkResponse.json()
-            
+
             if (checkResponse.status === 409) {
                 toast({
                     title: "Already Registered",
@@ -98,6 +98,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
                     isClosable: true,
                     duration: null,
                 })
+                return;
             } else if (!checkResponse.ok) {
                 throw new Error(
                     checkData.message || "Failed to check registration"
@@ -169,10 +170,10 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
             <form onSubmit={methods.handleSubmit(onSubmit)}>
                 <Stack spacing={4}>
                     <Text color="white">{registrationMessage ?? ""}</Text>
-    
+
                     <InputEthereumAddress />
                     <br />
-                    <InputSommelierAddress />
+                    <InputStarsAddress />
                     <Button
                         height="69px"
                         fontSize="21px"
@@ -193,7 +194,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
             </form>
         </FormProvider>
     )
-    
+
 }
 
 export default SnapshotForm

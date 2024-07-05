@@ -12,11 +12,11 @@ import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import Link from 'next/link';
 import { SnapshotFormValues } from './SnapshotCard';
-import { useChain } from '@cosmos-kit/react';
+import { useChain, useWallet } from '@cosmos-kit/react';
 import KeplrLogo from "../../public/keplr.png";
 import Image from "next/image";
 
-export const InputSommelierAddress: React.FC<InputProps> = ({
+export const InputStarsAddress: React.FC<InputProps> = ({
     children,
     ...rest
 }) => {
@@ -24,21 +24,19 @@ export const InputSommelierAddress: React.FC<InputProps> = ({
     const { register, setValue, getFieldState } =
         useFormContext<SnapshotFormValues>();
     const isError = !!getFieldState("stars_address").error;
-    const { getOfflineSignerDirect, connect, isWalletConnected } =
+    const { connect, isWalletConnected, address } =
         useChain("stargaze");
 
     const [isAutofilled, setIsAutofilled] = useState(false);  // State to track autofill
 
     const onAutofillClick = async () => {
         if (!isWalletConnected) {
-            await connect();
+            await connect("keplr-extension");
             return;
         }
         try {
-            const signer = getOfflineSignerDirect();
-            const accounts = await signer.getAccounts();
-            if (!accounts[0] || !accounts[0].address) throw new Error("Address not defined");
-            setValue("stars_address", accounts[0].address, { shouldValidate: true });
+            if (!address) throw new Error("Address not defined");
+            setValue("stars_address", address, { shouldValidate: true });
             setIsAutofilled(true);  // Set autofilled to true when an address is imported
         } catch (e) {
             setIsAutofilled(false);  // Reset autofilled to false on error
