@@ -8,8 +8,8 @@ import {
     Box,
     useToast,
 } from "@chakra-ui/react";
-import { isAddress } from 'viem'; // Ensure this is the correct import
-import React, { useState } from "react";
+import { isAddress } from 'viem';
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { SnapshotFormValues } from './SnapshotCard';
 import { useAccount, useConnect } from 'wagmi';
@@ -24,24 +24,26 @@ export const InputEthereumAddress: React.FC<
     const isError = !!getFieldState("eth_address").error;
 
 
-    const { address } = useAccount()
+    const { address, isConnected, isConnecting } = useAccount()
     const { connect } = useConnect({
         connector: new InjectedConnector(),
     })
+    useEffect(() => {
+        if(address) {
+            setValue("eth_address", address, {
+                shouldValidate: true,
+            });
+        }
+    }, [address]);
+
     const [isAutofilled, setIsAutofilled] = useState(false);
 
     const onAutofillClick = async () => {
         try {
             if (!address) {
-                toast({
-                    title: "Connect Wallet",
-                    description: <button onClick={() => connect()}>Connect Wallet</button>,
-                    status: "error",
-                    isClosable: true,
-                })
-                if(!address) throw new Error("No wallet connected")
+                connect();
+                return;
             }
-            if (!address) throw new Error("No wallet connected");
             setValue("eth_address", address, {
                 shouldValidate: true,
             });

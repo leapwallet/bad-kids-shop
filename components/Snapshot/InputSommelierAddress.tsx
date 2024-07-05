@@ -31,7 +31,7 @@ export const InputSommelierAddress: React.FC<InputProps> = ({
 
     const onAutofillClick = async () => {
         if (!isWalletConnected) {
-            connect();
+            await connect();
             return;
         }
         try {
