@@ -7,44 +7,47 @@ import {
     FormErrorMessage,
     Box,
     useToast,
-} from "@chakra-ui/react"
-import { isAddress } from 'viem'
-import React from "react"
-import { useFormContext } from "react-hook-form"
+} from "@chakra-ui/react";
+import { isAddress } from 'viem'; // Ensure this is the correct import
+import React, { useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { SnapshotFormValues } from './SnapshotCard';
 import { useChain } from '@cosmos-kit/react';
 
 export const InputEthereumAddress: React.FC<
     InputProps & { disabled?: boolean }
 > = ({ disabled, ...rest }) => {
-    const toast = useToast()
+    const toast = useToast();
     const { register, setValue, getFieldState } =
-        useFormContext<SnapshotFormValues>()
-    const isError = !!getFieldState("eth_address").error
+        useFormContext<SnapshotFormValues>();
+    const isError = !!getFieldState("eth_address").error;
 
+    const [isAutofilled, setIsAutofilled] = useState(false);
     const { username: address } = useChain("stargaze");
 
     const onAutofillClick = async () => {
         try {
-            if (!address) throw new Error("No wallet connected")
+            if (!address) throw new Error("No wallet connected");
             setValue("eth_address", address, {
                 shouldValidate: true,
-            })
+            });
+            setIsAutofilled(true); // Set autofilled to true
         } catch (e) {
-            const error = e as Error
+            setIsAutofilled(false); // Ensure autofill is set to false on error
+            const error = e as Error;
             toast({
                 title: "Import from Wallet",
-                description: <Text>{error.message}</Text>,
+                description: <Text color="white">{error.message}</Text>,
                 status: "error",
                 isClosable: true,
-            })
+            });
         }
-    }
+    };
 
     return (
         <Stack spacing={2}>
             <HStack justifyContent="space-between">
-                <Text fontWeight="bold" color="neutral.400" fontSize="xs">
+                <Text fontWeight="bold" color="white" fontSize="sm">
                     Ethereum Address
                 </Text>
                 <HStack
@@ -52,8 +55,9 @@ export const InputEthereumAddress: React.FC<
                     type="button"
                     spacing={1}
                     onClick={onAutofillClick}
+                    color="white"
                 >
-                    <Text fontWeight="bold" color="white" fontSize="xs">
+                    <Text fontWeight="bold" fontSize="sm">
                         Import ETH address
                     </Text>
                 </HStack>
@@ -65,9 +69,10 @@ export const InputEthereumAddress: React.FC<
                 <Input
                     id="eth_address"
                     placeholder="Ethereum address"
-                    fontSize="xs"
+                    fontSize="sm"
                     fontWeight={700}
-                    backgroundColor="surface.tertiary"
+                    backgroundColor="gray.950"
+                    color={isAutofilled ? "black" : "white"} // Conditionally render the color
                     variant="unstyled"
                     borderRadius="16px"
                     px={4}
@@ -90,9 +95,9 @@ export const InputEthereumAddress: React.FC<
                 <FormErrorMessage>
                     <HStack spacing="6px">
                         <Text
-                            fontSize="xs"
+                            fontSize="sm"
                             fontWeight="semibold"
-                            color="red.light"
+                            color="red.300"
                         >
                             Ethereum address is not valid—make sure it is correct.
                         </Text>
@@ -100,5 +105,5 @@ export const InputEthereumAddress: React.FC<
                 </FormErrorMessage>
             )}
         </Stack>
-    )
-}
+    );
+};
