@@ -10,18 +10,18 @@ export default async function handler(
     return res.status(405).end("Method Not Allowed")
   }
 
-  const { ethAddress, sommAddress } = req.body
+  const { ethAddress, starsAddress } = req.body
 
-  const existingSommRegistration = await kv.get(`somm:${sommAddress}`)
+  const existingSommRegistration = await kv.get(`stars:${starsAddress}`)
   const existingEthRegistration = await kv.get(`eth:${ethAddress}`)
 
   let message = ""
   if (existingSommRegistration && existingEthRegistration) {
-    message = `Both your ETH address ${ethAddress} and SOMM address ${sommAddress} are already registered.`
+    message = `Both your ETH address ${ethAddress} and SOMM address ${starsAddress} are already registered.`
   } else if (existingEthRegistration) {
     message = `The ETH address ${ethAddress} is already registered.`
   } else if (existingSommRegistration) {
-    message = `The SOMM address ${sommAddress} is already registered.`
+    message = `The SOMM address ${starsAddress} is already registered.`
   }
 
   if (message) {

@@ -90,7 +90,6 @@ export const Layout = ({ children, ...rest }: FlexProps) => {
     };
 
     return (
-        <Box>
             <Box display="block">
                 <Flex minH="100vh" flexDir="column" {...rest}>
                     <Header
@@ -116,6 +115,5 @@ export const Layout = ({ children, ...rest }: FlexProps) => {
                     />
                 </Flex>
             </Box>
-        </Box>
     )
 }

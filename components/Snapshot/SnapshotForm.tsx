@@ -12,7 +12,7 @@ interface SnapshotFormProps {
 
 export interface SnapshotFormValues {
     eth_address: string
-    somm_address: string
+    stars_address: string
 }
 
 const SnapshotForm: React.FC<SnapshotFormProps> = ({
@@ -21,8 +21,8 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
     const methods = useForm<SnapshotFormValues>()
     const { isConnected: isEthereumConnected } = useEthereumAccount()
     const ethAddress = methods.watch("eth_address")
-    const sommAddress = methods.watch("somm_address")
-    const isFormFilled = ethAddress && sommAddress
+    const starsAddress = methods.watch("stars_address")
+    const isFormFilled = ethAddress && starsAddress
     const toast = useToast()
 
 
@@ -40,7 +40,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         ethAddress: ethAddress,
-                        sommAddress: sommAddress,
+                        starsAddress: starsAddress,
                     }),
                 })
 
@@ -59,7 +59,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
         }
 
         checkRegistration()
-    }, [isEthereumConnected, wrongNetwork, ethAddress, sommAddress])
+    }, [isEthereumConnected, wrongNetwork, ethAddress, starsAddress])
 
     const onSubmit = async (data: SnapshotFormValues) => {
         if (!isEthereumConnected || wrongNetwork) {
@@ -81,7 +81,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     ethAddress: data.eth_address,
-                    sommAddress: data.somm_address,
+                    starsAddress: data.stars_address,
                 }),
             })
             
@@ -118,16 +118,16 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
                 data: encodedData,
             } = await signWithKeplr(
                 signer,
-                data.somm_address,
+                data.stars_address,
                 data.eth_address,
-                data.somm_address
+                data.stars_address
             )
 
             const response = await fetch("/api/saveSignedMessage", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    sommAddress: data.somm_address,
+                    starsAddress: data.stars_address,
                     ethAddress: data.eth_address,
                     signature,
                     pubKey,

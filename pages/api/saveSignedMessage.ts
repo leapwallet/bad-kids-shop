@@ -1,4 +1,3 @@
-//Users/henriots/Desktop/sommelier-strangelove/src/pages/api/saveSignedMessage.ts
 import { NextApiRequest, NextApiResponse } from "next"
 import { kv } from "@vercel/kv"
 import { verifyADR36Amino } from "@keplr-wallet/cosmos"
@@ -13,12 +12,12 @@ export default async function handler(
   }
 
   try {
-    const { sommAddress, ethAddress, signature, pubKey, data } =
+    const { starsAddress, ethAddress, signature, pubKey, data } =
       req.body
 
     // Ensure all required fields are present, including the 'data' field now
     if (
-      !sommAddress ||
+      !starsAddress ||
       !ethAddress ||
       !signature ||
       !pubKey ||
@@ -32,7 +31,7 @@ export default async function handler(
     // Reconstruct the message using known valid fields
     const reconstructedMessage = JSON.stringify({
       ethAddress,
-      sommAddress,
+      starsAddress,
     })
 
     // Decode the public key and signature from Base64
@@ -41,8 +40,8 @@ export default async function handler(
 
     // Verify the signature against the reconstructed message
     const isValidSignature = await verifyADR36Amino(
-      "somm", // Your chain's Bech32 prefix
-      sommAddress,
+      "stars", // Your chain's Bech32 prefix
+      starsAddress,
       reconstructedMessage, // Use the reconstructed message for verification
       decodedPubKey,
       decodedSignature,
@@ -55,10 +54,10 @@ export default async function handler(
 
     // Save data after successful validation, including the 'data' field
     await kv.set(
-      `somm:${sommAddress}`,
+      `stars:${starsAddress}`,
       JSON.stringify({ ethAddress, signature, data }) // 'data' is included here
     )
-    await kv.set(`eth:${ethAddress}`, sommAddress)
+    await kv.set(`eth:${ethAddress}`, starsAddress)
 
     return res
       .status(200)

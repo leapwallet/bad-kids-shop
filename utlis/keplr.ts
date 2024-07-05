@@ -4,7 +4,7 @@ export const signWithKeplr = async (
   signer: OfflineDirectSigner,
   sommelierAddress: string,
   ethAddress: string,
-  sommAddress: string
+  starsAddress: string
 ) => {
   if (!window.keplr) {
     throw new Error("Please install Keplr extension")
@@ -29,7 +29,7 @@ export const signWithKeplr = async (
 
   const messageContent = {
     ethAddress: ethAddress,
-    sommAddress: sommAddress,
+    starsAddress: starsAddress,
   }
 
   // Serialize the message content to a string for signing

@@ -6,7 +6,7 @@ import SnapshotForm from './SnapshotForm';
 
 export interface SnapshotFormValues {
     eth_address: string;
-    somm_address: string;
+    stars_address: string;
 }
 
 export const SnapshotCard: React.FC = () => {
@@ -16,7 +16,7 @@ export const SnapshotCard: React.FC = () => {
     const methods = useForm<SnapshotFormValues>({
         defaultValues: {
             eth_address: "",
-            somm_address: "",
+            stars_address: "",
         },
     });
 

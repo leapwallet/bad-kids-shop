@@ -23,7 +23,7 @@ export const InputSommelierAddress: React.FC<InputProps> = ({
     const toast = useToast();
     const { register, setValue, getFieldState } =
         useFormContext<SnapshotFormValues>();
-    const isError = !!getFieldState("somm_address").error;
+    const isError = !!getFieldState("stars_address").error;
     const { getOfflineSignerDirect, connect, isWalletConnected } =
         useChain("stargaze");
 
@@ -38,7 +38,7 @@ export const InputSommelierAddress: React.FC<InputProps> = ({
             const signer = getOfflineSignerDirect();
             const accounts = await signer.getAccounts();
             if (!accounts[0] || !accounts[0].address) throw new Error("Address not defined");
-            setValue("somm_address", accounts[0].address, { shouldValidate: true });
+            setValue("stars_address", accounts[0].address, { shouldValidate: true });
             setIsAutofilled(true);  // Set autofilled to true when an address is imported
         } catch (e) {
             setIsAutofilled(false);  // Reset autofilled to false on error
@@ -103,7 +103,7 @@ export const InputSommelierAddress: React.FC<InputProps> = ({
                     py={6}
                     maxH="64px"
                     type="text"
-                    {...register("somm_address", {
+                    {...register("stars_address", {
                         required: "Enter Stargaze address",
                     })}
                     autoComplete="off"
