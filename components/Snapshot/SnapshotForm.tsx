@@ -177,6 +177,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
                             {isFormFilled && isEthereumConnected && isWalletConnected && !wrongNetwork ? "Sign" : "Fill all fields"}
                         </Button>
                     </Box>
+                    <br />
                     <Text color="white">
                         Re-link to update with a new wallet at any time.
                     </Text>
