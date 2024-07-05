@@ -171,6 +171,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
                     <Text color="white">{registrationMessage ?? ""}</Text>
     
                     <InputEthereumAddress />
+                    <br />
                     <InputSommelierAddress />
                     <Button
                         height="69px"
