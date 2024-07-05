@@ -101,8 +101,7 @@ export const Layout = ({ children, ...rest }: FlexProps) => {
                     <Container
                         as="main"
                         flex={1}
-                        pt={40}
-                        maxW="1300px"
+                        pt={5}
                         px={{ base: 0, sm: 4 }}
                     >
                         {children}
