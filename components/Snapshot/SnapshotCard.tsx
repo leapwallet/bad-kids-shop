@@ -73,18 +73,25 @@ export const SnapshotCard: React.FC = () => {
                     w="full"
                     boxShadow="-11px 15px 23.4px 0px rgba(0, 0, 0, 0.41)"
                     px={{ base: 5, md: 12 }}
-                    pt="52px"
+                    pt="150px"
                     pb="48px"
                     borderRadius={{ base: "32px", md: "40px" }}
                     mx={4}
                     backgroundColor="gray.950"
                 >
-                    <Heading as="h4" size="lg" mb={4} color="white">
-                        Snapshot
-                    </Heading>
+    <Heading
+        textAlign="center"
+        mb={20}
+        color="white"
+         fontWeight="bold"
+
+    >
+        Snapshot
+    </Heading>
                     <Text mb={4} color="white">
                         Link your wallets for bonus SOMM rewards and/or participate in partner campaigns.
                     </Text>
+                    <br />
                     <FormProvider {...methods}>
                         <SnapshotForm wrongNetwork={isWrongNetwork} labelColor="white" />
                     </FormProvider>
