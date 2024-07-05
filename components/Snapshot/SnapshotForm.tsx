@@ -76,33 +76,33 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
         }
 
         try {
-            // const checkResponse = await fetch("/api/checkRegistration", {
-            //     method: "POST",
-            //     headers: { "Content-Type": "application/json" },
-            //     body: JSON.stringify({
-            //         ethAddress: data.eth_address,
-            //         sommAddress: data.somm_address,
-            //     }),
-            // })
-            //
-            // const checkData = await checkResponse.json()
-            //
-            // if (checkResponse.status === 409) {
-            //     toast({
-            //         title: "Already Registered",
-            //         status: "warning",
-            //         description: (
-            //             `${checkData.message}. You can still proceed to sign and
-            //                     update your registration.`
-            //         ),
-            //         isClosable: true,
-            //         duration: null,
-            //     })
-            // } else if (!checkResponse.ok) {
-            //     throw new Error(
-            //         checkData.message || "Failed to check registration"
-            //     )
-            // }
+            const checkResponse = await fetch("/api/checkRegistration", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    ethAddress: data.eth_address,
+                    sommAddress: data.somm_address,
+                }),
+            })
+            
+            const checkData = await checkResponse.json()
+            
+            if (checkResponse.status === 409) {
+                toast({
+                    title: "Already Registered",
+                    status: "warning",
+                    description: (
+                        `${checkData.message}. You can still proceed to sign and
+                                update your registration.`
+                    ),
+                    isClosable: true,
+                    duration: null,
+                })
+            } else if (!checkResponse.ok) {
+                throw new Error(
+                    checkData.message || "Failed to check registration"
+                )
+            }
 
             if (!isWalletConnected) {
                 connect();
@@ -169,7 +169,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
             <form onSubmit={methods.handleSubmit(onSubmit)}>
                 <Stack spacing={4}>
                     <Text color="white">{registrationMessage ?? ""}</Text>
-
+    
                     <InputEthereumAddress />
                     <InputSommelierAddress />
                     <Button
@@ -177,6 +177,8 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
                         fontSize="21px"
                         type="submit"
                         colorScheme="purple"
+                        color="white" // Explicitly setting the text color to white
+                        _hover={{ bg: 'purple.600' }} // Adjust hover background as necessary
                         isDisabled={
                             !isEthereumConnected || wrongNetwork || !isFormFilled || !isWalletConnected
                         }
@@ -190,6 +192,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
             </form>
         </FormProvider>
     )
+    
 }
 
 export default SnapshotForm
