@@ -12,7 +12,8 @@ import { isAddress } from 'viem'
 import React from "react"
 import { useFormContext } from "react-hook-form"
 import { SnapshotFormValues } from './SnapshotCard';
-import { useChain } from '@cosmos-kit/react';
+import { useAccount, useConnect } from 'wagmi';
+import { InjectedConnector } from '@wagmi/connectors/injected';
 
 export const InputEthereumAddress: React.FC<
     InputProps & { disabled?: boolean }
@@ -22,11 +23,23 @@ export const InputEthereumAddress: React.FC<
         useFormContext<SnapshotFormValues>()
     const isError = !!getFieldState("eth_address").error
 
-    const { username: address } = useChain("stargaze");
+    const { address } = useAccount()
+    const { connect } = useConnect({
+        connector: new InjectedConnector(),
+    })
 
     const onAutofillClick = async () => {
+
         try {
-            if (!address) throw new Error("No wallet connected")
+            if (!address) {
+                toast({
+                    title: "Connect Wallet",
+                    description: <button onClick={() => connect()}>Connect Wallet</button>,
+                    status: "error",
+                    isClosable: true,
+                })
+                if(!address) throw new Error("No wallet connected")
+            }
             setValue("eth_address", address, {
                 shouldValidate: true,
             })

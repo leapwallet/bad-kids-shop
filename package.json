@@ -53,7 +53,8 @@
     "react-select": "^5.8.0",
     "stargazejs": "^0.14.1",
     "viem": "^1.21.4",
-    "wagmi": "1.4.13"
+    "wagmi": "1.4.13",
+    "@vercel/kv": "^1.0.1"
   },
   "devDependencies": {
     "@types/node": "18.11.9",
