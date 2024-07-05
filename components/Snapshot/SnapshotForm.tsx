@@ -1,38 +1,35 @@
-import React, { useState, useEffect } from "react"
-import { useForm, FormProvider } from "react-hook-form"
-import { useAccount as useEthereumAccount } from "wagmi"
-import { Stack, Text, Button, useToast } from "@chakra-ui/react"
+import React, { useState, useEffect } from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import { useAccount as useEthereumAccount } from "wagmi";
+import { Stack, Text, Button, useToast, Box } from "@chakra-ui/react";
 import { useChain } from '@cosmos-kit/react';
 import { InputEthereumAddress } from './InputEthereumAddress';
 import { InputStarsAddress } from './InputStarsAddress';
 import { signWithKeplr } from '../../utlis/keplr';
+
 interface SnapshotFormProps {
-    wrongNetwork: boolean
+    wrongNetwork: boolean;
 }
 
 export interface SnapshotFormValues {
-    eth_address: string
-    stars_address: string
+    eth_address: string;
+    stars_address: string;
 }
 
-const SnapshotForm: React.FC<SnapshotFormProps> = ({
-                                                       wrongNetwork,
-                                                   }) => {
-    const methods = useForm<SnapshotFormValues>()
-    const { isConnected: isEthereumConnected } = useEthereumAccount()
-    const ethAddress = methods.watch("eth_address")
-    const starsAddress = methods.watch("stars_address")
-    const isFormFilled = ethAddress && starsAddress
-    const toast = useToast()
-
-
-    const [registrationMessage, setRegistrationMessage] = useState("")
+const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
+    const methods = useForm<SnapshotFormValues>();
+    const { isConnected: isEthereumConnected } = useEthereumAccount();
+    const ethAddress = methods.watch("eth_address");
+    const starsAddress = methods.watch("stars_address");
+    const isFormFilled = ethAddress && starsAddress;
+    const toast = useToast();
+    const [registrationMessage, setRegistrationMessage] = useState("");
 
     const { connect, isWalletConnected, getOfflineSignerDirect } = useChain("stargaze");
 
     useEffect(() => {
         const checkRegistration = async () => {
-            if (!isEthereumConnected || wrongNetwork) return
+            if (!isEthereumConnected || wrongNetwork) return;
 
             try {
                 const checkResponse = await fetch("/api/checkRegistration", {
@@ -42,37 +39,35 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
                         ethAddress: ethAddress,
                         starsAddress: starsAddress,
                     }),
-                })
+                });
 
-                const checkData = await checkResponse.json()
+                const checkData = await checkResponse.json();
 
                 if (checkResponse.status === 409) {
-                    setRegistrationMessage(checkData.message)
+                    setRegistrationMessage(checkData.message);
                 } else if (!checkResponse.ok) {
                     throw new Error(
                         checkData.message || "Failed to check registration"
-                    )
+                    );
                 }
             } catch (error) {
-                console.error("Error checking registration: ", error)
+                console.error("Error checking registration: ", error);
             }
-        }
+        };
 
-        checkRegistration()
-    }, [isEthereumConnected, wrongNetwork, ethAddress, starsAddress])
+        checkRegistration();
+    }, [isEthereumConnected, wrongNetwork, ethAddress, starsAddress]);
 
     const onSubmit = async (data: SnapshotFormValues) => {
         if (!isEthereumConnected || wrongNetwork) {
             toast({
                 title: "Submission Error",
                 status: "error",
-                description: (
-                        "Please check your wallet connection and network."
-                ),
+                description: "Please check your wallet connection and network.",
                 isClosable: true,
                 duration: null,
-            })
-            return
+            });
+            return;
         }
 
         try {
@@ -83,46 +78,38 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
                     ethAddress: data.eth_address,
                     starsAddress: data.stars_address,
                 }),
-            })
+            });
 
-            const checkData = await checkResponse.json()
+            const checkData = await checkResponse.json();
 
             if (checkResponse.status === 409) {
                 toast({
                     title: "Already Registered",
                     status: "warning",
-                    description: (
-                        `${checkData.message}. You can still proceed to sign and
-                                update your registration.`
-                    ),
+                    description: `${checkData.message}. You can still proceed to sign and update your registration.`,
                     isClosable: true,
                     duration: null,
-                })
+                });
                 return;
             } else if (!checkResponse.ok) {
                 throw new Error(
                     checkData.message || "Failed to check registration"
-                )
+                );
             }
 
             if (!isWalletConnected) {
                 connect();
-                return <></>;
+                return;
             }
 
             const signer = getOfflineSignerDirect();
 
-
-            const {
-                signature,
-                pubKey,
-                data: encodedData,
-            } = await signWithKeplr(
+            const { signature, pubKey, data: encodedData } = await signWithKeplr(
                 signer,
                 data.stars_address,
                 data.eth_address,
                 data.stars_address
-            )
+            );
 
             const response = await fetch("/api/saveSignedMessage", {
                 method: "POST",
@@ -134,67 +121,69 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({
                     pubKey,
                     data: encodedData,
                 }),
-            })
+            });
 
             if (!response.ok) {
-                const text = await response.text()
+                const text = await response.text();
                 throw new Error(
                     `HTTP error! status: ${response.status}. Body: ${text}`
-                )
+                );
             }
 
-            const responseData = await response.json()
-            console.log("Response from server:", responseData)
+            const responseData = await response.json();
+            console.log("Response from server:", responseData);
             toast({
                 title: "Success",
                 status: "success",
                 description: "Your addresses have been successfully signed.",
                 isClosable: true,
                 duration: null,
-            })
+            });
         } catch (error) {
-            console.error("Error in form submission: ", error)
+            console.error("Error in form submission: ", error);
             toast({
                 title: "Submission Error",
                 status: "error",
-
                 description: "There was an error during the submission process. Please try again.",
                 isClosable: true,
                 duration: null,
-            })
+            });
         }
-    }
+    };
 
     return (
         <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
                 <Stack spacing={4}>
                     <Text color="white">{registrationMessage ?? ""}</Text>
-
                     <InputEthereumAddress />
                     <br />
                     <InputStarsAddress />
-                    <Button
-                        height="69px"
-                        fontSize="21px"
-                        type="submit"
-                        colorScheme="purple"
-                        color="white" // Explicitly setting the text color to white
-                        _hover={{ bg: 'purple.600' }} // Adjust hover background as necessary
-                        isDisabled={
-                            !isEthereumConnected || wrongNetwork || !isFormFilled || !isWalletConnected
-                        }
-                    >
-                        Sign
-                    </Button>
+                    <br />
+                    <Box display="flex" justifyContent="center" width="100%">
+                        <Button
+                            mt={4}
+                            height="40px"
+                            width="200px"
+                            fontSize="16px"
+                            type="submit"
+                            colorScheme={isFormFilled && isEthereumConnected && isWalletConnected && !wrongNetwork ? "purple" : "gray"}
+                            border="1px solid white"
+                            borderRadius="999px"
+                            color="white"
+                            _hover={isFormFilled && isEthereumConnected && isWalletConnected && !wrongNetwork ? { bg: 'purple.600', borderColor: 'white' } : {}}
+                            isDisabled={!isFormFilled || !isEthereumConnected || !isWalletConnected || wrongNetwork}
+                        >
+                            {isFormFilled && isEthereumConnected && isWalletConnected && !wrongNetwork ? "Sign" : "Fill all fields"}
+                        </Button>
+                    </Box>
                     <Text color="white">
                         Re-link to update with a new wallet at any time.
                     </Text>
                 </Stack>
             </form>
         </FormProvider>
-    )
-
+    );
 }
 
-export default SnapshotForm
+export default SnapshotForm;
