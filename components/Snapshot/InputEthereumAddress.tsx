@@ -9,7 +9,7 @@ import {
     useToast,
 } from "@chakra-ui/react";
 import { isAddress } from 'viem';
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { SnapshotFormValues } from './SnapshotCard';
 import { useAccount, useConnect } from 'wagmi';
@@ -23,7 +23,6 @@ export const InputEthereumAddress: React.FC<
         useFormContext<SnapshotFormValues>();
     const isError = !!getFieldState("eth_address").error;
 
-
     const { address } = useAccount()
     const { connect } = useConnect({
         connector: new InjectedConnector(),
@@ -36,20 +35,15 @@ export const InputEthereumAddress: React.FC<
         }
     }, [address]);
 
-    const [isAutofilled, setIsAutofilled] = useState(false);
-
     const onAutofillClick = async () => {
         try {
             if (!address) {
                 connect();
             }
-            if (!address) return
-            setValue("eth_address", address, {
+            setValue("eth_address", address ?? "", {
                 shouldValidate: true,
             });
-            setIsAutofilled(true); // Set autofilled to true
         } catch (e) {
-            setIsAutofilled(false); // Ensure autofill is set to false on error
             const error = e as Error;
             toast({
                 title: "Import from Wallet",
@@ -88,7 +82,7 @@ export const InputEthereumAddress: React.FC<
                     fontSize="sm"
                     fontWeight={700}
                     backgroundColor="gray.950"
-                    color={isAutofilled ? "black" : "white"} // Conditionally render the color
+                    color="black"
                     variant="unstyled"
                     borderRadius="16px"
                     px={4}

@@ -8,7 +8,7 @@ import {
     Box,
     useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import Link from 'next/link';
 import { SnapshotFormValues, STARGAZE_CHAIN_ID } from './SnapshotCard';
@@ -24,8 +24,6 @@ export const InputStarsAddress: React.FC<InputProps> = ({
         useFormContext<SnapshotFormValues>();
     const isError = !!getFieldState("stars_address").error;
 
-    const [isAutofilled, setIsAutofilled] = useState(false);  // State to track autofill
-
     const onAutofillClick = async () => {
         const offlineSigner = window.keplr.getOfflineSigner(STARGAZE_CHAIN_ID);
         const accounts = await offlineSigner.getAccounts();
@@ -35,9 +33,7 @@ export const InputStarsAddress: React.FC<InputProps> = ({
         try {
             if (!accounts[0].address) throw new Error("Address not defined");
             setValue("stars_address", accounts[0].address, { shouldValidate: true });
-            setIsAutofilled(true);  // Set autofilled to true when an address is imported
         } catch (e) {
-            setIsAutofilled(false);  // Reset autofilled to false on error
             const error = e as Error;
             toast({
                 title: "Keplr not found",
@@ -90,7 +86,7 @@ export const InputStarsAddress: React.FC<InputProps> = ({
                     fontSize="sm"
                     fontWeight={700}
                     backgroundColor="gray.950"
-                    color={isAutofilled ? "black" : "white"}  // Change text color based on autofill state
+                    color="black"
                     variant="unstyled"
                     borderRadius="16px"
                     px={4}
