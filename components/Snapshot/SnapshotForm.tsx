@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import { useAccount as useEthereumAccount } from "wagmi";
 import { Stack, Text, Button, useToast, Box } from "@chakra-ui/react";
-import { useChain } from '@cosmos-kit/react';
 import { InputEthereumAddress } from './InputEthereumAddress';
 import { InputStarsAddress } from './InputStarsAddress';
 import { signWithKeplr } from '../../utlis/keplr';
-import { STARGAZE_CHAIN_ID } from './SnapshotCard';
 interface SnapshotFormProps {
     wrongNetwork: boolean;
 }
@@ -18,18 +15,15 @@ export interface SnapshotFormValues {
 
 const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
     const methods = useForm<SnapshotFormValues>();
-    const { isConnected: isEthereumConnected } = useEthereumAccount();
     const ethAddress = methods.watch("eth_address");
     const starsAddress = methods.watch("stars_address");
     const isFormFilled = ethAddress && starsAddress;
     const toast = useToast();
     const [registrationMessage, setRegistrationMessage] = useState("");
 
-    const { connect, isWalletConnected, getOfflineSignerDirect } = useChain(STARGAZE_CHAIN_ID);
-
     useEffect(() => {
         const checkRegistration = async () => {
-            if (!isEthereumConnected || wrongNetwork) return;
+            if (!wrongNetwork) return;
 
             try {
                 const checkResponse = await fetch("/api/checkRegistration", {
@@ -56,10 +50,10 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
         };
 
         checkRegistration();
-    }, [isEthereumConnected, wrongNetwork, ethAddress, starsAddress]);
+    }, [wrongNetwork, ethAddress, starsAddress]);
 
     const onSubmit = async (data: SnapshotFormValues) => {
-        if (!isEthereumConnected || wrongNetwork) {
+        if (wrongNetwork) {
             toast({
                 title: "Submission Error",
                 status: "error",
@@ -97,16 +91,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
                 );
             }
 
-            if (!isWalletConnected) {
-                connect();
-                return;
-            }
-
-            const signer = getOfflineSignerDirect();
-
             const { signature, pubKey, data: encodedData } = await signWithKeplr(
-                signer,
-                data.stars_address,
                 data.eth_address,
                 data.stars_address
             );
@@ -167,14 +152,14 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
                             width="200px"
                             fontSize="16px"
                             type="submit"
-                            colorScheme={isFormFilled && isEthereumConnected && isWalletConnected && !wrongNetwork ? "purple" : "gray"}
+                            colorScheme={isFormFilled && !wrongNetwork ? "purple" : "gray"}
                             border="1px solid white"
                             borderRadius="999px"
                             color="white"
-                            _hover={isFormFilled && isEthereumConnected && isWalletConnected && !wrongNetwork ? { bg: 'purple.600', borderColor: 'white' } : {}}
-                            isDisabled={!isFormFilled || !isEthereumConnected || !isWalletConnected || wrongNetwork}
+                            _hover={isFormFilled && !wrongNetwork ? { bg: 'purple.600', borderColor: 'white' } : {}}
+                            isDisabled={!isFormFilled || wrongNetwork}
                         >
-                            {isFormFilled && isEthereumConnected && isWalletConnected && !wrongNetwork ? "Sign" : "Fill all fields"}
+                            {isFormFilled && !wrongNetwork ? "Sign" : "Fill all fields"}
                         </Button>
                     </Box>
                     <br />
