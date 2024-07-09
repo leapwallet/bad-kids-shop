@@ -168,16 +168,18 @@ export function ConnectWalletSideCurtainContent({
                 </div>
             </div>
             <div className="flex w-full flex-col pb-6">
-                <div className="flex flex-row items-center justify-start gap-1">
-                    <Text
-                        size="sm"
-                        color="text-black-100 dark:text-white-100"
-                        className="pl-6 pr-3 py-3"
-                    >
-                        New to Cosmos
-                    </Text>
-                    <HorizontalDivider outerClassName="flex-1 pr-6" />
-                </div>
+                {filteredWallets && filteredWallets?.length >= 3 && (
+                    <div className="flex flex-row items-center justify-start gap-1">
+                        <Text
+                            size="sm"
+                            color="text-black-100 dark:text-white-100"
+                            className="pl-6 pr-3 py-3"
+                        >
+                            New to Cosmos
+                        </Text>
+                        <HorizontalDivider outerClassName="flex-1 pr-6" />
+                    </div>
+                )}
                 {[
                     filteredWallets[2],
                     // {
