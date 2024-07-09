@@ -168,7 +168,7 @@ export function ConnectWalletSideCurtainContent({
                 </div>
             </div>
             <div className="flex w-full flex-col pb-6">
-                {filteredWallets && filteredWallets?.length >= 3 && (
+                {!router?.pathname?.includes("snapshot") && (
                     <div className="flex flex-row items-center justify-start gap-1">
                         <Text
                             size="sm"
