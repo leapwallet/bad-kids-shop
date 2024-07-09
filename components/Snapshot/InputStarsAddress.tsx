@@ -1,19 +1,17 @@
 import {
-    Stack,
-    Input,
-    Text,
-    HStack,
-    InputProps,
-    FormErrorMessage,
     Box,
+    FormErrorMessage,
+    HStack,
+    Input,
+    InputProps,
+    Stack,
+    Text,
     useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import { useChain } from "@cosmos-kit/react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import Link from 'next/link';
-import { SnapshotFormValues, STARGAZE_CHAIN_ID } from './SnapshotCard';
-import KeplrLogo from "../../public/keplr.png";
-import Image from "next/image";
+import { SnapshotFormValues } from "./SnapshotCard";
 
 export const InputStarsAddress: React.FC<InputProps> = ({
     children,
@@ -23,34 +21,35 @@ export const InputStarsAddress: React.FC<InputProps> = ({
     const { register, setValue, getFieldState } =
         useFormContext<SnapshotFormValues>();
     const isError = !!getFieldState("stars_address").error;
+    const { address, openView } = useChain("stargaze");
 
-    const onAutofillClick = async () => {
-        const offlineSigner = window.keplr.getOfflineSigner(STARGAZE_CHAIN_ID);
-        const accounts = await offlineSigner.getAccounts();
-        if (!accounts[0].address) {
-            window.keplr.enable("stargaze")
-        }
-        try {
-            if (!accounts[0].address) throw new Error("Address not defined");
-            setValue("stars_address", accounts[0].address, { shouldValidate: true });
-        } catch (e) {
-            const error = e as Error;
-            toast({
-                title: "Keplr not found",
-                description: (
-                    <Text>
-                        <>
-                            <Link href="https://www.keplr.app/download" target="_blank" passHref={true} style={{ color: 'white' }}>
-                                Please install Keplr extension
-                            </Link>
-                        </>
-                    </Text>
-                ),
-                status: "error",
-                isClosable: true
+    const [lookForAddressChange, setLookForAddressChange] =
+        useState<boolean>(false);
+
+    const onAutofillClick = useCallback(async () => {
+        if (!address) {
+            openView();
+            setLookForAddressChange(true);
+        } else {
+            setValue("stars_address", address, {
+                shouldValidate: true,
             });
+            setLookForAddressChange(false);
         }
-    };
+    }, [address, openView, setValue, setLookForAddressChange]);
+
+    useEffect(() => {
+        if (!lookForAddressChange) {
+            return;
+        }
+        if (lookForAddressChange && address) {
+            setValue("stars_address", address, {
+                shouldValidate: true,
+            });
+            setLookForAddressChange(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [address, lookForAddressChange]);
 
     return (
         <Stack spacing={2}>
@@ -66,14 +65,8 @@ export const InputStarsAddress: React.FC<InputProps> = ({
                     color="white"
                 >
                     <Text fontWeight="bold" fontSize="sm">
-                        Import from Keplr
+                        Import from Cosmos Wallet
                     </Text>
-                    <Image
-                        src={KeplrLogo}
-                        alt="Keplr logo"
-                        width={24}
-                        height={24}
-                    />
                 </HStack>
             </HStack>
             <Box
@@ -104,9 +97,13 @@ export const InputStarsAddress: React.FC<InputProps> = ({
             {isError && (
                 <FormErrorMessage>
                     <HStack spacing="6px">
-                        <Text fontSize="sm" fontWeight="semibold" color="red.300">
-                            Address is not valid—make sure Sommelier address is from a
-                            Cosmos wallet
+                        <Text
+                            fontSize="sm"
+                            fontWeight="semibold"
+                            color="red.300"
+                        >
+                            Address is not valid—make sure Sommelier address is
+                            from a Cosmos wallet
                         </Text>
                     </HStack>
                 </FormErrorMessage>
