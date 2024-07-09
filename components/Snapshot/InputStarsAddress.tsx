@@ -9,7 +9,7 @@ import {
     useToast,
 } from "@chakra-ui/react";
 import { useChain } from "@cosmos-kit/react";
-import React from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { SnapshotFormValues } from "./SnapshotCard";
 
@@ -23,15 +23,33 @@ export const InputStarsAddress: React.FC<InputProps> = ({
     const isError = !!getFieldState("stars_address").error;
     const { address, openView } = useChain("stargaze");
 
-    const onAutofillClick = async () => {
+    const [lookForAddressChange, setLookForAddressChange] =
+        useState<boolean>(false);
+
+    const onAutofillClick = useCallback(async () => {
         if (!address) {
             openView();
+            setLookForAddressChange(true);
         } else {
             setValue("stars_address", address, {
                 shouldValidate: true,
             });
+            setLookForAddressChange(false);
         }
-    };
+    }, [address, openView, setValue, setLookForAddressChange]);
+
+    useEffect(() => {
+        if (!lookForAddressChange) {
+            return;
+        }
+        if (lookForAddressChange && address) {
+            setValue("stars_address", address, {
+                shouldValidate: true,
+            });
+            setLookForAddressChange(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [address, lookForAddressChange]);
 
     return (
         <Stack spacing={2}>
