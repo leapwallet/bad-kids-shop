@@ -1,10 +1,11 @@
 import { Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
+import { MainWalletBase, WalletClient } from "@cosmos-kit/core";
 import { useWallet, useWalletClient } from "@cosmos-kit/react";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { signWithCosmosWallet } from "../../utlis/cosmosWallet";
 import { InputEthereumAddress } from "./InputEthereumAddress";
 import { InputStarsAddress } from "./InputStarsAddress";
-import { signWithCosmosWallet } from "../../utlis/cosmosWallet";
 interface SnapshotFormProps {
     wrongNetwork: boolean;
 }
@@ -100,8 +101,8 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
                 pubKey,
                 data: encodedData,
             } = await signWithCosmosWallet(
-                mainWallet,
-                client,
+                mainWallet as MainWalletBase | undefined,
+                client as WalletClient | undefined,
                 data.eth_address,
                 data.stars_address
             );
