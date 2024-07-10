@@ -55,7 +55,7 @@ export const InputStarsAddress: React.FC<InputProps> = ({
         <Stack spacing={2}>
             <HStack justifyContent="space-between">
                 <Text fontWeight="bold" color="white" fontSize="sm">
-                    Stars Address
+                    Stargaze Address
                 </Text>
                 <HStack
                     as="button"
@@ -86,6 +86,7 @@ export const InputStarsAddress: React.FC<InputProps> = ({
                     py={6}
                     maxH="64px"
                     type="text"
+                    isReadOnly // Making the field read-only
                     {...register("stars_address", {
                         required: "Enter Stargaze address",
                     })}
