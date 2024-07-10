@@ -89,6 +89,7 @@ export const InputEthereumAddress: React.FC<
                     py={6}
                     maxH="64px"
                     type="text"
+                    isReadOnly // Making the field read-only
                     isDisabled={disabled}
                     {...register("eth_address", {
                         required: "Ethereum address is required",
