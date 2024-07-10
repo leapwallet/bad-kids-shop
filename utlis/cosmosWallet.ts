@@ -1,15 +1,15 @@
-import { MainWalletBase, WalletClient } from "@cosmos-kit/core";
+import { ChainWalletBase, WalletClient } from "@cosmos-kit/core";
 
 export const signWithCosmosWallet = async (
-    mainWallet: MainWalletBase | undefined,
-    client: WalletClient | undefined,
+    chainWallet: ChainWalletBase | undefined,
     ethAddress: string,
     starsAddress: string
 ) => {
-    if (!client) {
+    const client = chainWallet?.client as WalletClient;
+    if (!chainWallet || !client) {
         throw new Error(
             `Please install/connect a ${
-                mainWallet?.walletPrettyName ?? "Cosmos"
+                chainWallet?.walletPrettyName ?? "Cosmos"
             } Wallet`
         );
     }
@@ -22,7 +22,7 @@ export const signWithCosmosWallet = async (
     if (typeof client.getOfflineSigner !== "function") {
         throw new Error(
             `${
-                mainWallet?.walletPrettyName ?? "Cosmos"
+                chainWallet?.walletPrettyName ?? "Cosmos"
             } wallet is not installed or not available in this context.`
         );
     }
@@ -33,7 +33,7 @@ export const signWithCosmosWallet = async (
     if (accounts[0].address !== starsAddress) {
         throw new Error(
             `${
-                mainWallet?.walletPrettyName ?? "Cosmos"
+                chainWallet?.walletPrettyName ?? "Cosmos"
             } account does not match the provided Stargaze address`
         );
     }
@@ -49,7 +49,7 @@ export const signWithCosmosWallet = async (
     if (!client.signArbitrary) {
         throw new Error(
             `${
-                mainWallet?.walletPrettyName ?? "Cosmos"
+                chainWallet?.walletPrettyName ?? "Cosmos"
             } Wallet does not support signing arbitrary messages`
         );
     }

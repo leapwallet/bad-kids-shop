@@ -1,6 +1,10 @@
 import { Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
-import { MainWalletBase, WalletClient } from "@cosmos-kit/core";
-import { useWallet, useWalletClient } from "@cosmos-kit/react";
+import {
+    ChainWalletBase,
+    MainWalletBase,
+    WalletClient,
+} from "@cosmos-kit/core";
+import { useChain, useWallet, useWalletClient } from "@cosmos-kit/react";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { signWithCosmosWallet } from "../../utlis/cosmosWallet";
@@ -23,8 +27,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
     const toast = useToast();
     const [registrationMessage, setRegistrationMessage] = useState("");
 
-    const { mainWallet } = useWallet();
-    const { client } = useWalletClient();
+    const { chainWallet } = useChain("stargaze");
 
     useEffect(() => {
         const checkRegistration = async () => {
@@ -101,8 +104,7 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
                 pubKey,
                 data: encodedData,
             } = await signWithCosmosWallet(
-                mainWallet as MainWalletBase | undefined,
-                client as WalletClient | undefined,
+                chainWallet as ChainWalletBase | undefined,
                 data.eth_address,
                 data.stars_address
             );
