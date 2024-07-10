@@ -14,7 +14,7 @@ export const signWithCosmosWallet = async (
         );
     }
 
-    const chainId = "stargaze";
+    const chainId = "stargaze-1";
     if (client.enable) {
         await client.enable(chainId);
     }
