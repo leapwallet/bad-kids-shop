@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import { Stack, Text, Button, useToast, Box } from "@chakra-ui/react";
-import { InputEthereumAddress } from './InputEthereumAddress';
-import { InputStarsAddress } from './InputStarsAddress';
-import { signWithKeplr } from '../../utlis/keplr';
+import { Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
+import {
+    ChainWalletBase,
+    MainWalletBase,
+    WalletClient,
+} from "@cosmos-kit/core";
+import { useChain, useWallet, useWalletClient } from "@cosmos-kit/react";
+import React, { useEffect, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { signWithCosmosWallet } from "../../utlis/cosmosWallet";
+import { InputEthereumAddress } from "./InputEthereumAddress";
+import { InputStarsAddress } from "./InputStarsAddress";
 interface SnapshotFormProps {
     wrongNetwork: boolean;
 }
@@ -20,6 +26,8 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
     const isFormFilled = ethAddress && starsAddress;
     const toast = useToast();
     const [registrationMessage, setRegistrationMessage] = useState("");
+
+    const { chainWallet } = useChain("stargaze");
 
     useEffect(() => {
         const checkRegistration = async () => {
@@ -91,7 +99,12 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
                 );
             }
 
-            const { signature, pubKey, data: encodedData } = await signWithKeplr(
+            const {
+                signature,
+                pubKey,
+                data: encodedData,
+            } = await signWithCosmosWallet(
+                chainWallet as ChainWalletBase | undefined,
                 data.eth_address,
                 data.stars_address
             );
@@ -129,7 +142,8 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
             toast({
                 title: "Submission Error",
                 status: "error",
-                description: "There was an error during the submission process. Please try again.",
+                description:
+                    "There was an error during the submission process. Please try again.",
                 isClosable: true,
                 duration: null,
             });
@@ -152,14 +166,24 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
                             width="200px"
                             fontSize="16px"
                             type="submit"
-                            colorScheme={isFormFilled && !wrongNetwork ? "purple" : "gray"}
+                            colorScheme={
+                                isFormFilled && !wrongNetwork
+                                    ? "purple"
+                                    : "gray"
+                            }
                             border="1px solid white"
                             borderRadius="999px"
                             color="white"
-                            _hover={isFormFilled && !wrongNetwork ? { bg: 'purple.600', borderColor: 'white' } : {}}
+                            _hover={
+                                isFormFilled && !wrongNetwork
+                                    ? { bg: "purple.600", borderColor: "white" }
+                                    : {}
+                            }
                             isDisabled={!isFormFilled || wrongNetwork}
                         >
-                            {isFormFilled && !wrongNetwork ? "Sign" : "Fill all fields"}
+                            {isFormFilled && !wrongNetwork
+                                ? "Sign"
+                                : "Fill all fields"}
                         </Button>
                     </Box>
                     <br />
@@ -170,6 +194,6 @@ const SnapshotForm: React.FC<SnapshotFormProps> = ({ wrongNetwork }) => {
             </form>
         </FormProvider>
     );
-}
+};
 
 export default SnapshotForm;
