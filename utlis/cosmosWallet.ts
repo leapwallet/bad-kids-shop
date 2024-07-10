@@ -6,13 +6,11 @@ export const signWithCosmosWallet = async (
     ethAddress: string,
     starsAddress: string
 ) => {
-    if (!mainWallet) {
-        throw new Error("Please install/connect to a Cosmos Wallet");
-    }
-
     if (!client) {
         throw new Error(
-            `Please install a ${mainWallet.walletPrettyName} Wallet`
+            `Please install/connect a ${
+                mainWallet?.walletPrettyName ?? "Cosmos"
+            } Wallet`
         );
     }
 
@@ -23,7 +21,9 @@ export const signWithCosmosWallet = async (
 
     if (typeof client.getOfflineSigner !== "function") {
         throw new Error(
-            `${mainWallet.walletPrettyName} extension is not installed or not available in this context.`
+            `${
+                mainWallet?.walletPrettyName ?? "Cosmos"
+            } wallet is not installed or not available in this context.`
         );
     }
 
@@ -32,7 +32,9 @@ export const signWithCosmosWallet = async (
 
     if (accounts[0].address !== starsAddress) {
         throw new Error(
-            `${mainWallet.walletPrettyName} account does not match the provided Stargaze address`
+            `${
+                mainWallet?.walletPrettyName ?? "Cosmos"
+            } account does not match the provided Stargaze address`
         );
     }
 
@@ -46,7 +48,9 @@ export const signWithCosmosWallet = async (
 
     if (!client.signArbitrary) {
         throw new Error(
-            `${mainWallet.walletPrettyName} does not support signing arbitrary messages`
+            `${
+                mainWallet?.walletPrettyName ?? "Cosmos"
+            } Wallet does not support signing arbitrary messages`
         );
     }
 
