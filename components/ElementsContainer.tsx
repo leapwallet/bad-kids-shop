@@ -38,11 +38,45 @@ export function ElementsContainer({ isOpen, setIsOpen }: Props) {
     const { RenderElements } = window.LeapElements;
     RenderElements({
       integratedTargetId: 'leap-elements-widget',
-      displayMode: "multi-view",
+      displayMode: "aggregated-swaps-view",
       connectWallet: async () => {
           openView();
       },
-      connectedWalletType: walletType
+      connectedWalletType: walletType,
+      title: 'Get STARS',
+      defaultValues: {
+        destinationChainId: 'stargaze-1',
+        destinationAsset: 'ustars'
+      },
+      sourceHeader: 'From',
+      destinationHeader: 'To',
+      showPoweredByBanner: true,
+      txnLifecycleHooks: {
+        onTxnSignInit: (txn: any) => {
+          console.log('onTxnSignInit', txn);
+        },
+        onTxnSignApproved: (txn: any) => {
+          console.log('onTxnSignApproved', txn);
+        },
+        onTxnSignFailed: (txn: any, err: any) => {
+          console.log('onTxnSignFailed', txn, err);
+        },
+        onTxnComplete: (summary: any) => {
+          console.log('onTxnComplete', summary);
+        },
+        onTxnInProgress: (tab: any) => {
+          console.log('onTxnInProgress', tab);
+          return () => {
+            console.log('onTxnInProgress cleanup');
+          };
+        },
+        onTxnReview: (txn: any) => {
+          console.log('onTxnReview', txn);
+        },
+        onTxnBeginTracking: (txn: any) => {
+          console.log('onTxnBeginTracking', txn);
+        }
+      } 
     });
   }
   }, [walletType, openView]);
