@@ -1,11 +1,27 @@
-import { SwapsModal, WalletClientContextProvider } from "@leapwallet/elements";
 
 import { useChain } from "@cosmos-kit/react";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { useElementsWalletClient } from "../config/walletclient";
+import { useConnectedWalletType } from "../hooks/use-connected-wallet-types";
 
 export const renderLiquidityButton = ({ onClick }: any) => {
   return <button onClick={onClick} id="open-liquidity-modal-btn"></button>;
+};
+
+const Modal = ({ show, onClose, children }: {
+  show: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}) => {
+  return (
+    <div className="swap-modal-backdrop leap-ui dark" style={{ display: show ? 'flex' : 'none' }}>
+      <div className="modal-container">
+        <button className="swap-modal-close-button" onClick={onClose}>X</button>
+        <div className="modal-body">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 interface Props {
@@ -14,36 +30,26 @@ interface Props {
 }
 
 export function ElementsContainer({ isOpen, setIsOpen }: Props) {
-  const { address, openView } = useChain("stargaze");
-  const walletClient = useElementsWalletClient();
+  const { address, openView, isWalletConnected, wallet } = useChain("stargaze");
+  const walletType = useConnectedWalletType(wallet?.name, isWalletConnected)
+
   useEffect(() => {
-    const elementsModal = document.querySelector(".leap-ui");
-    if (elementsModal) {
-      //@ts-ignore
-      elementsModal.style["zIndex"] = 11;
-    }
-  }, []);
+    if (window.LeapElements) {
+    const { RenderElements } = window.LeapElements;
+    RenderElements({
+      integratedTargetId: 'leap-elements-widget',
+      displayMode: "multi-view",
+      connectWallet: async () => {
+          openView();
+      },
+      connectedWalletType: walletType
+    });
+  }
+  }, [walletType, openView]);
+
   return (
-    <div className="fixed z-99 leap-ui dark">
-      <WalletClientContextProvider
-        value={{
-          userAddress: address,
-          walletClient: walletClient,
-          connectWallet: async () => {
-            openView();
-          },
-        }}
-      >
-        <SwapsModal
-          isOpen={isOpen}
-          title="Get STARS"
-          setIsOpen={setIsOpen}
-          defaultValues={{
-            destinationChainId: "stargaze-1",
-            destinationAsset: "ustars",
-          }}
-        />
-      </WalletClientContextProvider>
-    </div>
+    <Modal show={isOpen} onClose={() => setIsOpen(false)}>
+      <div id="leap-elements-widget"></div>
+    </Modal>  
   );
 }
