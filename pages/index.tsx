@@ -13,8 +13,7 @@ import { useChain } from "@cosmos-kit/react";
 import {
   AccountModal,
   Actions,
-  defaultBlurs,
-  defaultBorderRadii,
+  EmbeddedWalletProvider,
 } from "@leapwallet/embedded-wallet-sdk-react";
 
 export default function Home() {
@@ -37,42 +36,34 @@ export default function Home() {
       setMounted(true);
     }, []);
 
-    const theme = {
-      colors: {
-        primary: "#fff",
-        border: "#fff",
-        stepBorder: "#E8E8E8",
-        backgroundPrimary: "#141414",
-        backgroundSecondary: "#212121",
-        text: "#fff",
-        textSecondary: "#858585",
-        gray: "#9ca3af",
-        alpha: "#ffffff",
-        error: "#420006",
-        errorBackground: "#FFEBED",
-        success: "#29A874",
-        successBackground: "#DAF6EB",
-      },
-      borderRadii: defaultBorderRadii,
-      blurs: defaultBlurs,
-      fontFamily: "inherit",
-    };
-
     const navigate = (path: string) => {
       window.open(`https://cosmos.leapwallet.io${path}`);
     };
 
+    const chainData = {
+      [`${chainId}`]: {
+        address: `${address ?? ""}`,
+        restURL: restURL
+      },
+    };
+
     return mounted && isModalOpen ? (
+      <EmbeddedWalletProvider
+      connectWallet={() => {}}
+      disconnectWallet={() => {}}
+      connectedWalletType={undefined}
+      >
       <AccountModal
-        theme={theme}
-        chainId={chainId}
-        restUrl={restURL}
-        address={address || ""}
+        theme="dark"
+        chainRecords={chainData}
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
         }}
+        restrictChains={true}
+        enableWalletConnect={false}
         config={{
+          showActionButtons: true,
           actionListConfig: {
             [Actions.SEND]: {
               onClick: (chainId) =>
@@ -97,6 +88,7 @@ export default function Home() {
           },
         }}
       />
+      </EmbeddedWalletProvider>
     ) : null;
   };
 
