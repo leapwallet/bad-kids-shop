@@ -5,9 +5,9 @@ import { ConnectWalletSideCurtainContent } from "./ConnectWalletSideCurtainConte
 
 declare global {
   interface Window {
-    leap: any;
+    leap?: any;
     keplr: any;
-    cosmostation: any;
+    cosmostation?: any;
   }
 }
 

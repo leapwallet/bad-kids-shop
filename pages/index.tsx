@@ -40,12 +40,12 @@ export default function Home() {
       window.open(`https://cosmos.leapwallet.io${path}`);
     };
 
-    const chainData = {
-      [`${chainId}`]: {
-        address: `${address ?? ""}`,
-        restURL: restURL
+    const chainData = useMemo(() => ({
+      [chainId]: {
+        address: address ?? "",
+        restURL: restURL,
       },
-    };
+    }), [chainId, address, restURL]);
 
     return mounted && isModalOpen ? (
       <EmbeddedWalletProvider

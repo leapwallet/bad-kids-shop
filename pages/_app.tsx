@@ -42,7 +42,7 @@ const updatedChains = chains.map((chain) => {
 });
 
 function CreateCosmosApp({ Component, pageProps }: AppProps) {
-  const signerOptions: SignerOptions = {
+  const signerOptions = {
     // signingStargate: () => {
     //   return getSigningCosmosClientOptions();
     // }
