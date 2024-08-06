@@ -3,7 +3,7 @@ import { NFTs } from "../components/NFTList";
 import { ListControl } from "../components/ListControl";
 import { ElementsContainerDynamic, Header } from "../components/Header";
 import router, { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { isValidAddressWithPrefix } from "../config/validateAddress";
 import { isMobile } from "react-device-detect";
 
