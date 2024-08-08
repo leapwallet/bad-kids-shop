@@ -3897,10 +3897,10 @@
     "@cosmjs/proto-signing" "^0.31.3"
     typescript "^5.2.2"
 
-"@leapwallet/embedded-wallet-sdk-core@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@leapwallet/embedded-wallet-sdk-core/-/embedded-wallet-sdk-core-2.0.0.tgz#a0392f700ef0d22aceaddd194c9357ffbc3bf9d6"
-  integrity sha512-Zqt+GkJl5F3sJcG0e3cihb0hNZq33d7JPZWv5r/5cGylXvI5DBYclKV5isbWHu3NDiNcHHMYVkhh0oORYGqhUQ==
+"@leapwallet/embedded-wallet-sdk-core@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@leapwallet/embedded-wallet-sdk-core/-/embedded-wallet-sdk-core-2.0.2.tgz#9000aceded84f0bb41804df51db686c7f9b650ec"
+  integrity sha512-2IDejMwwm/mSR4ZDu3HDfR1YIdKxLnSo6bIaFdht+fSUpfBt8lNnYa3EBCEWOI1CcaMOwF9XfvTuZro+DDD7Hg==
   dependencies:
     "@leapwallet/parser-parfait" "0.7.0"
     bech32 "2.0.0"
@@ -3909,10 +3909,10 @@
     ky "^1.4.0"
     typedi "0.10.0"
 
-"@leapwallet/embedded-wallet-sdk-react@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@leapwallet/embedded-wallet-sdk-react/-/embedded-wallet-sdk-react-2.0.0.tgz#1de5107bbd3872ae968a4230f560d6d63474c48b"
-  integrity sha512-Dxt48Zdi4M+FppHrlF1k6mJskAymeud7nB/01rbO1+Dh5ehj4tl+uX3OgNvhnokvMhUhGBPPOXRnttbouehltQ==
+"@leapwallet/embedded-wallet-sdk-react@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@leapwallet/embedded-wallet-sdk-react/-/embedded-wallet-sdk-react-2.0.2.tgz#3f543ff24464a8989080ab1f74c774143e7ad97e"
+  integrity sha512-fhw0MaKFIfIb17pa6dkVhyDquwWITwjpYhoyWkvbS9VwWcW6esDCOxNw172rgqv3RrY0BKZEMLzqlpbAFnDOXg==
   dependencies:
     "@cosmjs/cosmwasm-stargate" "^0.32.4"
     "@cosmjs/launchpad" "^0.27.1"
@@ -3921,7 +3921,7 @@
     "@cosmjs/tendermint-rpc" "^0.32.4"
     "@keplr-wallet/types" "^0.12.119"
     "@leapwallet/cosmos-social-login-capsule-provider" "^0.0.38"
-    "@leapwallet/embedded-wallet-sdk-core" "2.0.0"
+    "@leapwallet/embedded-wallet-sdk-core" "2.0.2"
     "@leapwallet/parser-parfait" "0.7.0"
     "@leapwallet/react-ui" "^1.10.2"
     "@phosphor-icons/react" "^2.1.7"

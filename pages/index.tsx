@@ -1,8 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import { NFTs } from "../components/NFTList";
-import { ListControl } from "../components/ListControl";
 import { ElementsContainerDynamic, Header } from "../components/Header";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { isValidAddressWithPrefix } from "../config/validateAddress";
 import { isMobile } from "react-device-detect";
@@ -14,18 +13,23 @@ import {
   AccountModal,
   Actions,
   EmbeddedWalletProvider,
+  WalletType,
 } from "@leapwallet/embedded-wallet-sdk-react";
 
 export default function Home() {
   const [collection, setCollection] = useState<string | undefined>();
   const router = useRouter();
 
-  const { status: walletConnectStatus, address, chain } = useChain("stargaze");
+  const { connect, address, chain, disconnect, isWalletConnected, wallet } = useChain("stargaze");
   const [isElementsModalOpen, setIsElementsModalOpen] =
     useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const restURL = chain?.apis?.rest ? [0] && chain?.apis?.rest[0].address : "";
   const chainId = chain?.chain_id || "stargaze-1";
+  
+  useEffect(() => { 
+    setIsModalOpen(false)
+  }, [address])
 
   const ClientAccountModal = () => {
     const ref = useRef();
@@ -49,9 +53,10 @@ export default function Home() {
 
     return mounted && isModalOpen ? (
       <EmbeddedWalletProvider
-      connectWallet={() => {}}
-      disconnectWallet={() => {}}
-      connectedWalletType={undefined}
+      connectWallet={connect}
+      disconnectWallet={disconnect}
+      connectedWalletType={wallet?.name as WalletType}
+      chains={[chainId]}
       >
       <AccountModal
         theme="dark"
@@ -61,28 +66,28 @@ export default function Home() {
           setIsModalOpen(false);
         }}
         restrictChains={true}
-        enableWalletConnect={false}
+        enableWalletConnect={true}
         config={{
           showActionButtons: true,
           actionListConfig: {
             [Actions.SEND]: {
-              onClick: (chainId) =>
+              onClick: () =>
                 navigate(`/transact/send?sourceChainId=${chainId}`),
             },
             [Actions.IBC]: {
-              onClick: (chainId) =>
+              onClick: () =>
                 navigate(`/transact/send?sourceChainId=${chainId}`),
             },
             [Actions.SWAP]: {
-              onClick: (chainId) =>
+              onClick: () =>
                 navigate(`/transact/swap?sourceChainId=${chainId}`),
             },
             [Actions.BRIDGE]: {
-              onClick: (chainId) =>
+              onClick: () =>
                 navigate(`/transact/bridge?destinationChainId=${chainId}`),
             },
             [Actions.BUY]: {
-              onClick: (chainId) =>
+              onClick: () =>
                 navigate(`/transact/buy?destinationChainId=${chainId}`),
             },
           },
