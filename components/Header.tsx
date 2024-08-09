@@ -65,7 +65,7 @@ export function Header({
         )}
       </button>
 
-      <div id="nav-menu" className={` md:block ${isMenuOpen ? "" : "hidden"}`}>
+      <div id="nav-menu" className={isMenuOpen ? "nav-menu" : "nav-menu-hidden"}>
         <div className="flex flex-row gap-3 flex-wrap">
           <button
             onClick={() =>

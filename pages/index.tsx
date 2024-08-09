@@ -1,9 +1,8 @@
 import { Toaster } from "react-hot-toast";
 import { NFTs } from "../components/NFTList";
-import { ListControl } from "../components/ListControl";
 import { ElementsContainerDynamic, Header } from "../components/Header";
-import router, { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { isValidAddressWithPrefix } from "../config/validateAddress";
 import { isMobile } from "react-device-detect";
 
@@ -13,20 +12,24 @@ import { useChain } from "@cosmos-kit/react";
 import {
   AccountModal,
   Actions,
-  defaultBlurs,
-  defaultBorderRadii,
+  EmbeddedWalletProvider,
+  WalletType,
 } from "@leapwallet/embedded-wallet-sdk-react";
 
 export default function Home() {
   const [collection, setCollection] = useState<string | undefined>();
   const router = useRouter();
 
-  const { status: walletConnectStatus, address, chain } = useChain("stargaze");
+  const { connect, address, chain, disconnect, isWalletConnected, wallet } = useChain("stargaze");
   const [isElementsModalOpen, setIsElementsModalOpen] =
     useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const restURL = chain?.apis?.rest ? [0] && chain?.apis?.rest[0].address : "";
   const chainId = chain?.chain_id || "stargaze-1";
+  
+  useEffect(() => { 
+    setIsModalOpen(false)
+  }, [address])
 
   const ClientAccountModal = () => {
     const ref = useRef();
@@ -37,66 +40,60 @@ export default function Home() {
       setMounted(true);
     }, []);
 
-    const theme = {
-      colors: {
-        primary: "#fff",
-        border: "#fff",
-        stepBorder: "#E8E8E8",
-        backgroundPrimary: "#141414",
-        backgroundSecondary: "#212121",
-        text: "#fff",
-        textSecondary: "#858585",
-        gray: "#9ca3af",
-        alpha: "#ffffff",
-        error: "#420006",
-        errorBackground: "#FFEBED",
-        success: "#29A874",
-        successBackground: "#DAF6EB",
-      },
-      borderRadii: defaultBorderRadii,
-      blurs: defaultBlurs,
-      fontFamily: "inherit",
-    };
-
     const navigate = (path: string) => {
       window.open(`https://cosmos.leapwallet.io${path}`);
     };
 
+    const chainData = useMemo(() => ({
+      [chainId]: {
+        address: address ?? "",
+        restURL: restURL,
+      },
+    }), [chainId, address, restURL]);
+
     return mounted && isModalOpen ? (
+      <EmbeddedWalletProvider
+      connectWallet={() => connect}
+      disconnectWallet={disconnect}
+      connectedWalletType={wallet?.name as WalletType}
+      chains={[chainId]}
+      >
       <AccountModal
-        theme={theme}
-        chainId={chainId}
-        restUrl={restURL}
-        address={address || ""}
+        theme="dark"
+        chainRecords={chainData}
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
         }}
+        restrictChains={true}
+        enableWalletConnect={true}
         config={{
+          showActionButtons: true,
           actionListConfig: {
             [Actions.SEND]: {
-              onClick: (chainId) =>
+              onClick: () =>
                 navigate(`/transact/send?sourceChainId=${chainId}`),
             },
             [Actions.IBC]: {
-              onClick: (chainId) =>
+              onClick: () =>
                 navigate(`/transact/send?sourceChainId=${chainId}`),
             },
             [Actions.SWAP]: {
-              onClick: (chainId) =>
+              onClick: () =>
                 navigate(`/transact/swap?sourceChainId=${chainId}`),
             },
             [Actions.BRIDGE]: {
-              onClick: (chainId) =>
+              onClick: () =>
                 navigate(`/transact/bridge?destinationChainId=${chainId}`),
             },
             [Actions.BUY]: {
-              onClick: (chainId) =>
+              onClick: () =>
                 navigate(`/transact/buy?destinationChainId=${chainId}`),
             },
           },
         }}
       />
+      </EmbeddedWalletProvider>
     ) : null;
   };
 
