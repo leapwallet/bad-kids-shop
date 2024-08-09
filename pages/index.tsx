@@ -53,7 +53,7 @@ export default function Home() {
 
     return mounted && isModalOpen ? (
       <EmbeddedWalletProvider
-      connectWallet={() => {}}
+      connectWallet={() => connect}
       disconnectWallet={disconnect}
       connectedWalletType={wallet?.name as WalletType}
       chains={[chainId]}
