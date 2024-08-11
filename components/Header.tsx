@@ -19,6 +19,14 @@ export const ElementsContainerDynamic = dynamic(
   { ssr: false }
 );
 
+export const EmbeddedWalletContainerDynamic = dynamic(
+  () =>
+    import("../components/EmbeddedWalletContainer").then(
+      (mod) => mod.EmbeddedWalletContainer
+    ),
+  { ssr: false }
+);
+
 const fetchBalance = async (address: string, chain: any) => {
   const res = await fetch(
     `${chain.apis?.rest?.[0].address}/cosmos/bank/v1beta1/balances/${address}`
