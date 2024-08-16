@@ -45,7 +45,7 @@ export function EmbeddedWalletContainer({
     <EmbeddedWalletProvider
       primaryChainId="stargaze-1"
       connectWallet={connectWallet}
-      disconnectWallet={() => disconnect()}
+      disconnectWallet={disconnect}
       connectedWalletType={walletType}
       chains={["stargaze-1"]}
     >
