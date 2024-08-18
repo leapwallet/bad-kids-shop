@@ -2,7 +2,6 @@ import "../styles/globals.css";
 import "../styles/modal.css";
 import "@leapwallet/embedded-wallet-sdk-react/styles.css";
 import "@leapwallet/cosmos-social-login-capsule-provider-ui/styles.css";
-import "@leapwallet/react-ui/styles.css";
 
 import type { AppProps } from "next/app";
 import { ChainProvider, useChain } from "@cosmos-kit/react";
