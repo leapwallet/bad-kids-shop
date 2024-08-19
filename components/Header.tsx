@@ -10,6 +10,7 @@ import { WalletButton } from "../components/WalletButton";
 import Text from "./Text";
 
 import StargazeLogo from "../public/stargaze-logo.svg";
+import classNames from "classnames";
 
 export const ElementsContainerDynamic = dynamic(
   () =>
@@ -73,7 +74,12 @@ export function Header({
         )}
       </button>
 
-      <div id="nav-menu" className={isMenuOpen ? "nav-menu" : "nav-menu-hidden"}>
+      <div id="nav-menu" 
+      className={classNames({
+        'nav-menu': isMenuOpen,
+        'nav-menu-hidden': !isMenuOpen,
+      })}
+      >
         <div className="flex flex-row gap-3 flex-wrap">
           <button
             onClick={() =>

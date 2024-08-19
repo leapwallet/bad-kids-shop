@@ -20,11 +20,11 @@ export function EmbeddedWalletContainer({
 }: Props) {
   const { address, openView, disconnect, isWalletConnected, wallet, chain } = useChain("stargaze");
   const walletType = useConnectedWalletType(wallet?.name, isWalletConnected);
-  const restURL = chain?.apis?.rest ? [0] && chain?.apis?.rest[0].address : "";
+  const restURL = chain?.apis?.rest ? chain.apis.rest[0].address : "";
   const chainId = chain?.chain_id || "stargaze-1";
 
   const navigate = (path: string) => {
-    window.open(`https://cosmos.leapwallet.io${path}`);
+    window.open(`https://app.leapwallet.io${path}`);
   };
 
   const connectWallet = async () => {
