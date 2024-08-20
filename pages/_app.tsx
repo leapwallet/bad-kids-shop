@@ -19,6 +19,7 @@ import { SignerOptions, Wallet } from "@cosmos-kit/core";
 import ConnectWalletSideCurtain from "../components/ConnectWalletSideCurtain/connectWalletSideCurtain";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { OAuthMethod } from "@leapwallet/cosmos-social-login-capsule-provider";
 
 if (typeof global.self === "undefined") {
   (global as any).self = global;
@@ -158,23 +159,20 @@ export function CustomCapsuleModalViewX() {
   }, []);
 
   return (
-    <div
-      className="leap-ui dark fixed z-[9999]"
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
-    >
+    <div className="leap-ui dark !z-[99999] fixed">
       <CCUI
+        onAfterLoginSuccessful={() => {}}
+        onLoginFailure={() => {}}
         showCapsuleModal={showCapsuleModal}
         setShowCapsuleModal={setShowCapsuleModal}
         theme={"dark"}
-        onAfterLoginSuccessful={() => {
-          window.successFromCapsuleModal();
-        }}
-        onLoginFailure={() => {
-          window.failureFromCapsuleModal();
-        }}
-        oAuthMethods={oAuthMethods}
+        oAuthMethods={[
+          OAuthMethod.GOOGLE,
+          OAuthMethod.APPLE,
+          OAuthMethod.TWITTER,
+          OAuthMethod.DISCORD,
+        ]}
+        appName="Social Logins Demo"
       />
       <TransactionSigningModal dAppInfo={{ name: "Bad Kids Shop" }} />
     </div>
