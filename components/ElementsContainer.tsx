@@ -1,6 +1,6 @@
 
 import { useChain } from "@cosmos-kit/react";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PiXBold } from "react-icons/pi";
 import '@leapwallet/elements-umd-types'
 
@@ -37,13 +37,10 @@ interface Props {
 export function ElementsContainer({ isOpen, setIsOpen }: Props) {
   const { openView, isWalletConnected, wallet } = useChain("stargaze");
   const walletType = useConnectedWalletType(wallet?.name, isWalletConnected)
-  const isElementsMounted = useRef(false)
   const [isElementsReady, setIsElementsReady] = useState(false)
 
   useEffect(() => {
-    if (window.LeapElements && isElementsReady && !isElementsMounted.current) {
-      isElementsMounted.current = true;
-
+    if (window.LeapElements && isElementsReady) {
       window.LeapElements.mountElements({
         element: {
           name: 'aggregated-swaps',
@@ -59,10 +56,8 @@ export function ElementsContainer({ isOpen, setIsOpen }: Props) {
           }
         },
         elementsRoot: "#swap-modal>.modal-container>.modal-body",
-        connectWallet: async () => {
-          openView();
-        },
         connectedWalletType: walletType,
+        connectWallet: openView,
       });
     }
   }, [walletType, openView, isElementsReady]);
