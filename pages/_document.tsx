@@ -9,7 +9,7 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
-        <link rel="stylesheet" href="https://unpkg.com/@leapwallet/elements@1.4.2/dist/umd/style.css" />
+        <link rel="stylesheet" href="https://unpkg.com/@leapwallet/elements@1.4.2/dist/style.css" />
         <script defer src="https://unpkg.com/@leapwallet/elements@1.4.2/dist/umd/main.js" />
       </body>
     </Html>
