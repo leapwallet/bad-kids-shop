@@ -1,21 +1,26 @@
 
 import { useChain } from "@cosmos-kit/react";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { PiXBold } from "react-icons/pi";
+import '@leapwallet/elements-umd-types'
+
 import { useConnectedWalletType } from "../hooks/use-connected-wallet-types";
 
 export const renderLiquidityButton = ({ onClick }: any) => {
   return <button onClick={onClick} id="open-liquidity-modal-btn"></button>;
 };
 
-const Modal = ({ show, onClose, children }: {
+const Modal = ({ show, onClose, children = null }: {
   show: boolean;
   onClose: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }) => {
   return (
-    <div className="swap-modal-backdrop leap-ui dark" style={{ display: show ? 'flex' : 'none' }}>
+    <div id="swap-modal" className="swap-modal-backdrop leap-ui dark" style={{ display: show ? 'flex' : 'none' }}>
       <div className="modal-container">
-        <button className="swap-modal-close-button" onClick={onClose}>X</button>
+        <button className="swap-modal-close-button bg-background p-2 rounded-full border shadow" onClick={onClose}>
+          <PiXBold />
+        </button>
         <div className="modal-body">
           {children}
         </div>
@@ -30,60 +35,63 @@ interface Props {
 }
 
 export function ElementsContainer({ isOpen, setIsOpen }: Props) {
-  const { address, openView, isWalletConnected, wallet } = useChain("stargaze");
+  const { openView, isWalletConnected, wallet } = useChain("stargaze");
   const walletType = useConnectedWalletType(wallet?.name, isWalletConnected)
+  const [isElementsReady, setIsElementsReady] = useState(false)
 
   useEffect(() => {
+    if (window.LeapElements && isElementsReady) {
+      window.LeapElements.mountElements({
+        element: {
+          name: 'aggregated-swaps',
+          props: {
+            title: 'Get STARS',
+            defaultValues: {
+              destinationChainId: 'stargaze-1',
+              destinationAsset: 'ustars'
+            },
+            sourceHeader: 'From',
+            destinationHeader: 'To',
+            showPoweredByBanner: true,
+          }
+        },
+        elementsRoot: "#swap-modal>.modal-container>.modal-body",
+        connectedWalletType: walletType,
+        connectWallet: openView,
+      });
+    }
+  }, [walletType, openView, isElementsReady]);
+
+  useEffect(() => {
+    if (!window) {
+      return;
+    }
+
     if (window.LeapElements) {
-    const { RenderElements } = window.LeapElements;
-    RenderElements({
-      integratedTargetId: 'leap-elements-widget',
-      displayMode: "aggregated-swaps-view",
-      connectWallet: async () => {
-          openView();
-      },
-      connectedWalletType: walletType,
-      title: 'Get STARS',
-      defaultValues: {
-        destinationChainId: 'stargaze-1',
-        destinationAsset: 'ustars'
-      },
-      sourceHeader: 'From',
-      destinationHeader: 'To',
-      showPoweredByBanner: true,
-      txnLifecycleHooks: {
-        onTxnSignInit: (txn: any) => {
-          console.log('onTxnSignInit', txn);
-        },
-        onTxnSignApproved: (txn: any) => {
-          console.log('onTxnSignApproved', txn);
-        },
-        onTxnSignFailed: (txn: any, err: any) => {
-          console.log('onTxnSignFailed', txn, err);
-        },
-        onTxnComplete: (summary: any) => {
-          console.log('onTxnComplete', summary);
-        },
-        onTxnInProgress: (tab: any) => {
-          console.log('onTxnInProgress', tab);
-          return () => {
-            console.log('onTxnInProgress cleanup');
-          };
-        },
-        onTxnReview: (txn: any) => {
-          console.log('onTxnReview', txn);
-        },
-        onTxnBeginTracking: (txn: any) => {
-          console.log('onTxnBeginTracking', txn);
-        }
-      } 
-    });
-  }
-  }, [walletType, openView]);
+      setIsElementsReady(true);
+      return;
+    }
+
+    const cb = () => {
+      setIsElementsReady(true);
+    };
+
+    window.addEventListener("@leapwallet/elements:load", cb);
+
+    return () => {
+      window.removeEventListener("@leapwallet/elements:load", cb);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isOpen]);
 
   return (
-    <Modal show={isOpen} onClose={() => setIsOpen(false)}>
-      <div id="leap-elements-widget"></div>
-    </Modal>  
+    <Modal show={isOpen} onClose={() => setIsOpen(false)}/>
   );
 }
