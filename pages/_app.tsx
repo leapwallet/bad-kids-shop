@@ -15,7 +15,7 @@ import { LeapCapsuleWallet } from "@cosmos-kit/leap-capsule-social-login";
 import { client } from "../config/apolloclient";
 import LeapUiTheme, { ThemeName } from "../components/ThemeProvider";
 import Head from "next/head";
-import { SignerOptions, Wallet } from "@cosmos-kit/core";
+import { Wallet } from "@cosmos-kit/core";
 import ConnectWalletSideCurtain from "../components/ConnectWalletSideCurtain/connectWalletSideCurtain";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
@@ -53,12 +53,6 @@ const updatedChains = chains.map((chain) => {
 });
 
 function CreateCosmosApp({ Component, pageProps }: AppProps) {
-  const signerOptions: SignerOptions = {
-    // signingStargate: () => {
-    //   return getSigningCosmosClientOptions();
-    // }
-  };
-
   const [cosmosCapsuleWallet, setCosmosCapsuleWallet] =
     useState<LeapCapsuleWallet>();
   const [wallets, setWallets] = useState();
@@ -113,7 +107,6 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
                 },
               },
             }}
-            signerOptions={signerOptions}
           >
             {!!cosmosCapsuleWallet && <CustomCapsuleModalViewX />}
             <Component {...pageProps} />
