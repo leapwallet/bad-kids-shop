@@ -115,8 +115,8 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
             }}
             signerOptions={signerOptions}
           >
-            <Component {...pageProps} />
             {!!cosmosCapsuleWallet && <CustomCapsuleModalViewX />}
+            <Component {...pageProps} />
           </ChainProvider>
         </LeapUiTheme>
       </GraphqlProvider>
@@ -144,19 +144,6 @@ const TransactionSigningModal = dynamic(
 
 export function CustomCapsuleModalViewX() {
   const [showCapsuleModal, setShowCapsuleModal] = useState(false);
-  const [oAuthMethods, setOAuthMethods] = useState<Array<any>>([]);
-
-  useEffect(() => {
-    import("@leapwallet/cosmos-social-login-capsule-provider").then(
-      (capsuleProvider) => {
-        setOAuthMethods([
-          capsuleProvider.OAuthMethod.GOOGLE,
-          capsuleProvider.OAuthMethod.FACEBOOK,
-          capsuleProvider.OAuthMethod.TWITTER,
-        ]);
-      },
-    );
-  }, []);
 
   return (
     <div className="leap-ui dark !z-[99999] fixed">
