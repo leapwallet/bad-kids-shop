@@ -6,12 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "mkdir -p node_modules/abi-wan-kanabi-v1/dist && touch node_modules/abi-wan-kanabi-v1/dist/generate.js"
   },
   "overrides": {
     "next": {
       "@swc/helpers": "0.5.1"
-    }
+    },
+    "graz": {
+      "starknet": "^5.24.3"
+    },
+    "rimraf": "^4.4.1",
+    "@eslint/config-array": "@humanwhocodes/config-array@1.0.1",
+    "@eslint/object-schema": "@humanwhocodes/object-schema@1.2.1"
   },
   "dependencies": {
     "@apollo/client": "^3.8.8",
@@ -28,17 +35,20 @@
     "@cosmos-kit/react": "2.8.4",
     "@emotion/react": "11.10.6",
     "@emotion/styled": "11.10.6",
+    "@interchain-ui/react": "^1.14.1",
     "@leapwallet/cosmos-social-login-capsule-provider": "0.0.33",
     "@leapwallet/cosmos-social-login-capsule-provider-ui": "0.0.50",
     "@leapwallet/embedded-wallet-sdk-react": "0.3.7",
     "@types/bignumber.js": "^5.0.0",
     "@urql/exchange-graphcache": "^6.4.0",
+    "@walletconnect/modal": "^2.6.2",
     "bignumber.js": "^9.1.2",
     "chain-registry": "1.20.0",
     "classnames": "^2.3.2",
     "cosmjs-types": "^0.9.0",
     "framer-motion": "9.0.7",
     "graphql": "^16.8.1",
+    "lru-cache": "^10.1.0",
     "next": "13.4.4",
     "react": "18.2.0",
     "react-device-detect": "2.2.3",
@@ -47,6 +57,7 @@
     "react-icons": "4.12.0",
     "react-loading-skeleton": "^3.3.1",
     "react-select": "^5.8.0",
+    "starknet": "^5.24.3",
     "stargazejs": "^0.14.1",
     "wagmi": "1.4.13"
   },
@@ -56,7 +67,7 @@
     "@types/react": "18.2.4",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "^10.4.8",
-    "eslint": "8.28.0",
+    "eslint": "^8.28.0",
     "eslint-config-next": "13.0.5",
     "postcss": "^8.4.16",
     "tailwindcss": "^3.1.8",
@@ -64,6 +75,12 @@
   },
   "resolutions": {
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "starknet": "^5.24.3",
+    "rimraf": "^4.4.1",
+    "@web3modal/standalone": "@walletconnect/modal@^2.6.2",
+    "inflight": "lru-cache@^10.1.0",
+    "@eslint/config-array": "@humanwhocodes/config-array@1.0.1",
+    "@eslint/object-schema": "@humanwhocodes/object-schema@1.2.1"
   }
 }

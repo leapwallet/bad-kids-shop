@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  nextjs:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+      - next-cache:/app/.next
+      - yarn-cache:/usr/local/share/.cache/yarn
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+      - NODE_OPTIONS=--max-old-space-size=4096
+    command: yarn dev
+
+volumes:
+  node_modules:
+  next-cache:
+  yarn-cache:
