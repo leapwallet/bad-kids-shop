@@ -8,19 +8,16 @@ RUN apk add --no-cache python3 make g++ git
 WORKDIR /app
 
 # Copy package files first
-COPY package*.json yarn.lock ./
+COPY package.json ./
+COPY yarn.lock ./
 
 # Copy config files
 COPY postcss.config.js ./
 COPY tailwind.config.js ./
 COPY tsconfig*.json ./
 
-# Clear existing files and install with yarn
-RUN rm -rf node_modules && \
-    rm -rf .next && \
-    rm -rf yarn.lock && \
-    yarn cache clean && \
-    yarn install --network-timeout 100000
+# Install dependencies with specific flags to handle peer dependencies
+RUN yarn install --network-timeout 1000000 --ignore-engines --ignore-platform --legacy-peer-deps
 
 # Copy the rest of the application
 COPY . .
