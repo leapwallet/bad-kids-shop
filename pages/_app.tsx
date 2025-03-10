@@ -13,7 +13,7 @@ import { LeapCapsuleWallet } from "@cosmos-kit/leap-capsule-social-login";
 import { client } from "../config/apolloclient";
 import LeapUiTheme, { ThemeName } from "../components/ThemeProvider";
 import Head from "next/head";
-import { SignerOptions, Wallet } from "@cosmos-kit/core";
+import { Wallet } from "@cosmos-kit/core";
 import ConnectWalletSideCurtain from "../components/ConnectWalletSideCurtain/connectWalletSideCurtain";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
@@ -108,7 +108,6 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
                 },
               },
             }}
-            signerOptions={signerOptions}
           >
             <Component {...pageProps} />
             {!!cosmosCapsuleWallet && (
