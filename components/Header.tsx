@@ -30,7 +30,7 @@ export const EmbeddedWalletContainerDynamic = dynamic(
 
 const fetchBalance = async (address: string, chain: any) => {
   const res = await fetch(
-    `${chain.apis?.rest?.[0].address}/cosmos/bank/v1beta1/balances/${address}`
+    `${chain.apis?.rest?.[1].address}/cosmos/bank/v1beta1/balances/${address}`
   );
   const response = await res.json();
   const starsBalance = response.balances.find(

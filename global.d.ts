@@ -20,6 +20,9 @@ interface Window {
     }) => void;
     WalletType: any;
   };
+  leap?: any;
+  keplr: any;
+  cosmostation?: any;
 }
 
 type TxnLifecycleHooks<K> = {

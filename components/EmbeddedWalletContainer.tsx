@@ -2,14 +2,14 @@ import { useChain } from "@cosmos-kit/react";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { useConnectedWalletType } from "../hooks/use-connected-wallet-types";
 import {
-  AccountModal,
   Actions,
   EmbeddedWalletProvider,
+  StickyAggregatedView
 } from "@leapwallet/embedded-wallet-sdk-react";
 
 interface Props {
   mounted: boolean;
-  isModalOpen: boolean;
+  isModalOpen?: boolean;
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -20,11 +20,11 @@ export function EmbeddedWalletContainer({
 }: Props) {
   const { address, openView, disconnect, isWalletConnected, wallet, chain } = useChain("stargaze");
   const walletType = useConnectedWalletType(wallet?.name, isWalletConnected);
-  const restURL = chain?.apis?.rest ? chain.apis.rest[0].address : "";
+  const restURL = chain?.apis?.rest ? chain.apis.rest[1].address : "";
   const chainId = chain?.chain_id || "stargaze-1";
 
   const navigate = (path: string) => {
-    window.open(`https://app.leapwallet.io${path}`);
+    window.open(`https://swapfast.app${path}`);
   };
 
   const connectWallet = async () => {
@@ -36,12 +36,25 @@ export function EmbeddedWalletContainer({
       [chainId]: {
         address: address ?? "",
         restURL: restURL,
+        chainType: "cosmos",
       },
     }),
     [chainId, address, restURL]
   );
 
-  return mounted && isModalOpen && address ? (
+  const connectedWalletList = useMemo(() => {
+    if (isWalletConnected) {
+      return [{
+        type: 'cosmos' as any,
+        address: address ?? "",
+        prettyName: wallet?.prettyName || "",
+        logoUrl: typeof wallet?.logo === 'string' ? wallet.logo : "",
+      }];
+    }
+    return [];
+  }, [wallet, isWalletConnected, address]);
+
+  return mounted && address ? (
     <EmbeddedWalletProvider
       primaryChainId="stargaze-1"
       connectWallet={connectWallet}
@@ -49,37 +62,35 @@ export function EmbeddedWalletContainer({
       connectedWalletType={walletType}
       chains={["stargaze-1"]}
     >
-      <AccountModal
+       <StickyAggregatedView
         theme="dark"
         chainRecords={chainData}
-        isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
         }}
         restrictChains={true}
-        enableWalletConnect={true}
+        connectedWalletList={connectedWalletList}
         config={{
           showActionButtons: true,
+          showWalletList: true,
           actionListConfig: {
             [Actions.SEND]: {
-              onClick: () =>
-                navigate(`/transact/send?sourceChainId=${chainId}`),
+              enabled: false,
             },
             [Actions.IBC]: {
-              onClick: () =>
-                navigate(`/transact/send?sourceChainId=${chainId}`),
+              enabled: false,
             },
             [Actions.SWAP]: {
               onClick: () =>
-                navigate(`/transact/swap?sourceChainId=${chainId}`),
+                navigate(`?sourceChainId=${chainId}}`),
             },
             [Actions.BRIDGE]: {
               onClick: () =>
-                navigate(`/transact/bridge?destinationChainId=${chainId}`),
+                navigate(`?destinationChainId=${chainId}`),
             },
             [Actions.BUY]: {
               onClick: () =>
-                navigate(`/transact/buy?destinationChainId=${chainId}`),
+                navigate(`?destinationChainId=${chainId}`),
             },
           },
         }}
