@@ -4021,10 +4021,10 @@
     viem "1.21.0"
     wagmi "1.4.13"
 
-"@leapwallet/embedded-wallet-sdk-core@2.1.0-beta.23":
-  version "2.1.0-beta.23"
-  resolved "https://registry.yarnpkg.com/@leapwallet/embedded-wallet-sdk-core/-/embedded-wallet-sdk-core-2.1.0-beta.23.tgz#e951e559510ce233a0c2fc7c6db654cd99ce9adf"
-  integrity sha512-m6hwaJLspTNYaaAnaYpVzLGEBq2Mbp3En9vsaMnE/e145pkjvd0uIKT2M39S72wzxKV3VGFU4txVjI+pFypakA==
+"@leapwallet/embedded-wallet-sdk-core@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@leapwallet/embedded-wallet-sdk-core/-/embedded-wallet-sdk-core-2.1.0.tgz#c727dcc71f6dc9b761fcca73d65587da8f00b46d"
+  integrity sha512-+iBoZWOrUWrpzAZlsIrR9azezkpFv7HnSO6l+6ttHTwJFgLsX0cB+MFO/nYjYY3hjJ6LhbBdrFNV4k4VmA+VnA==
   dependencies:
     "@leapwallet/parser-parfait" "0.7.0"
     bech32 "2.0.0"
@@ -4033,10 +4033,10 @@
     ky "^1.4.0"
     typedi "0.10.0"
 
-"@leapwallet/embedded-wallet-sdk-react@2.1.0-beta.23":
-  version "2.1.0-beta.23"
-  resolved "https://registry.yarnpkg.com/@leapwallet/embedded-wallet-sdk-react/-/embedded-wallet-sdk-react-2.1.0-beta.23.tgz#53bfeab286db187b207cb170885f50037286f5ec"
-  integrity sha512-4FCr6M81ySdxoq5ltNfLOjO/osCsKG80qbCzVPZEVNCJ/bj0LU858e08/Ruj6SUBOBrsvAdjkboLAYtDYm63vQ==
+"@leapwallet/embedded-wallet-sdk-react@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@leapwallet/embedded-wallet-sdk-react/-/embedded-wallet-sdk-react-2.1.0.tgz#34ddd1b82f300e5b068417b9c63350169dd5e901"
+  integrity sha512-kZ4BB/sIpRNzD4Wiv9Nbg1lZkoEdo71AEVh4ldbyxQMy2E/EHI0Us84/PXZdV56dQuZfIlhdR5d5/iz2BT7wNw==
   dependencies:
     "@cosmjs/cosmwasm-stargate" "^0.32.4"
     "@cosmjs/launchpad" "^0.27.1"
@@ -4045,7 +4045,7 @@
     "@cosmjs/tendermint-rpc" "^0.32.4"
     "@keplr-wallet/types" "^0.12.119"
     "@leapwallet/cosmos-social-login-capsule-provider" "^0.0.38"
-    "@leapwallet/embedded-wallet-sdk-core" "2.1.0-beta.23"
+    "@leapwallet/embedded-wallet-sdk-core" "2.1.0"
     "@leapwallet/parser-parfait" "0.7.0"
     "@leapwallet/react-ui" "^1.10.2"
     "@phosphor-icons/react" "^2.1.7"
