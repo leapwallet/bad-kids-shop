@@ -10,6 +10,7 @@ import { WalletButton } from "../components/WalletButton";
 import Text from "./Text";
 
 import StargazeLogo from "../public/stargaze-logo.svg";
+import classNames from "classnames";
 
 export const ElementsContainerDynamic = dynamic(
   () =>
@@ -19,9 +20,17 @@ export const ElementsContainerDynamic = dynamic(
   { ssr: false }
 );
 
+export const EmbeddedWalletContainerDynamic = dynamic(
+  () =>
+    import("../components/EmbeddedWalletContainer").then(
+      (mod) => mod.EmbeddedWalletContainer
+    ),
+  { ssr: false }
+);
+
 const fetchBalance = async (address: string, chain: any) => {
   const res = await fetch(
-    `${chain.apis?.rest?.[0].address}/cosmos/bank/v1beta1/balances/${address}`
+    `${chain.apis?.rest?.[1].address}/cosmos/bank/v1beta1/balances/${address}`
   );
   const response = await res.json();
   const starsBalance = response.balances.find(
@@ -65,7 +74,12 @@ export function Header({
         )}
       </button>
 
-      <div id="nav-menu" className={` md:block ${isMenuOpen ? "" : "hidden"}`}>
+      <div id="nav-menu" 
+      className={classNames({
+        'nav-menu': isMenuOpen,
+        'nav-menu-hidden': !isMenuOpen,
+      })}
+      >
         <div className="flex flex-row gap-3 flex-wrap">
           <button
             onClick={() =>

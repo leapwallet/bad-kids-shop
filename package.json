@@ -30,7 +30,7 @@
     "@emotion/styled": "11.10.6",
     "@leapwallet/cosmos-social-login-capsule-provider": "0.0.33",
     "@leapwallet/cosmos-social-login-capsule-provider-ui": "0.0.50",
-    "@leapwallet/embedded-wallet-sdk-react": "0.3.7",
+    "@leapwallet/embedded-wallet-sdk-react": "2.1.0",
     "@types/bignumber.js": "^5.0.0",
     "@urql/exchange-graphcache": "^6.4.0",
     "bignumber.js": "^9.1.2",

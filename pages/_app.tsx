@@ -1,6 +1,6 @@
+import "@leapwallet/embedded-wallet-sdk-react/styles.css"
 import "../styles/globals.css";
 import "../styles/modal.css";
-import "@leapwallet/embedded-wallet-sdk-react/styles.css"
 import type { AppProps } from "next/app";
 import { ChainProvider, useChain } from "@cosmos-kit/react";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
@@ -42,6 +42,12 @@ const updatedChains = chains.map((chain) => {
 });
 
 function CreateCosmosApp({ Component, pageProps }: AppProps) {
+  const signerOptions = {
+    // signingStargate: () => {
+    //   return getSigningCosmosClientOptions();
+    // }
+  };
+
   const [cosmosCapsuleWallet, setCosmosCapsuleWallet] =
     useState<LeapCapsuleWallet>();
   const [wallets, setWallets] = useState()
